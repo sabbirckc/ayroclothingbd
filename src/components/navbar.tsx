@@ -70,13 +70,7 @@ export function Navbar() {
             </Link>
           ))}
 
-          {/* Red Bordered "Sale" Box - exact style as shown in the uploaded screenshot! */}
-          <Link
-            href="/clothes?category=Streetwear"
-            className="ml-2 px-3.5 py-1 rounded border border-rose-500/80 hover:bg-rose-500/10 text-rose-500 font-bold text-xs uppercase tracking-wider transition-all"
-          >
-            Sale
-          </Link>
+
         </nav>
 
         {/* Right Action Icons & Auth */}
@@ -249,16 +243,7 @@ export function Navbar() {
                   {link.name}
                 </Link>
               ))}
-              <Link
-                href="/clothes?category=Streetwear"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-lg text-sm font-bold text-rose-500 flex items-center justify-between"
-              >
-                <span>Sale & Special Drops</span>
-                <span className="px-2 py-0.5 rounded text-[10px] border border-rose-500 uppercase">
-                  Sale
-                </span>
-              </Link>
+
             </nav>
 
             {!user && (
