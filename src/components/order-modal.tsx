@@ -320,3 +320,4 @@ export function OrderModal({ isOpen, onClose, cloth, onOrderSuccess }: OrderModa
     </div>
   );
 }
+

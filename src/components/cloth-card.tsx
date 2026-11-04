@@ -152,3 +152,4 @@ export function ClothCard({ item }: { item: ClothItem }) {
     </div>
   );
 }
+

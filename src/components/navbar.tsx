@@ -11,15 +11,17 @@ import {
   Sun,
   Moon,
   Heart,
-  User,
+  User as UserIcon,
   PlusCircle,
   Package,
   ShoppingBag,
   LogOut,
   Menu,
   X,
+  Search,
   Sparkles,
-  LayoutDashboard
+  LayoutDashboard,
+  ChevronDown
 } from 'lucide-react';
 
 export function Navbar() {
@@ -44,12 +46,11 @@ export function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/85 backdrop-blur-md transition-colors duration-200">
+    <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/90 backdrop-blur-md transition-colors duration-200">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Brand Logo */}
+        {/* Brand Logo styled in the Le Reve aesthetic: clean, lowercase modern curves with needle & thread accent */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-amber-600 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform duration-200">
-            {/* Needle & Thread / Hanger icon */}
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-amber-600 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform duration-200">
             <svg
               className="w-5 h-5 fill-current"
               viewBox="0 0 24 24"
@@ -59,37 +60,55 @@ export function Navbar() {
             </svg>
           </div>
           <div className="flex flex-col">
-            <span className="font-heading font-black tracking-tight text-xl leading-none bg-gradient-to-r from-foreground via-foreground to-rose-600 bg-clip-text text-transparent">
-              ClothSpace
-            </span>
-            <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">
+            <div className="font-heading tracking-tight text-2xl font-black leading-none flex items-center">
+              <span className="text-foreground lowercase">cloth</span>
+              <span className="text-rose-600 font-normal lowercase ml-0.5">space</span>
+            </div>
+            <span className="text-[9px] uppercase tracking-widest text-muted-foreground font-semibold">
               Designer Apparel
             </span>
           </div>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-1.5 lg:gap-2">
+        {/* Desktop Navigation - Clean Jost Typography with letter-spacing */}
+        <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-150 relative ${
+              className={`px-3.5 py-1.5 rounded-lg text-sm font-medium tracking-wide transition-all duration-150 relative ${
                 isActive(link.href)
-                  ? 'text-foreground font-semibold bg-accent'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+                  ? 'text-foreground font-semibold'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-accent/40'
               }`}
             >
               {link.name}
               {isActive(link.href) && (
-                <span className="absolute bottom-0.5 left-3.5 right-3.5 h-0.5 bg-rose-600 rounded-full" />
+                <span className="absolute bottom-0 left-3.5 right-3.5 h-0.5 bg-rose-600 rounded-full" />
               )}
             </Link>
           ))}
+
+          {/* Red Bordered "Sale" Box - exact style as shown in the uploaded screenshot! */}
+          <Link
+            href="/clothes?category=Streetwear"
+            className="ml-2 px-3.5 py-1 rounded border border-rose-500/80 hover:bg-rose-500/10 text-rose-500 font-bold text-xs uppercase tracking-wider transition-all"
+          >
+            Sale
+          </Link>
         </nav>
 
         {/* Right Action Icons & Auth */}
         <div className="flex items-center gap-2 sm:gap-3">
+          {/* Search Shortcut */}
+          <Link
+            href="/clothes"
+            aria-label="Search Apparel"
+            className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+          >
+            <Search className="w-4 h-4" />
+          </Link>
+
           {/* Theme Toggle (Challenge 3) */}
           <button
             onClick={toggleTheme}
@@ -117,6 +136,21 @@ export function Navbar() {
             )}
           </Link>
 
+          {/* Orders / Cart Bag Icon with dynamic counter as seen in the screenshot */}
+          <Link
+            href="/my-orders"
+            aria-label="My Orders"
+            className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors relative"
+          >
+            <ShoppingBag className="w-4 h-4" />
+          </Link>
+
+          {/* Country / Region Flag Badge as shown in the screenshot */}
+          <div className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-md border border-border/80 text-[11px] font-semibold text-muted-foreground bg-muted/30">
+            <span>🇧🇩</span>
+            <span className="text-[10px]">BD</span>
+          </div>
+
           {/* User Auth Section */}
           {user ? (
             <div className="relative">
@@ -125,7 +159,7 @@ export function Navbar() {
                 onBlur={() => setTimeout(() => setDropdownOpen(false), 200)}
                 className="flex items-center gap-2 p-1 pl-2 rounded-full border border-border bg-card hover:bg-accent transition-colors"
               >
-                <span className="text-xs font-semibold max-w-[100px] truncate hidden sm:inline-block">
+                <span className="text-xs font-semibold max-w-[100px] truncate hidden sm:inline-block font-sans">
                   {user.name.split(' ')[0]}
                 </span>
                 <img
@@ -188,16 +222,23 @@ export function Navbar() {
               )}
             </div>
           ) : (
-            <div className="hidden sm:flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <Link
                 href="/login"
-                className="px-4 py-2 text-xs font-semibold text-foreground hover:bg-accent rounded-lg transition-colors"
+                className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors sm:hidden"
+                title="Login / Account"
+              >
+                <UserIcon className="w-4 h-4" />
+              </Link>
+              <Link
+                href="/login"
+                className="hidden sm:inline-flex px-4 py-1.5 text-xs font-semibold text-foreground hover:bg-accent rounded-lg transition-colors tracking-wide"
               >
                 Login
               </Link>
               <Link
                 href="/register"
-                className="px-4 py-2 text-xs font-semibold text-white bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 rounded-lg shadow-sm hover:shadow transition-all"
+                className="hidden sm:inline-flex px-4 py-1.5 text-xs font-semibold text-white bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 rounded-lg shadow-sm hover:shadow transition-all tracking-wide"
               >
                 Register
               </Link>
@@ -207,7 +248,7 @@ export function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden w-9 h-9 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-accent"
+            className="lg:hidden w-9 h-9 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-accent"
             aria-label="Open Mobile Menu"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -217,14 +258,14 @@ export function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-border bg-card px-4 pt-2 pb-6 space-y-3">
+        <div className="lg:hidden border-b border-border bg-card px-4 pt-2 pb-6 space-y-3">
           <nav className="flex flex-col space-y-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`px-3 py-2 rounded-lg text-sm font-medium ${
+                className={`px-3 py-2 rounded-lg text-sm font-medium tracking-wide ${
                   isActive(link.href)
                     ? 'text-rose-600 font-semibold bg-accent'
                     : 'text-muted-foreground'
@@ -233,6 +274,16 @@ export function Navbar() {
                 {link.name}
               </Link>
             ))}
+            <Link
+              href="/clothes?category=Streetwear"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-2 rounded-lg text-sm font-bold text-rose-500 flex items-center justify-between"
+            >
+              <span>Sale & Special Drops</span>
+              <span className="px-2 py-0.5 rounded text-[10px] border border-rose-500 uppercase">
+                Sale
+              </span>
+            </Link>
           </nav>
 
           {!user && (
@@ -240,14 +291,14 @@ export function Navbar() {
               <Link
                 href="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex-1 py-2 text-center text-xs font-semibold border border-border rounded-lg"
+                className="flex-1 py-2 text-center text-xs font-semibold border border-border rounded-lg tracking-wide"
               >
                 Login
               </Link>
               <Link
                 href="/register"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex-1 py-2 text-center text-xs font-semibold text-white bg-rose-600 rounded-lg"
+                className="flex-1 py-2 text-center text-xs font-semibold text-white bg-rose-600 rounded-lg tracking-wide"
               >
                 Register
               </Link>

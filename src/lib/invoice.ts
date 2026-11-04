@@ -129,3 +129,4 @@ export function generateOrderInvoice(order: any) {
   // Save the PDF
   doc.save(`ClothSpace-Invoice-${String(orderId).slice(-6)}.pdf`);
 }
+
