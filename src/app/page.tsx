@@ -1,88 +1,87 @@
 'use client';
 
-  import React, { useEffect, useState } from 'react';
-  import Link from 'next/link';
-  import { HeroSlider } from '@/components/hero-slider';
-  import { ClothCard, ClothItem } from '@/components/cloth-card';
-  import { ClothGridSkeleton } from '@/components/skeletons';
-  import { InstagramFeed } from '@/components/instagram-feed';
-  import { api } from '@/lib/api';
-  import {
-    Sparkles,
-    ArrowRight,
-    ShieldCheck,
-    RotateCcw,
-    Headphones,
-    CheckCircle,
-    Shirt,
-    Scissors,
-    Layers,
-    Sparkle,
-    Compass,
-    Star,
-    Quote
-  } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { HeroSlider } from '@/components/hero-slider';
+import { ClothCard, ClothItem } from '@/components/cloth-card';
+import { ClothGridSkeleton } from '@/components/skeletons';
+import { api } from '@/lib/api';
+import {
+  Sparkles,
+  ArrowRight,
+  ShieldCheck,
+  RotateCcw,
+  Headphones,
+  CheckCircle,
+  Shirt,
+  Scissors,
+  Layers,
+  Sparkle,
+  Compass,
+  Star,
+  Quote
+} from 'lucide-react';
 
-  export default function HomePage() {
-    const [featuredClothes, setFeaturedClothes] = useState<ClothItem[]>([]);
-    const [loading, setLoading] = useState(true);
+export default function HomePage() {
+  const [featuredClothes, setFeaturedClothes] = useState<ClothItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-      async function loadFeatured() {
-        try {
-          setLoading(true);
-          const res = await api.get('/api/clothes/featured');
-          if (res.success && Array.isArray(res.data)) {
-            setFeaturedClothes(res.data);
-          }
-        } catch (err) {
-          console.error('Failed to load featured clothes:', err);
-        } finally {
-          setLoading(false);
+  useEffect(() => {
+    async function loadFeatured() {
+      try {
+        setLoading(true);
+        const res = await api.get('/api/clothes/featured');
+        if (res.success && Array.isArray(res.data)) {
+          setFeaturedClothes(res.data);
         }
+      } catch (err) {
+        console.error('Failed to load featured clothes:', err);
+      } finally {
+        setLoading(false);
       }
-      loadFeatured();
-    }, []);
+    }
+    loadFeatured();
+  }, []);
 
-    const categories = [
-      {
-        name: 'Streetwear',
-        description: 'Heavyweight hoodies, cargo trench coats & raw cyberpunk silhouettes.',
-        image: '/image-2.jpg',
-        count: '40+ pieces',
-        slug: 'Streetwear',
-      },
-      {
-        name: 'Formal Wear',
-        description: 'Structured wool-blend blazers, silk tuxedos & velvet evening gowns.',
-        image: '/image-1.jpg',
-        count: '32+ pieces',
-        slug: 'Formal Wear',
-      },
-      {
-        name: 'Casual Essentials',
-        description: 'Belgian linen trousers, slub cotton overshirts & relaxed tailoring.',
-        image: '/image-5.jpg',
-        count: '55+ pieces',
-        slug: 'Casual Essentials',
-      },
-      {
-        name: 'Vintage & Retro',
-        description: 'Curated 90s selvedge denim bombers & antique reversible silk kimonos.',
-        image: '/image-3.jpg',
-        count: '28+ pieces',
-        slug: 'Vintage & Retro',
-      },
-      {
-        name: 'Handcrafted Knitwear',
-        description: 'Pure Mongolian cashmere cardigans & brushed open-stitch mohair pullovers.',
-        image: '/image-4.jpg',
-        count: '24+ pieces',
-        slug: 'Handcrafted Knitwear',
-      },
-    ];
+  const categories = [
+    {
+      name: 'Streetwear',
+      description: 'Heavyweight hoodies, cargo trench coats & raw cyberpunk silhouettes.',
+      image: '/image-2.jpg',
+      count: '40+ pieces',
+      slug: 'Streetwear',
+    },
+    {
+      name: 'Formal Wear',
+      description: 'Structured wool-blend blazers, silk tuxedos & velvet evening gowns.',
+      image: '/image-1.jpg',
+      count: '32+ pieces',
+      slug: 'Formal Wear',
+    },
+    {
+      name: 'Casual Essentials',
+      description: 'Belgian linen trousers, slub cotton overshirts & relaxed tailoring.',
+      image: '/image-5.jpg',
+      count: '55+ pieces',
+      slug: 'Casual Essentials',
+    },
+    {
+      name: 'Vintage & Retro',
+      description: 'Curated 90s selvedge denim bombers & antique reversible silk kimonos.',
+      image: '/image-3.jpg',
+      count: '28+ pieces',
+      slug: 'Vintage & Retro',
+    },
+    {
+      name: 'Handcrafted Knitwear',
+      description: 'Pure Mongolian cashmere cardigans & brushed open-stitch mohair pullovers.',
+      image: '/image-4.jpg',
+      count: '24+ pieces',
+      slug: 'Handcrafted Knitwear',
+    },
+  ];
 
-    return (
+  return (
     <div className="space-y-16 md:space-y-24 pb-20">
       {/* 1. Hero Slider Section */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 pt-6">
@@ -399,23 +398,6 @@
           ))}
         </div>
       </section>
-
-      {/* 7. AYRO Brand Official Instagram Lookbook & Interface */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-8">
-          <span className="text-xs font-bold uppercase tracking-widest text-rose-600">
-            Social Lookbook & Drops
-          </span>
-          <h2 className="font-heading font-black text-2xl sm:text-3xl md:text-4xl text-foreground mt-1.5">
-            Follow @ayroclothingbd on Instagram
-          </h2>
-          <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-            Explore daily campaign reels, fabric weave inspections, and timeless essential releases.
-          </p>
-        </div>
-
-        <InstagramFeed />
-      </section>
     </div>
   );
-  }
+}

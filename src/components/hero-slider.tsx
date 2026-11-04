@@ -66,9 +66,8 @@ export function HeroSlider() {
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-            index === current ? 'opacity-100 scale-100' : 'opacity-0 scale-105 pointer-events-none'
-          }`}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === current ? 'opacity-100 scale-100' : 'opacity-0 scale-105 pointer-events-none'
+            }`}
           style={{ transition: 'opacity 1s ease-in-out, transform 7s ease-out' }}
         >
           <img
@@ -147,9 +146,8 @@ export function HeroSlider() {
             key={idx}
             onClick={() => setCurrent(idx)}
             aria-label={`Go to slide ${idx + 1}`}
-            className={`transition-all duration-300 rounded-full ${
-              idx === current ? 'w-8 h-2 bg-rose-500' : 'w-2 h-2 bg-white/40 hover:bg-white/70'
-            }`}
+            className={`transition-all duration-300 rounded-full ${idx === current ? 'w-8 h-2 bg-rose-500' : 'w-2 h-2 bg-white/40 hover:bg-white/70'
+              }`}
           />
         ))}
       </div>

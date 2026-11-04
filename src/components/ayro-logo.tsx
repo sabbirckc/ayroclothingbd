@@ -37,3 +37,4 @@ export function AyroLogo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
     </Link>
   );
 }
+
