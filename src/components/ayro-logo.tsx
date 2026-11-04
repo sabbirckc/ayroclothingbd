@@ -4,21 +4,35 @@ import React from 'react';
 import Link from 'next/link';
 
 export function AyroLogo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
-  const circleSizes = {
-    sm: 'w-8 h-8 text-[9px]',
-    md: 'w-10 h-10 text-[11px]',
-    lg: 'w-16 h-16 text-[15px]',
+  const iconSizes = {
+    sm: 'w-8 h-8',
+    md: 'w-10 h-10',
+    lg: 'w-12 h-12',
+  };
+
+  const svgSizes = {
+    sm: 'w-4 h-4',
+    md: 'w-5 h-5',
+    lg: 'w-6 h-6',
   };
 
   return (
-    <Link href="/" className="flex items-center gap-3 group">
-      {/* Circular Cream Badge Logo matching @ayroclothingbd */}
+    <Link href="/" className="flex items-center gap-2.5 group">
+      {/* Clean Hanger Icon Emblem */}
       <div
-        className={`${circleSizes[size]} rounded-full bg-[#F5EFEB] dark:bg-stone-900 border border-[#E3DAC9] dark:border-stone-700 flex flex-col items-center justify-center text-stone-900 dark:text-stone-100 shadow-sm group-hover:scale-105 transition-transform duration-200 select-none shrink-0`}
+        className={`${iconSizes[size]} rounded-xl bg-stone-900 dark:bg-stone-100 text-stone-100 dark:text-stone-900 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-200 shrink-0 border border-border`}
       >
-        <span className="font-serif tracking-[0.22em] font-semibold pl-[0.22em] leading-tight">
-          AYRO
-        </span>
+        <svg
+          className={`${svgSizes[size]} fill-none stroke-current`}
+          viewBox="0 0 24 24"
+          strokeWidth="1.9"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          {/* Modern Coat Hanger */}
+          <path d="M12 2a3 3 0 0 0-3 3c0 .8.3 1.5.8 2.1L3.5 13a2 2 0 0 0 1.2 3.5h14.6a2 2 0 0 0 1.2-3.5L14.2 7.1A3 3 0 0 0 15 5a3 3 0 0 0-3-3z" />
+          <line x1="4" y1="16.5" x2="20" y2="16.5" />
+        </svg>
       </div>
 
       <div className="flex flex-col">
@@ -26,8 +40,8 @@ export function AyroLogo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
           <span className="font-heading font-black tracking-tight text-xl leading-none text-foreground">
             AYRO
           </span>
-          <span className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-mono font-medium">
-            ClothSpace
+          <span className="text-[11px] px-2 py-0.5 rounded-md bg-muted text-foreground font-sans font-bold tracking-tight border border-border">
+            ClothingBD
           </span>
         </div>
         <span className="text-[9px] uppercase tracking-[0.18em] text-muted-foreground font-semibold mt-0.5">
@@ -37,4 +51,3 @@ export function AyroLogo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
     </Link>
   );
 }
-
