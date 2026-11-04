@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/context/auth-context';
 import { useTheme } from '@/context/theme-context';
 import { useWishlist } from '@/context/wishlist-context';
@@ -27,12 +27,35 @@ import {
 
 export function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const { wishlistIds } = useWishlist();
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleSearchClick = () => {
+    if (pathname === '/') {
+      const input = document.getElementById('home-search-input');
+      if (input) {
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        input.focus();
+        return;
+      }
+      const section = document.getElementById('clothes-section');
+      if (section) section.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      router.push('/#clothes-section');
+      setTimeout(() => {
+        const input = document.getElementById('home-search-input');
+        if (input) {
+          input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          input.focus();
+        }
+      }, 350);
+    }
+  };
 
   const navLinks = [
     { name: 'Home', href: '/' },
@@ -75,14 +98,16 @@ export function Navbar() {
 
         {/* Right Action Icons & Auth */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Search Shortcut */}
-          <Link
-            href="/clothes"
+          {/* Search Shortcut - moves to home search section and focuses search input */}
+          <button
+            type="button"
+            onClick={handleSearchClick}
             aria-label="Search Apparel"
-            className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+            title="Search clothing on home page"
+            className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
           >
             <Search className="w-4 h-4" />
-          </Link>
+          </button>
 
           {/* Theme Toggle (Challenge 3) */}
           <button

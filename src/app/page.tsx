@@ -19,12 +19,20 @@ import {
   Sparkle,
   Compass,
   Star,
-  Quote
+  Quote,
+  Search,
+  X
 } from 'lucide-react';
 
 export default function HomePage() {
   const [featuredClothes, setFeaturedClothes] = useState<ClothItem[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Home Page live search state
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeSearch, setActiveSearch] = useState('');
+  const [searchResults, setSearchResults] = useState<ClothItem[] | null>(null);
+  const [searching, setSearching] = useState(false);
 
   useEffect(() => {
     async function loadFeatured() {
@@ -42,6 +50,34 @@ export default function HomePage() {
     }
     loadFeatured();
   }, []);
+
+  const handleHomeSearch = async (e?: React.FormEvent, term?: string) => {
+    if (e) e.preventDefault();
+    const query = (term !== undefined ? term : searchQuery).trim();
+    if (!query) {
+      setSearchResults(null);
+      setActiveSearch('');
+      return;
+    }
+    try {
+      setSearching(true);
+      setActiveSearch(query);
+      const res = await api.get('/api/clothes', { params: { search: query, limit: 12 } });
+      if (res.success && Array.isArray(res.data)) {
+        setSearchResults(res.data);
+      }
+    } catch (err) {
+      console.error('Home search error:', err);
+    } finally {
+      setSearching(false);
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    setActiveSearch('');
+    setSearchResults(null);
+  };
 
   const categories = [
     {
@@ -86,19 +122,94 @@ export default function HomePage() {
       {/* 1. Hero Slider Section - Full Width Edge-to-Edge */}
       <HeroSlider />
 
-      {/* 2. Featured Clothes Section (Dynamic .limit(6)) */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8">
+      {/* 2. Featured Clothes & Live Search Section */}
+      <section id="clothes-section" className="container mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
+        {/* Search Bar on Home Page */}
+        <div className="mb-8 p-4 sm:p-5 rounded-2xl bg-card border border-border shadow-sm">
+          <form onSubmit={handleHomeSearch} className="flex flex-col sm:flex-row gap-3">
+            <div className="relative flex-1">
+              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <input
+                id="home-search-input"
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search clothing by name, fabric, style (e.g. Cotton, Linen, Formal, Blazer)..."
+                className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all font-sans"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={handleClearSearch}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1 cursor-pointer"
+                  title="Clear search"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+            <button
+              type="submit"
+              disabled={searching}
+              className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-foreground text-background font-semibold text-xs tracking-wider uppercase hover:opacity-90 shadow-sm transition-all shrink-0 cursor-pointer disabled:opacity-50"
+            >
+              {searching ? (
+                <div className="w-4 h-4 border-2 border-background border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <Search className="w-4 h-4" />
+              )}
+              <span>Search</span>
+            </button>
+          </form>
+
+          {/* Quick search suggestion tags */}
+          <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-border/50 text-xs">
+            <span className="text-muted-foreground font-medium text-[11px]">Popular:</span>
+            {['Cotton', 'Linen', 'Shirt', 'Formal', 'Streetwear', 'Knitwear'].map((tag) => (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => {
+                  setSearchQuery(tag);
+                  handleHomeSearch(undefined, tag);
+                }}
+                className={`px-2.5 py-1 rounded-full border text-[11px] font-medium transition-colors cursor-pointer ${
+                  activeSearch.toLowerCase() === tag.toLowerCase()
+                    ? 'bg-rose-500 text-white border-rose-500'
+                    : 'bg-muted/40 hover:bg-muted text-foreground border-border'
+                }`}
+              >
+                {tag}
+              </button>
+            ))}
+            {activeSearch && (
+              <button
+                type="button"
+                onClick={handleClearSearch}
+                className="ml-auto text-rose-500 hover:underline text-[11px] font-semibold cursor-pointer"
+              >
+                Clear Search & Reset to Featured
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 text-rose-600 dark:text-rose-400 text-xs font-bold uppercase tracking-wider mb-2">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Curated Highlights</span>
+              {activeSearch ? <Search className="w-3.5 h-3.5" /> : <Sparkles className="w-3.5 h-3.5" />}
+              <span>{activeSearch ? 'Search Results' : 'Curated Highlights'}</span>
             </div>
             <h2 className="font-heading font-black text-2xl sm:text-3xl md:text-4xl text-foreground">
-              Featured Designer Apparel
+              {activeSearch
+                ? `Search Results for "${activeSearch}"`
+                : 'Featured Designer Apparel'}
             </h2>
             <p className="text-sm text-muted-foreground mt-1 max-w-xl">
-              Hand-selected garments from verified independent ateliers, displaying transparent pricing and real-time inventory.
+              {activeSearch
+                ? `Showing ${searchResults?.length || 0} apparel item(s) matching "${activeSearch}".`
+                : 'Hand-selected garments from verified independent ateliers, displaying transparent pricing and real-time inventory.'}
             </p>
           </div>
 
@@ -111,8 +222,35 @@ export default function HomePage() {
           </Link>
         </div>
 
-        {loading ? (
+        {/* Product Grid */}
+        {searching || loading ? (
           <ClothGridSkeleton count={6} />
+        ) : activeSearch ? (
+          searchResults && searchResults.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {searchResults.map((item) => (
+                <ClothCard key={item.id || item._id} item={item} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 p-8 border border-dashed border-border rounded-2xl bg-muted/20">
+              <Shirt className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
+              <h3 className="font-heading font-bold text-base text-foreground">
+                No Apparel Found for &ldquo;{activeSearch}&rdquo;
+              </h3>
+              <p className="text-xs text-muted-foreground mt-1 max-w-sm mx-auto">
+                We couldn&apos;t find any items matching your search. Try different keywords or reset to featured apparel.
+              </p>
+              <button
+                type="button"
+                onClick={handleClearSearch}
+                className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-foreground text-background text-xs font-semibold cursor-pointer hover:opacity-90 transition-opacity"
+              >
+                <X className="w-3.5 h-3.5" />
+                <span>Reset to Featured Clothes</span>
+              </button>
+            </div>
+          )
         ) : featuredClothes.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {featuredClothes.slice(0, 6).map((item) => (
