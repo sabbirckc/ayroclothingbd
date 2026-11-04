@@ -184,7 +184,7 @@ export function Footer() {
 
         {/* Bottom Bar: Copyright & Terms */}
         <div className="pt-8 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <p>© {new Date().getFullYear()} ClothSpace. All rights reserved. Built for conscious apparel lovers.</p>
+          <p>© 2026 ClothSpace. All rights reserved. Built for conscious apparel lovers.</p>
           <div className="flex items-center gap-5">
             <Link href="/about" className="hover:text-foreground transition-colors">
               Privacy Policy

@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
+
+// Rest of imports
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/api';
@@ -27,7 +29,7 @@ import {
   Sparkle
 } from 'lucide-react';
 
-export default function ClothDetailsPage() {
+function ClothDetailsContent() {
   const params = useParams();
   const router = useRouter();
   const id = params?.id as string;
@@ -410,6 +412,14 @@ export default function ClothDetailsPage() {
         }}
       />
     </div>
+  );
+}
+
+export default function ClothDetailsPage() {
+  return (
+    <Suspense fallback={<DetailSkeleton />}>
+      <ClothDetailsContent />
+    </Suspense>
   );
 }
 

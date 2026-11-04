@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/context/auth-context';
 import { api } from '@/lib/api';
 import { toast } from 'sonner';
 import { Edit3, ArrowLeft, AlertCircle, Save, Check } from 'lucide-react';
 
-export default function EditClothPage() {
+function EditClothContent() {
   const params = useParams();
   const router = useRouter();
   const id = params?.id as string;
@@ -429,6 +429,14 @@ export default function EditClothPage() {
         </div>
       </form>
     </div>
+  );
+}
+
+export default function EditClothPage() {
+  return (
+    <Suspense fallback={<div className="container mx-auto px-4 py-16 text-center text-sm text-muted-foreground">Loading listing editor...</div>}>
+      <EditClothContent />
+    </Suspense>
   );
 }
 

@@ -34,7 +34,9 @@ export const metadata: Metadata = {
             <ThemeProvider>
               <AuthProvider>
                 <WishlistProvider>
-                  <Navbar />
+                  <Suspense fallback={<div className="h-16 w-full border-b border-border/60 bg-background/90" />}>
+                    <Navbar />
+                  </Suspense>
                   <main className="flex-1 flex flex-col">{children}</main>
                   <Footer />
                   <Toaster richColors position="top-right" closeButton />
