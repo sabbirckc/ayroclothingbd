@@ -2,131 +2,158 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, Sparkles, ArrowRight, ShieldCheck, Tag } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Sparkles, ArrowRight, Shirt, Tag, Scissors } from 'lucide-react';
 
-interface Slide {
-  image: string;
+interface SlideData {
+  id: number;
   badge: string;
+  badgeIcon: any;
   headline: string;
   subtext: string;
-  tag: string;
+  image: string;
+  primaryCtaText: string;
+  primaryCtaLink: string;
+  secondaryCtaText: string;
+  secondaryCtaLink: string;
 }
 
-const slides: Slide[] = [
+const HERO_SLIDES: SlideData[] = [
   {
-    image: '/image-10.jpg',
-    badge: 'AYRO Campaign Drop',
-    headline: "Let's Go With AYRO — Timeless Essential Collection",
-    subtext: 'Masterfully tailored button-downs and pinstripe pieces engineered with pure breathable cotton and precision collar architecture.',
-    tag: '100% Pure Cotton',
-  },
-  {
+    id: 1,
+    badge: 'AYRO Timeless Essentials',
+    badgeIcon: Sparkles,
+    headline: 'High-Performance Designer Apparel for Visionary Creators',
+    subtext: 'Discover pristine tailored shirts, handcrafted textures, and architectural silhouettes with transparent pricing and real-time inventory.',
     image: '/home-1.jpg',
-    badge: 'Artisanal Menswear Tailoring',
-    headline: 'Bespoke Textures, Mother-of-Pearl Buttons & Subtle Stripes',
-    subtext: 'Every garment is tailored with enduring craftsmanship, French seams, and verified premium textiles.',
-    tag: 'AYRO Verified Atelier',
+    primaryCtaText: 'Explore Clothes',
+    primaryCtaLink: '/clothes',
+    secondaryCtaText: 'List Your Apparel',
+    secondaryCtaLink: '/add-cloth',
   },
   {
-    image: '/image-9.jpg',
-    badge: 'Tailored Essentials',
+    id: 2,
+    badge: '100% Breathable Combed Cotton',
+    badgeIcon: Shirt,
     headline: 'Premium Button-Downs for Boardrooms, Weekends & Occasions',
     subtext: 'Discover transparent sizing, zero double-booking inventory, and authentic clothing directly from AYRO.',
-    tag: 'Guaranteed Authentic Weaves',
+    image: '/image-10.jpg',
+    primaryCtaText: 'Explore Collection',
+    primaryCtaLink: '/clothes?category=Formal%20Wear',
+    secondaryCtaText: 'List Your Apparel',
+    secondaryCtaLink: '/add-cloth',
+  },
+  {
+    id: 3,
+    badge: 'Artisanal Tailoring & Heritage Weaves',
+    badgeIcon: Scissors,
+    headline: 'Bespoke Textures, Mother-of-Pearl Buttons & Subtle Pinstripes',
+    subtext: 'Every stitch tells a story. Connect directly with boutique creators and experience craftsmanship untainted by mass production.',
+    image: '/image-9.jpg',
+    primaryCtaText: 'Explore All Apparel',
+    primaryCtaLink: '/clothes',
+    secondaryCtaText: 'List Your Apparel',
+    secondaryCtaLink: '/add-cloth',
   },
 ];
 
 export function HeroSlider() {
   const [current, setCurrent] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
-    if (isPaused) return;
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % HERO_SLIDES.length);
     }, 6000);
-    return () => clearInterval(interval);
-  }, [isPaused]);
+    return () => clearInterval(timer);
+  }, []);
 
   const prevSlide = () => {
-    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
+    setCurrent((prev) => (prev === 0 ? HERO_SLIDES.length - 1 : prev - 1));
   };
 
   const nextSlide = () => {
-    setCurrent((prev) => (prev + 1) % slides.length);
+    setCurrent((prev) => (prev + 1) % HERO_SLIDES.length);
   };
+
+  const activeSlide = HERO_SLIDES[current];
+  const ActiveIcon = activeSlide.badgeIcon;
 
   return (
     <div
-      className="relative w-full overflow-hidden rounded-2xl md:rounded-3xl bg-slate-950 text-white shadow-2xl min-h-[460px] md:min-h-[540px] flex items-center group"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      id="hero-banner"
+      className="scroll-mt-20 relative w-full h-[580px] sm:h-[620px] lg:h-[680px] overflow-hidden bg-black select-none"
     >
-      {/* Background Slides */}
-      {slides.map((slide, index) => (
-        <div
-          key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === current ? 'opacity-100 scale-100' : 'opacity-0 scale-105 pointer-events-none'
+      {/* Background Images Crossfade */}
+      {HERO_SLIDES.map((slide, index) => {
+        const isActive = index === current;
+        return (
+          <div
+            key={slide.id}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              isActive ? 'opacity-100 z-0' : 'opacity-0 z-0 pointer-events-none'
             }`}
-          style={{ transition: 'opacity 1s ease-in-out, transform 7s ease-out' }}
-        >
-          <img
-            src={slide.image}
-            alt={slide.headline}
-            className="w-full h-full object-cover object-center filter brightness-[0.45] contrast-105"
-          />
-          {/* Subtle gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
-        </div>
-      ))}
+          >
+            <img
+              src={slide.image}
+              alt={slide.headline}
+              className={`w-full h-full object-cover transition-transform duration-7000 ease-out ${
+                isActive ? 'scale-105' : 'scale-100'
+              }`}
+            />
+            {/* Dark Cinematic Gradients matching StudioSpace */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-black/45" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+          </div>
+        );
+      })}
 
-      {/* Slide Content */}
-      <div className="relative z-10 container mx-auto px-6 sm:px-10 lg:px-16 py-12">
-        <div className="max-w-2xl space-y-5">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-semibold tracking-wide text-rose-300">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
-            <span>{slides[current].badge}</span>
-            <span className="w-1 h-1 rounded-full bg-white/40" />
-            <span className="text-[11px] text-white/80">{slides[current].tag}</span>
+      {/* Active Slide Text Content */}
+      <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center z-10">
+        <div
+          key={activeSlide.id}
+          className="max-w-2xl space-y-6 animate-in fade-in slide-in-from-bottom-5 duration-500 fill-mode-forwards"
+        >
+          {/* Feature Badge */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-semibold uppercase tracking-wider">
+            <ActiveIcon className="w-3.5 h-3.5 text-amber-400" />
+            <span>{activeSlide.badge}</span>
           </div>
 
-          {/* Punchy Headline */}
-          <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-white">
-            {slides[current].headline}
+          {/* Headline */}
+          <h1 className="font-heading font-black text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-[1.1]">
+            {activeSlide.headline}
           </h1>
 
           {/* Subtext */}
-          <p className="text-sm sm:text-base md:text-lg text-slate-200/90 leading-relaxed font-light">
-            {slides[current].subtext}
+          <p className="text-base sm:text-lg text-white/80 leading-relaxed max-w-xl">
+            {activeSlide.subtext}
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-wrap items-center gap-3 pt-3">
+          <div className="flex flex-wrap items-center gap-4 pt-2">
             <Link
-              href="/clothes"
-              className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-rose-600 via-rose-500 to-amber-500 hover:from-rose-500 hover:to-amber-400 text-white text-sm font-bold shadow-lg hover:shadow-rose-500/25 flex items-center gap-2 transform active:scale-95 transition-all"
+              href={activeSlide.primaryCtaLink}
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white text-black font-semibold text-sm hover:bg-white/90 shadow-lg hover:shadow-white/20 transition-all group"
             >
-              <span>Explore Clothes</span>
-              <ArrowRight className="w-4 h-4" />
+              <span>{activeSlide.primaryCtaText}</span>
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
 
             <Link
-              href="/add-cloth"
-              className="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white text-sm font-semibold flex items-center gap-2 transition-all"
+              href={activeSlide.secondaryCtaLink}
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white font-semibold text-sm hover:bg-white/20 transition-all"
             >
               <Tag className="w-4 h-4 text-amber-400" />
-              <span>List Your Apparel</span>
+              <span>{activeSlide.secondaryCtaText}</span>
             </Link>
           </div>
         </div>
       </div>
 
-      {/* Prev / Next Arrows */}
+      {/* Manual Navigation Arrows */}
       <button
         onClick={prevSlide}
         aria-label="Previous slide"
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/40 hover:bg-black/70 backdrop-blur-md border border-white/20 text-white flex items-center justify-center opacity-80 group-hover:opacity-100 transition-all hover:scale-110"
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white hover:bg-black/70 flex items-center justify-center transition-all cursor-pointer"
       >
         <ChevronLeft className="w-5 h-5" />
       </button>
@@ -134,24 +161,26 @@ export function HeroSlider() {
       <button
         onClick={nextSlide}
         aria-label="Next slide"
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/40 hover:bg-black/70 backdrop-blur-md border border-white/20 text-white flex items-center justify-center opacity-80 group-hover:opacity-100 transition-all hover:scale-110"
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white hover:bg-black/70 flex items-center justify-center transition-all cursor-pointer"
       >
         <ChevronRight className="w-5 h-5" />
       </button>
 
-      {/* Indicators */}
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-        {slides.map((_, idx) => (
+      {/* Navigation Indicators */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+        {HERO_SLIDES.map((_, index) => (
           <button
-            key={idx}
-            onClick={() => setCurrent(idx)}
-            aria-label={`Go to slide ${idx + 1}`}
-            className={`transition-all duration-300 rounded-full ${idx === current ? 'w-8 h-2 bg-rose-500' : 'w-2 h-2 bg-white/40 hover:bg-white/70'
-              }`}
+            key={index}
+            onClick={() => setCurrent(index)}
+            aria-label={`Go to slide ${index + 1}`}
+            className={`transition-all duration-300 rounded-full cursor-pointer ${
+              index === current
+                ? 'w-8 h-2 bg-white'
+                : 'w-2 h-2 bg-white/40 hover:bg-white/70'
+            }`}
           />
         ))}
       </div>
     </div>
   );
 }
-

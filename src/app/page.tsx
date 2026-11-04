@@ -82,11 +82,9 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="space-y-16 md:space-y-24 pb-20">
-      {/* 1. Hero Slider Section */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-        <HeroSlider />
-      </section>
+    <div className="flex flex-col w-full space-y-16 md:space-y-24 pb-20">
+      {/* 1. Hero Slider Section - Full Width Edge-to-Edge */}
+      <HeroSlider />
 
       {/* 2. Featured Clothes Section (Dynamic .limit(6)) */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-8">
