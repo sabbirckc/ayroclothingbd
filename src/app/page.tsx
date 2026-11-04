@@ -5,6 +5,7 @@
   import { HeroSlider } from '@/components/hero-slider';
   import { ClothCard, ClothItem } from '@/components/cloth-card';
   import { ClothGridSkeleton } from '@/components/skeletons';
+  import { InstagramFeed } from '@/components/instagram-feed';
   import { api } from '@/lib/api';
   import {
     Sparkles,
@@ -397,7 +398,24 @@
             </div>
           ))}
         </div>
-      </section >
-    </div >
+      </section>
+
+      {/* 7. AYRO Brand Official Instagram Lookbook & Interface */}
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-2xl mx-auto mb-8">
+          <span className="text-xs font-bold uppercase tracking-widest text-rose-600">
+            Social Lookbook & Drops
+          </span>
+          <h2 className="font-heading font-black text-2xl sm:text-3xl md:text-4xl text-foreground mt-1.5">
+            Follow @ayroclothingbd on Instagram
+          </h2>
+          <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+            Explore daily campaign reels, fabric weave inspections, and timeless essential releases.
+          </p>
+        </div>
+
+        <InstagramFeed />
+      </section>
+    </div>
   );
   }

@@ -14,25 +14,25 @@ interface Slide {
 
 const slides: Slide[] = [
   {
+    image: '/image-10.jpg',
+    badge: 'AYRO Campaign Drop',
+    headline: "Let's Go With AYRO — Timeless Essential Collection",
+    subtext: 'Masterfully tailored button-downs and pinstripe pieces engineered with pure breathable cotton and precision collar architecture.',
+    tag: '100% Pure Cotton',
+  },
+  {
     image: '/home-1.jpg',
-    badge: 'Curated Autumn/Winter Drop',
-    headline: 'Peer-to-Peer Apparel for Independent Ateliers & Enthusiasts',
-    subtext: 'Discover bespoke evening wear, handcrafted knitwear, and architectural streetwear direct from verified independent designers worldwide.',
-    tag: 'Authentic Fabrics Only',
+    badge: 'Artisanal Menswear Tailoring',
+    headline: 'Bespoke Textures, Mother-of-Pearl Buttons & Subtle Stripes',
+    subtext: 'Every garment is tailored with enduring craftsmanship, French seams, and verified premium textiles.',
+    tag: 'AYRO Verified Atelier',
   },
   {
-    image: '/home-2.jpg',
-    badge: 'Slow Fashion Revolution',
-    headline: 'Wear Rare Pieces. Circulate Designer Wardrobes Sustainably.',
-    subtext: 'Give pre-loved luxury and artisanal creations a second life. Transparent pricing, dynamic sizing, and real-time inventory management.',
-    tag: 'Zero Double-Booking Guarantee',
-  },
-  {
-    image: '/image-1.jpg',
-    badge: 'Bespoke Tailoring & Heritage',
-    headline: 'Milanese Wool, Japanese Selvedge & Pure Mongolian Cashmere',
-    subtext: 'Every stitch tells a story. Connect directly with boutique creators and experience craftsmanship untainted by mass production.',
-    tag: 'Verified Independent Designers',
+    image: '/image-9.jpg',
+    badge: 'Tailored Essentials',
+    headline: 'Premium Button-Downs for Boardrooms, Weekends & Occasions',
+    subtext: 'Discover transparent sizing, zero double-booking inventory, and authentic clothing directly from AYRO.',
+    tag: 'Guaranteed Authentic Weaves',
   },
 ];
 

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { ArrowRight, ShieldCheck, HeartHandshake } from 'lucide-react';
+import { AyroLogo } from '@/components/ayro-logo';
 
 export function Footer() {
   const [email, setEmail] = useState('');
@@ -24,19 +25,10 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8 mb-12">
           {/* Col 1 & 2: Brand & Mission */}
           <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-amber-600 flex items-center justify-center text-white shadow">
-                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                  <path d="M12 2C9.79 2 8 3.79 8 6c0 1.28.61 2.42 1.55 3.16L3.4 13.9c-.8.57-.99 1.67-.42 2.47.57.8 1.67.99 2.47.42L12 12.08l6.55 4.71c.8.57 1.9.38 2.47-.42.57-.8.38-1.9-.42-2.47L14.45 9.16C15.39 8.42 16 7.28 16 6c0-2.21-1.79-4-4-4zm0 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm-9 14h18v2H3v-2z" />
-                </svg>
-              </div>
-              <span className="font-heading font-black tracking-tight text-xl">
-                ClothSpace
-              </span>
-            </Link>
+            <AyroLogo size="md" />
 
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
-              The premier peer-to-peer apparel marketplace dedicated to independent fashion creators, boutique ateliers, and discerning clothing connoisseurs. Championing slow fashion, textile authenticity, and wardrobe circularity.
+              AYRO Clothing BD • Timeless Essential. The premier apparel marketplace dedicated to independent fashion creators, boutique ateliers, and discerning clothing connoisseurs.
             </p>
 
             <div className="flex items-center gap-3 pt-2">
