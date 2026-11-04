@@ -126,12 +126,6 @@ export function Navbar() {
             <ShoppingBag className="w-4 h-4" />
           </Link>
 
-          {/* Country / Region Flag Badge as shown in the screenshot */}
-          <div className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-md border border-border/80 text-[11px] font-semibold text-muted-foreground bg-muted/30">
-            <span>🇧🇩</span>
-            <span className="text-[10px]">BD</span>
-          </div>
-
           {/* User Auth Section */}
           {user ? (
             <div className="relative">
