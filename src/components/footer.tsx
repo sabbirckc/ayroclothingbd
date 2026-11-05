@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
-import { ArrowRight, ShieldCheck, HeartHandshake } from 'lucide-react';
+import { ArrowRight, ShieldCheck } from 'lucide-react';
 import { AyroLogo } from '@/components/ayro-logo';
 
 export function Footer() {
@@ -46,7 +46,7 @@ export function Footer() {
               </a>
 
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/ayroclothingbd"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Follow us on Instagram"
@@ -58,7 +58,7 @@ export function Footer() {
               </a>
 
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/ayro.clothing"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Follow us on Facebook"
