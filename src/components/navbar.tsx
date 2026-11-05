@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/auth-context';
 import { useTheme } from '@/context/theme-context';
 import { useWishlist } from '@/context/wishlist-context';
@@ -23,7 +23,6 @@ import {
 
 export function Navbar() {
   const pathname = usePathname();
-  const router = useRouter();
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const { wishlistIds } = useWishlist();
@@ -32,13 +31,7 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleSearchClick = () => {
-    if (pathname === '/') {
-      window.dispatchEvent(new CustomEvent('toggle-home-search'));
-      const section = document.getElementById('clothes-section');
-      if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else {
-      router.push('/?search=open#clothes-section');
-    }
+    window.dispatchEvent(new CustomEvent('open-search-modal'));
   };
 
   const navLinks = [
@@ -65,89 +58,88 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`px-3.5 py-1.5 rounded-lg text-sm font-medium tracking-wide transition-all duration-150 relative ${
-                isActive(link.href)
+              className={`px-3.5 py-1.5 rounded-lg text-sm font-medium tracking-wide transition-all duration-150 relative ${isActive(link.href)
                   ? 'text-foreground font-semibold'
                   : 'text-muted-foreground hover:text-foreground hover:bg-accent/40'
               }`}
             >
-              {link.name}
-              {isActive(link.href) && (
-                <span className="absolute bottom-0 left-3.5 right-3.5 h-0.5 bg-rose-600 rounded-full" />
-              )}
-            </Link>
+          {link.name}
+          {isActive(link.href) && (
+            <span className="absolute bottom-0 left-3.5 right-3.5 h-0.5 bg-rose-600 rounded-full" />
+          )}
+        </Link>
           ))}
-        </nav>
+      </nav>
 
-        {/* Right Action Icons & Auth */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Search Shortcut */}
-          <button
-            type="button"
-            onClick={handleSearchClick}
-            aria-label="Search Apparel"
-            title="Search clothing on home page"
-            className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
-          >
-            <Search className="w-4 h-4" />
-          </button>
+      {/* Right Action Icons & Auth */}
+      <div className="flex items-center gap-2 sm:gap-3">
+        {/* Search Shortcut */}
+        <button
+          type="button"
+          onClick={handleSearchClick}
+          aria-label="Search Apparel"
+          title="Search clothing on home page"
+          className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
+        >
+          <Search className="w-4 h-4" />
+        </button>
 
-          {/* Theme Toggle (Challenge 3) */}
-          <button
-            onClick={toggleTheme}
-            aria-label="Toggle Theme"
-            className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-          >
-            {theme === 'dark' ? (
-              <Sun className="w-4 h-4 text-amber-400" />
-            ) : (
-              <Moon className="w-4 h-4 text-slate-700" />
-            )}
-          </button>
+        {/* Theme Toggle (Challenge 3) */}
+        <button
+          onClick={toggleTheme}
+          aria-label="Toggle Theme"
+          className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+        >
+          {theme === 'dark' ? (
+            <Sun className="w-4 h-4 text-amber-400" />
+          ) : (
+            <Moon className="w-4 h-4 text-slate-700" />
+          )}
+        </button>
 
-          {/* Wishlist Link */}
-          <Link
-            href="/clothes?wishlist=true"
-            aria-label="Wishlist"
-            className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors relative"
-          >
-            <Heart className="w-4 h-4" />
-            {wishlistIds.length > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-600 text-[10px] text-white font-bold rounded-full flex items-center justify-center shadow-sm">
-                {wishlistIds.length}
+        {/* Wishlist Link */}
+        <Link
+          href="/clothes?wishlist=true"
+          aria-label="Wishlist"
+          className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors relative"
+        >
+          <Heart className="w-4 h-4" />
+          {wishlistIds.length > 0 && (
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-600 text-[10px] text-white font-bold rounded-full flex items-center justify-center shadow-sm">
+              {wishlistIds.length}
+            </span>
+          )}
+        </Link>
+
+        {/* Orders / Cart Bag Icon */}
+        <Link
+          href="/my-orders"
+          aria-label="My Orders"
+          className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors relative"
+        >
+          <ShoppingBag className="w-4 h-4" />
+        </Link>
+
+        {/* User Auth Section */}
+        {user ? (
+          <div className="relative">
+            <button
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+              className="flex items-center gap-2 p-1 pl-2 rounded-full border border-border bg-card hover:bg-accent transition-colors cursor-pointer"
+              aria-label="User Menu"
+            >
+              <span className="text-xs font-semibold max-w-[100px] truncate hidden sm:inline-block font-sans">
+                {user.name.split(' ')[0]}
               </span>
-            )}
-          </Link>
+              <img
+                src={user.photoURL || '/client-review-1.jpg'}
+                alt={user.name}
+                className="w-8 h-8 rounded-full object-cover border border-border"
+              />
+            </button>
 
-          {/* Orders / Cart Bag Icon */}
-          <Link
-            href="/my-orders"
-            aria-label="My Orders"
-            className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors relative"
-          >
-            <ShoppingBag className="w-4 h-4" />
-          </Link>
-
-          {/* User Auth Section */}
-          {user ? (
-            <div className="relative">
-              <button
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-2 p-1 pl-2 rounded-full border border-border bg-card hover:bg-accent transition-colors cursor-pointer"
-                aria-label="User Menu"
-              >
-                <span className="text-xs font-semibold max-w-[100px] truncate hidden sm:inline-block font-sans">
-                  {user.name.split(' ')[0]}
-                </span>
-                <img
-                  src={user.photoURL || '/client-review-1.jpg'}
-                  alt={user.name}
-                  className="w-8 h-8 rounded-full object-cover border border-border"
-                />
-              </button>
-
-              {/* User Dropdown */}
-              {dropdownOpen && (
+            {/* User Dropdown */}
+            {dropdownOpen && (
                 <>
                   <div
                     className="fixed inset-0 z-40"
@@ -210,8 +202,8 @@ export function Navbar() {
                   </div>
                 </>
               )}
-            </div>
-          ) : (
+              </div>
+            ) : (
             <div className="hidden lg:flex items-center gap-2">
               <Link
                 href="/login"
@@ -229,56 +221,56 @@ export function Navbar() {
           )}
 
           {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden w-9 h-9 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-accent"
-            aria-label="Open Mobile Menu"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="lg:hidden w-9 h-9 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-accent"
+          aria-label="Open Mobile Menu"
+        >
+          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
       </div>
+    </div>
 
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden border-b border-border bg-card px-4 pt-2 pb-6 space-y-3">
-          <nav className="flex flex-col space-y-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`px-3 py-2 rounded-lg text-sm font-medium tracking-wide ${
-                  isActive(link.href)
-                    ? 'text-rose-600 font-semibold bg-accent'
-                    : 'text-muted-foreground'
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
-          </nav>
+        {/* Mobile Drawer */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden border-b border-border bg-card px-4 pt-2 pb-6 space-y-3">
+            <nav className="flex flex-col space-y-1">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium tracking-wide ${isActive(link.href)
+                      ? 'text-rose-600 font-semibold bg-accent'
+                      : 'text-muted-foreground'
+                    }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </nav>
 
           {!user && (
-            <div className="pt-3 border-t border-border flex gap-2">
-              <Link
-                href="/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex-1 py-2 text-center text-xs font-semibold border border-border rounded-lg tracking-wide"
-              >
-                Login
-              </Link>
-              <Link
-                href="/register"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex-1 py-2 text-center text-xs font-semibold text-white bg-rose-600 rounded-lg tracking-wide"
-              >
-                Register
-              </Link>
-            </div>
-          )}
+              <div className="pt-3 border-t border-border flex gap-2">
+                <Link
+                  href="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex-1 py-2 text-center text-xs font-semibold border border-border rounded-lg tracking-wide"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex-1 py-2 text-center text-xs font-semibold text-white bg-rose-600 rounded-lg tracking-wide"
+                >
+                  Register
+                </Link>
+              </div>
+            )}
         </div>
-      )}
-    </header>
+    )
+  }
+    </header >
   );
 }

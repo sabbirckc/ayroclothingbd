@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { HeroSlider } from '@/components/hero-slider';
 import { ClothCard, ClothItem } from '@/components/cloth-card';
@@ -28,94 +28,35 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
 
   // Home Page live search state
-  const [showSearchSection, setShowSearchSection] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [activeSearch, setActiveSearch] = useState('');
   const [searchResults, setSearchResults] = useState<ClothItem[] | null>(null);
   const [searching, setSearching] = useState(false);
 
-  // Relatable product suggestions autocomplete state
-  const [suggestions, setSuggestions] = useState<ClothItem[]>([]);
-  const [isSuggesting, setIsSuggesting] = useState(false);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const searchContainerRef = useRef<HTMLDivElement>(null);
-
-  // Listen to navbar search button trigger
+  // Listen to home-search-executed event from global SearchModal
   useEffect(() => {
-    const handleToggle = () => {
-      setShowSearchSection(true);
-      setTimeout(() => {
-        const input = document.getElementById('home-search-input');
-        if (input) {
-          input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          input.focus();
-        }
-      }, 150);
-    };
-
-    window.addEventListener('toggle-home-search', handleToggle);
-
-    // Also check if opened via query
-    if (typeof window !== 'undefined') {
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('search') === 'open') {
-        queueMicrotask(() => setShowSearchSection(true));
-      }
-    }
-
-    return () => window.removeEventListener('toggle-home-search', handleToggle);
-  }, []);
-
-  // Close search and suggestions when clicking outside or pressing Escape
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
-        setShowSuggestions(false);
-      }
-    };
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setShowSearchSection(false);
-        setShowSuggestions(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
-
-  // Debounced relatable product name fetcher on typing
-  useEffect(() => {
-    const query = searchQuery.trim();
-    if (!query) {
-      const timer = setTimeout(() => {
-        setSuggestions([]);
-        setShowSuggestions(false);
-      }, 0);
-      return () => clearTimeout(timer);
-    }
-
-    const timer = setTimeout(async () => {
+    const handleHomeSearchExecuted = async (e: Event) => {
+      const customEvent = e as CustomEvent<{ query: string }>;
+      const query = customEvent.detail?.query;
+      if (!query) return;
+      setActiveSearch(query);
       try {
-        setIsSuggesting(true);
-        const res = await api.get('/api/clothes', { params: { search: query, limit: 6 } });
+        setSearching(true);
+        const res = await api.get('/api/clothes', { params: { search: query, limit: 12 } });
         if (res.success && Array.isArray(res.data)) {
-          setSuggestions(res.data);
-          setShowSuggestions(true);
+          setSearchResults(res.data);
         }
       } catch (err) {
-        console.error('Relatable products fetch error:', err);
+        console.error('Home search error:', err);
       } finally {
-        setIsSuggesting(false);
+        setSearching(false);
       }
-    }, 180);
+    };
 
-    return () => clearTimeout(timer);
-  }, [searchQuery]);
+    window.addEventListener('home-search-executed', handleHomeSearchExecuted);
+    return () => {
+      window.removeEventListener('home-search-executed', handleHomeSearchExecuted);
+    };
+  }, []);
 
   useEffect(() => {
     async function loadFeatured() {
@@ -134,42 +75,9 @@ export default function HomePage() {
     loadFeatured();
   }, []);
 
-  const handleHomeSearch = async (e?: React.FormEvent, term?: string) => {
-    if (e) e.preventDefault();
-    setShowSuggestions(false);
-    const query = (term !== undefined ? term : searchQuery).trim();
-    if (!query) {
-      setSearchResults(null);
-      setActiveSearch('');
-      setShowSearchSection(false);
-      return;
-    }
-    try {
-      setSearching(true);
-      setActiveSearch(query);
-      // Automatically close search section when searched is complete
-      setShowSearchSection(false);
-      const section = document.getElementById('clothes-section');
-      if (section) {
-        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-      const res = await api.get('/api/clothes', { params: { search: query, limit: 12 } });
-      if (res.success && Array.isArray(res.data)) {
-        setSearchResults(res.data);
-      }
-    } catch (err) {
-      console.error('Home search error:', err);
-    } finally {
-      setSearching(false);
-    }
-  };
-
   const handleClearSearch = () => {
-    setSearchQuery('');
     setActiveSearch('');
     setSearchResults(null);
-    setSuggestions([]);
-    setShowSuggestions(false);
   };
 
   const categories = [
@@ -217,203 +125,6 @@ export default function HomePage() {
 
       {/* 2. Featured Clothes & Live Search Section */}
       <section id="clothes-section" className="container mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
-        {/* Search Modal Overlay - Smoothly appears on screen, closes on outside click or Esc */}
-        {showSearchSection && (
-          <div
-            onClick={(e) => {
-              if (e.target === e.currentTarget) {
-                setShowSearchSection(false);
-                setShowSuggestions(false);
-              }
-            }}
-            className="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm flex items-start justify-center pt-20 sm:pt-28 px-4 animate-in fade-in duration-200"
-          >
-            <div
-              ref={searchContainerRef}
-              onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-2xl bg-card border border-border rounded-2xl shadow-2xl p-5 sm:p-6 relative animate-in zoom-in-95 slide-in-from-top-4 duration-200"
-            >
-              {/* Header with Title & Close Button */}
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center">
-                    <Search className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-bold text-foreground">Search Designer Apparel</h3>
-                    <p className="text-[11px] text-muted-foreground">Find pieces by name, fabric type, or collection</p>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowSearchSection(false);
-                    setShowSuggestions(false);
-                  }}
-                  className="w-8 h-8 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
-                  title="Close search (Esc)"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-
-              <form onSubmit={handleHomeSearch} className="flex flex-col sm:flex-row gap-3 relative">
-                <div className="relative flex-1">
-                  <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                  <input
-                    id="home-search-input"
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => {
-                      setSearchQuery(e.target.value);
-                      setShowSuggestions(true);
-                    }}
-                    onFocus={() => {
-                      if (searchQuery.trim().length > 0) setShowSuggestions(true);
-                    }}
-                    placeholder="Search clothing by name, fabric, style (e.g. Cotton, Linen, Formal, Blazer)..."
-                    className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all font-sans"
-                    autoComplete="off"
-                    autoFocus
-                  />
-                  {searchQuery && (
-                    <button
-                      type="button"
-                      onClick={handleClearSearch}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1 cursor-pointer"
-                      title="Clear search"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                  )}
-
-                  {/* Relatable Product Suggestions Dropdown */}
-                  {showSuggestions && (
-                    <div className="absolute left-0 right-0 top-full mt-2 bg-card border border-border rounded-2xl shadow-2xl z-50 overflow-hidden divide-y divide-border/60 backdrop-blur-md animate-in fade-in slide-in-from-top-2 duration-200">
-                      <div className="px-4 py-2.5 bg-muted/30 flex items-center justify-between text-[11px] font-semibold text-muted-foreground">
-                        <div className="flex items-center gap-1.5">
-                          <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                          <span>Relatable Products ({suggestions.length})</span>
-                        </div>
-                        {isSuggesting && (
-                          <span className="inline-flex items-center gap-1 text-[10px] text-rose-500 font-medium">
-                            <div className="w-2.5 h-2.5 border-2 border-rose-500 border-t-transparent rounded-full animate-spin" />
-                            <span>Matching...</span>
-                          </span>
-                        )}
-                      </div>
-
-                      {suggestions.length > 0 ? (
-                        <div className="max-h-72 overflow-y-auto divide-y divide-border/40">
-                          {suggestions.map((item) => (
-                            <Link
-                              key={item.id || item._id}
-                              href={`/clothes/${item.id || item._id}`}
-                              onClick={() => {
-                                setShowSuggestions(false);
-                                setShowSearchSection(false);
-                              }}
-                              className="flex items-center gap-3.5 p-3 sm:px-4 hover:bg-accent/60 transition-colors group"
-                            >
-                              <img
-                                src={item.image}
-                                alt={item.title}
-                                className="w-11 h-11 rounded-lg object-cover border border-border shrink-0 group-hover:scale-105 transition-transform"
-                              />
-                              <div className="flex-1 min-w-0">
-                                <p className="text-xs font-bold text-foreground group-hover:text-rose-600 dark:group-hover:text-rose-400 truncate transition-colors">
-                                  {item.title}
-                                </p>
-                                <p className="text-[11px] text-muted-foreground truncate mt-0.5">
-                                  <span className="font-medium text-foreground/80">{item.category}</span>
-                                  <span className="mx-1.5">•</span>
-                                  <span>{item.fabric}</span>
-                                </p>
-                              </div>
-                              <div className="text-right shrink-0">
-                                <span className="text-xs font-bold font-mono text-foreground block">
-                                  ${item.price}
-                                </span>
-                                <span className="text-[10px] text-muted-foreground block">
-                                  {item.stock > 0 ? `${item.stock} in stock` : 'Out of stock'}
-                                </span>
-                              </div>
-                            </Link>
-                          ))}
-                        </div>
-                      ) : !isSuggesting && searchQuery.trim().length >= 1 ? (
-                        <div className="p-6 text-center text-xs text-muted-foreground">
-                          <p>No relatable product found for &ldquo;{searchQuery}&rdquo;.</p>
-                          <p className="text-[11px] mt-1 text-muted-foreground/80">
-                            Try searching by fabric like &ldquo;Cotton&rdquo;, &ldquo;Linen&rdquo;, or &ldquo;Streetwear&rdquo;.
-                          </p>
-                        </div>
-                      ) : null}
-
-                      {suggestions.length > 0 && (
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            setShowSuggestions(false);
-                            handleHomeSearch(e);
-                          }}
-                          className="w-full py-2.5 px-4 bg-muted/40 hover:bg-muted text-xs font-semibold text-rose-600 dark:text-rose-400 text-center flex items-center justify-center gap-2 transition-colors cursor-pointer"
-                        >
-                          <span>View all relatable products on home page</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </button>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={searching}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-foreground text-background font-semibold text-xs tracking-wider uppercase hover:opacity-90 shadow-sm transition-all shrink-0 cursor-pointer disabled:opacity-50"
-                >
-                  {searching ? (
-                    <div className="w-4 h-4 border-2 border-background border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    <Search className="w-4 h-4" />
-                  )}
-                  <span>Search</span>
-                </button>
-              </form>
-
-              {/* Quick search suggestion tags */}
-              <div className="flex flex-wrap items-center gap-2 mt-4 pt-3.5 border-t border-border/50 text-xs">
-                <span className="text-muted-foreground font-medium text-[11px]">Popular:</span>
-                {['Cotton', 'Linen', 'Shirt', 'Formal', 'Streetwear', 'Knitwear'].map((tag) => (
-                  <button
-                    key={tag}
-                    type="button"
-                    onClick={() => {
-                      setSearchQuery(tag);
-                      handleHomeSearch(undefined, tag);
-                    }}
-                    className={`px-2.5 py-1 rounded-full border text-[11px] font-medium transition-colors cursor-pointer ${activeSearch.toLowerCase() === tag.toLowerCase()
-                      ? 'bg-rose-500 text-white border-rose-500'
-                      : 'bg-muted/40 hover:bg-muted text-foreground border-border'
-                      }`}
-                  >
-                    {tag}
-                  </button>
-                ))}
-                {activeSearch && (
-                  <button
-                    type="button"
-                    onClick={handleClearSearch}
-                    className="ml-auto text-rose-500 hover:underline text-[11px] font-semibold cursor-pointer"
-                  >
-                    Clear Search & Reset to Featured
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>

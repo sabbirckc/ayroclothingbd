@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/context/theme-context';
 import { AuthProvider } from '@/context/auth-context';
 import { WishlistProvider } from '@/context/wishlist-context';
 import { Navbar } from '@/components/navbar';
+import { SearchModal } from '@/components/search-modal';
 import { Footer } from '@/components/footer';
 import { Toaster } from 'sonner';
 
@@ -36,6 +37,9 @@ export default function RootLayout({
             <WishlistProvider>
               <Suspense fallback={<div className="h-16 w-full border-b border-border/60 bg-background/90" />}>
                 <Navbar />
+              </Suspense>
+              <Suspense fallback={null}>
+                <SearchModal />
               </Suspense>
               <main className="flex-1 flex flex-col">{children}</main>
               <Footer />
