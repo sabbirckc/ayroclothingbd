@@ -3,9 +3,6 @@ import { jsPDF } from 'jspdf';
 export function generateOrderInvoice(order: any) {
   const doc = new jsPDF();
 
-  const primaryColor = '#1e293b';
-  const accentColor = '#e11d48';
-
   // Header Banner
   doc.setFillColor(30, 41, 59); // Slate-800
   doc.rect(0, 0, 210, 40, 'F');

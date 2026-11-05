@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { api, setToken, removeToken, getToken } from '@/lib/api';
+import { authClient } from '@/lib/auth-client';
 import { toast } from 'sonner';
 
 export interface User {
@@ -17,7 +18,7 @@ interface AuthContextType {
   loading: boolean;
   login: (email: string, password: string) => Promise<boolean>;
   register: (name: string, email: string, password: string, photoURL?: string) => Promise<boolean>;
-  loginWithGoogle: () => Promise<boolean>;
+  loginWithGoogle: (callbackUrl?: string) => Promise<boolean>;
   quickLoginExaminer: () => Promise<boolean>;
   logout: () => Promise<void>;
   updateUser: (updated: Partial<User>) => void;
@@ -30,18 +31,120 @@ const AuthContext = createContext<AuthContextType>({
   register: async () => false,
   loginWithGoogle: async () => false,
   quickLoginExaminer: async () => false,
-  logout: async () => {},
-  updateUser: () => {},
+  logout: async () => { },
+  updateUser: () => { },
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('clothspace_user');
+        return saved ? JSON.parse(saved) : null;
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  });
   const [loading, setLoading] = useState(true);
 
-  // Restore session on mount to ensure private routes do not redirect on refresh
+  // Reactive Better-Auth session hook
+  const session = authClient.useSession();
+
+  // Sync Better-Auth session reactively (e.g. after Google OAuth redirect)
+  useEffect(() => {
+    if (session.data?.user) {
+      const baUser = session.data.user;
+      const userObj: User = {
+        id: baUser.id,
+        name: baUser.name,
+        email: baUser.email,
+        photoURL: baUser.image || '/client-review-1.jpg',
+        role: 'designer',
+      };
+      setUser((prev) => {
+        if (prev?.id === userObj.id && prev?.email === userObj.email) return prev;
+        return userObj;
+      });
+
+      const authToken =
+        (session.data as Record<string, any>)?.session?.token ||
+        (session.data as Record<string, any>)?.token ||
+        (session.data as Record<string, any>)?.session?.id;
+
+      if (authToken) {
+        setToken(authToken);
+      }
+
+      fetch('/api/auth/token')
+        .then((r) => r.json())
+        .then((data) => {
+          if (data?.token) setToken(data.token);
+        })
+        .catch(() => { });
+
+      localStorage.setItem('clothspace_user', JSON.stringify(userObj));
+      setLoading(false);
+    }
+  }, [session.data]);
+
+  // Restore session on mount
   useEffect(() => {
     async function restoreSession() {
       try {
+        // 1. Fetch Better-Auth token & user from same-origin route
+        try {
+          const tokenRes = await fetch('/api/auth/token').then((r) => r.json());
+          if (tokenRes?.token) {
+            setToken(tokenRes.token);
+            if (tokenRes.user) {
+              const userObj: User = {
+                id: tokenRes.user.id,
+                name: tokenRes.user.name,
+                email: tokenRes.user.email,
+                photoURL: tokenRes.user.image || '/client-review-1.jpg',
+                role: 'designer',
+              };
+              setUser(userObj);
+              localStorage.setItem('clothspace_user', JSON.stringify(userObj));
+              setLoading(false);
+              return;
+            }
+          }
+        } catch (tokenErr) {
+          console.warn('Same-origin token fetch:', tokenErr);
+        }
+
+        // 2. Check authClient.getSession()
+        try {
+          const sessionRes = await authClient.getSession();
+          if (sessionRes?.data?.user) {
+            const baUser = sessionRes.data.user;
+            const userObj: User = {
+              id: baUser.id,
+              name: baUser.name,
+              email: baUser.email,
+              photoURL: baUser.image || '/client-review-1.jpg',
+              role: 'designer',
+            };
+            setUser(userObj);
+            const authToken =
+              (sessionRes.data as any)?.session?.token ||
+              (sessionRes.data as any)?.token ||
+              (sessionRes.data as any)?.session?.id;
+            if (authToken) {
+              setToken(authToken);
+            }
+            localStorage.setItem('clothspace_user', JSON.stringify(userObj));
+            setLoading(false);
+            return;
+          }
+        } catch (baErr) {
+          console.warn('Better-Auth getSession check:', baErr);
+        }
+
+        // 3. Fallback to cached token/session verification with backend
         const savedUserStr = localStorage.getItem('clothspace_user');
         const token = getToken();
 
@@ -54,7 +157,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
         }
 
-        // Verify with server session if token or cookie exists
         if (token || savedUserStr) {
           try {
             const res = await api.get('/api/auth/me');
@@ -62,12 +164,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               setUser(res.user);
               localStorage.setItem('clothspace_user', JSON.stringify(res.user));
             }
-          } catch (err) {
-            // Token might be expired or server unreachable, if no token, reset
-            if (!token) {
-              setUser(null);
-              localStorage.removeItem('clothspace_user');
-            }
+          } catch {
+            // Keep state intact
           }
         }
       } catch (err) {
@@ -82,6 +180,46 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
+      // 1. Try Better-Auth email sign-in first
+      try {
+        const res = await authClient.signIn.email({
+          email: email.trim().toLowerCase(),
+          password,
+        });
+
+        if (res && !res.error && res.data?.user) {
+          const baUser = res.data.user;
+          const userObj: User = {
+            id: baUser.id,
+            name: baUser.name,
+            email: baUser.email,
+            photoURL: baUser.image || '/client-review-1.jpg',
+            role: 'designer',
+          };
+          setUser(userObj);
+          const authToken =
+            (res.data as any)?.token ||
+            (res.data as any)?.session?.token ||
+            (res.data as any)?.session?.id;
+          if (authToken) {
+            setToken(authToken);
+          } else {
+            fetch('/api/auth/token')
+              .then((r) => r.json())
+              .then((d) => {
+                if (d?.token) setToken(d.token);
+              })
+              .catch(() => { });
+          }
+          localStorage.setItem('clothspace_user', JSON.stringify(userObj));
+          toast.success(`Welcome back, ${userObj.name}!`);
+          return true;
+        }
+      } catch {
+        // Fallback to backend API
+      }
+
+      // 2. Fallback to backend /api/auth/login
       const res = await api.post('/api/auth/login', { email, password });
       if (res.success && res.user) {
         setUser(res.user);
@@ -97,9 +235,74 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const register = async (name: string, email: string, password: string, photoURL?: string): Promise<boolean> => {
+  const register = async (
+    name: string,
+    email: string,
+    password: string,
+    photoURL?: string
+  ): Promise<boolean> => {
     try {
-      const res = await api.post('/api/auth/register', { name, email, password, photoURL });
+      const normalizedEmail = email.trim().toLowerCase();
+      const defaultPhoto = photoURL || '/client-review-1.jpg';
+
+      // 1. Try Better-Auth email sign-up
+      try {
+        const res = await authClient.signUp.email({
+          name: name.trim(),
+          email: normalizedEmail,
+          password,
+          image: defaultPhoto,
+        });
+
+        if (res && !res.error && res.data?.user) {
+          const baUser = res.data.user;
+          const userObj: User = {
+            id: baUser.id,
+            name: baUser.name,
+            email: baUser.email,
+            photoURL: baUser.image || defaultPhoto,
+            role: 'designer',
+          };
+          setUser(userObj);
+          const authToken =
+            (res.data as any)?.token ||
+            (res.data as any)?.session?.token ||
+            (res.data as any)?.session?.id;
+          if (authToken) {
+            setToken(authToken);
+          } else {
+            fetch('/api/auth/token')
+              .then((r) => r.json())
+              .then((d) => {
+                if (d?.token) setToken(d.token);
+              })
+              .catch(() => { });
+          }
+          localStorage.setItem('clothspace_user', JSON.stringify(userObj));
+
+          // Also notify backend registration so legacy collections stay in sync
+          await api.post('/api/auth/register', {
+            name: name.trim(),
+            email: normalizedEmail,
+            password,
+            photoURL: defaultPhoto,
+          }).catch(() => { });
+
+          toast.success('Registration successful! Welcome to ClothSpace.');
+          return true;
+        }
+      } catch {
+        // Continue to server fallback
+      }
+
+      // 2. Fallback to backend /api/auth/register
+      const res = await api.post('/api/auth/register', {
+        name,
+        email: normalizedEmail,
+        password,
+        photoURL: defaultPhoto,
+      });
+
       if (res.success && res.user) {
         setUser(res.user);
         if (res.token) setToken(res.token);
@@ -114,79 +317,75 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const loginWithGoogle = async (): Promise<boolean> => {
+  const loginWithGoogle = async (callbackUrl: string = '/'): Promise<boolean> => {
     try {
-      // Prompt user or simulate authenticated Google OAuth profile
-      const demoEmail = 'alex.designer@clothspace.com';
-      const demoName = 'Alex Rivera (Google Verified)';
-      const demoPhoto = '/client-review-1.jpg';
+      const origin =
+        typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
+      const cleanCallback = callbackUrl.startsWith('http')
+        ? callbackUrl
+        : `${origin}${callbackUrl.startsWith('/') ? callbackUrl : `/${callbackUrl}`}`;
 
-      const res = await api.post('/api/auth/social-login', {
-        email: demoEmail,
-        name: demoName,
-        photoURL: demoPhoto,
-      });
-
-      if (res.success && res.user) {
-        setUser(res.user);
-        if (res.token) setToken(res.token);
-        localStorage.setItem('clothspace_user', JSON.stringify(res.user));
-        toast.success(`Signed in with Google as ${res.user.name}`);
-        return true;
-      }
-      return false;
-    } catch (err: any) {
-      toast.error(err.message || 'Google authentication failed.');
-      return false;
-    }
-  };
-
-  const quickLoginExaminer = async (): Promise<boolean> => {
-    try {
-      return await login('examiner@clothspace.com', 'ClothSpace2026!');
-    } catch (err: any) {
-      toast.error('Quick test login failed.');
-      return false;
-    }
-  };
-
-  const logout = async () => {
-    try {
-      await api.post('/api/auth/logout').catch(() => {});
-    } finally {
-      setUser(null);
-      removeToken();
-      toast.success('You have been signed out.');
-    }
-  };
-
-  const updateUser = (updated: Partial<User>) => {
-    if (user) {
-      const next = { ...user, ...updated };
-      setUser(next);
-      localStorage.setItem('clothspace_user', JSON.stringify(next));
-    }
-  };
-
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        loading,
-        login,
-        register,
-        loginWithGoogle,
-        quickLoginExaminer,
-        logout,
-        updateUser,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+  await authClient.signIn.social({
+    provider: 'google',
+    callbackURL: cleanCallback,
+  });
+  return true;
+} catch (err: any) {
+  toast.error(err.message || 'Google authentication failed.');
+  return false;
 }
+  };
+
+const quickLoginExaminer = async (): Promise<boolean> => {
+  try {
+    return await login('examiner@clothspace.com', 'ClothSpace2026!');
+  } catch {
+    toast.error('Quick test login failed.');
+    return false;
+  }
+};
+
+const logout = async () => {
+  try {
+    try {
+      await authClient.signOut();
+    } catch (baSignOutErr) {
+      console.warn('Better-Auth signOut error:', baSignOutErr);
+    }
+    await api.post('/api/auth/logout').catch(() => { });
+  } finally {
+    setUser(null);
+    removeToken();
+    toast.success('You have been signed out.');
+  }
+};
+
+const updateUser = (updated: Partial<User>) => {
+  if (user) {
+    const next = { ...user, ...updated };
+    setUser(next);
+    localStorage.setItem('clothspace_user', JSON.stringify(next));
+  }
+};
+
+return (
+  <AuthContext.Provider
+    value={{
+      user,
+      loading,
+      login,
+      register,
+      loginWithGoogle,
+      quickLoginExaminer,
+      logout,
+      updateUser,
+    }}
+  >
+    {children}
+  </AuthContext.Provider>
+);
+  }
 
 export function useAuth() {
   return useContext(AuthContext);
 }
-

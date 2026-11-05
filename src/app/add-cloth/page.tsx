@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/auth-context';
 import { api } from '@/lib/api';
 import { toast } from 'sonner';
-import { PlusCircle, Image as ImageIcon, Shirt, Tag, AlertCircle, ArrowLeft, Check } from 'lucide-react';
+import { PlusCircle, Image as ImageIcon, Shirt, Tag, AlertCircle, ArrowLeft, Check, UploadCloud, Trash2 } from 'lucide-react';
 
 export default function AddClothPage() {
   const router = useRouter();
@@ -19,6 +19,9 @@ export default function AddClothPage() {
   const [fabric, setFabric] = useState('');
   const [brandOrigin, setBrandOrigin] = useState('');
   const [image, setImage] = useState('/image-1.jpg');
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [selectedFileName, setSelectedFileName] = useState('');
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [careInstructions, setCareInstructions] = useState<string[]>([
     'Dry Clean Only',
   ]);
@@ -78,6 +81,48 @@ export default function AddClothPage() {
     { label: 'Selvedge Shirt', url: '/image-10.jpg' },
     { label: 'Avant Parka', url: '/image-11.jpg' },
   ];
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file (PNG, JPG, WEBP, etc.)');
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error('Image size must be less than 10MB');
+      return;
+    }
+
+    try {
+      setUploadingImage(true);
+      setSelectedFileName(file.name);
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (data.success && data.url) {
+        setImage(data.url);
+        toast.success(`Image "${file.name}" imported and saved to uploads folder!`);
+      } else {
+        throw new Error(data.error || 'Failed to upload image');
+      }
+    } catch (err: any) {
+      console.error('Image upload failed:', err);
+      toast.error(err.message || 'Image upload failed. Please try again.');
+      setSelectedFileName('');
+    } finally {
+      setUploadingImage(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
 
   const handleSizeToggle = (s: string) => {
     if (sizes.includes(s)) {
@@ -292,11 +337,10 @@ export default function AddClothPage() {
                 key={s}
                 type="button"
                 onClick={() => handleSizeToggle(s)}
-                className={`px-4 py-2 text-xs font-bold rounded-xl border transition-all ${
-                  sizes.includes(s)
-                    ? 'bg-rose-600 text-white border-rose-600 shadow-sm'
-                    : 'bg-background border-border text-foreground hover:bg-muted'
-                }`}
+                className={`px-4 py-2 text-xs font-bold rounded-xl border transition-all ${sizes.includes(s)
+                  ? 'bg-rose-600 text-white border-rose-600 shadow-sm'
+                  : 'bg-background border-border text-foreground hover:bg-muted'
+                  }`}
               >
                 {s}
               </button>
@@ -304,106 +348,179 @@ export default function AddClothPage() {
           </div>
         </div>
 
-        {/* Image Selection / URL */}
-        <div className="space-y-2">
+        {/* Device Image Upload Section */}
+        <div className="space-y-3">
           <label className="block text-xs font-bold text-foreground">
-            Apparel Image URL (or select from public collection) <span className="text-rose-500">*</span>
+            Apparel Image <span className="text-rose-500">*</span>
           </label>
+
+          {/* Hidden File Input */}
           <input
-            type="text"
-            required
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            placeholder="https://... (or /image-1.jpg)"
-            className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-foreground"
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleFileUpload}
           />
+
+          {/* Upload Dropzone / Preview */}
+          <div className="border-2 border-dashed border-border hover:border-rose-500/50 rounded-2xl p-4 sm:p-6 bg-card/60 transition-all">
+            {image ? (
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <div className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-xl overflow-hidden border border-border shadow-xs shrink-0 bg-muted/30">
+                  <img
+                    src={image}
+                    alt="Apparel preview"
+                    className="w-full h-full object-cover"
+                  />
+                  {uploadingImage && (
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                      <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex-1 text-center sm:text-left space-y-2 min-w-0">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[11px] font-semibold">
+                    <Check className="w-3.5 h-3.5" />
+                    <span>{image.startsWith('/uploads') ? 'Uploaded from device' : 'Catalog image selected'}</span>
+                  </div>
+                  <p className="text-xs font-bold text-foreground truncate max-w-sm">
+                    {selectedFileName || image}
+                  </p>
+                  <p className="text-[11px] text-muted-foreground">
+                    Image is saved in your local folder and ready to publish.
+                  </p>
+
+                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1">
+                    <button
+                      type="button"
+                      disabled={uploadingImage}
+                      onClick={() => fileInputRef.current?.click()}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-rose-600 text-white hover:bg-rose-500 transition-colors shadow-xs cursor-pointer disabled:opacity-50"
+                    >
+                      <UploadCloud className="w-3.5 h-3.5" />
+                      <span>{uploadingImage ? 'Uploading...' : 'Choose from Device'}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setImage('');
+                        setSelectedFileName('');
+                      }}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg border border-border text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>Clear</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                className="flex flex-col items-center justify-center py-6 text-center cursor-pointer group"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                  <UploadCloud className="w-7 h-7" />
+                </div>
+                <p className="text-xs font-bold text-foreground group-hover:text-rose-600 transition-colors">
+                  {uploadingImage ? 'Uploading photo...' : 'Click to import image from your device'}
+                </p>
+                <p className="text-[11px] text-muted-foreground mt-1">
+                  Supports PNG, JPG, JPEG, WEBP or AVIF (auto-saved to folder)
+                </p>
+              </div>
+            )}
+          </div>
 
           {/* Quick presets from public folder */}
           <div className="pt-2">
             <span className="text-[11px] font-semibold text-muted-foreground block mb-2">
-              Choose from existing high-res catalog apparel:
+              Or choose from existing catalog presets:
             </span>
             <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-11 gap-2">
               {presetImages.map((p) => (
                 <button
                   key={p.url}
                   type="button"
-                  onClick={() => setImage(p.url)}
-                  className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all ${
-                    image === p.url ? 'border-rose-600 ring-2 ring-rose-500/30' : 'border-border/70 opacity-70 hover:opacity-100'
-                  }`}
-                >
-                  <img src={p.url} alt={p.label} className="w-full h-full object-cover" />
-                  {image === p.url && (
-                    <div className="absolute inset-0 bg-rose-600/30 flex items-center justify-center text-white">
-                      <Check className="w-3.5 h-3.5" />
-                    </div>
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Care Instructions (Checkboxes/Tags) */}
-        <div>
-          <label className="block text-xs font-bold text-foreground mb-2">
-            Care Instructions (Tags)
-          </label>
-          <div className="flex flex-wrap gap-2">
-            {careOptions.map((c) => (
-              <button
-                key={c}
-                type="button"
-                onClick={() => handleCareToggle(c)}
-                className={`px-3 py-1.5 text-xs font-medium rounded-xl border transition-all ${
-                  careInstructions.includes(c)
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'bg-background border-border text-muted-foreground hover:bg-muted'
+              onClick={() => {
+                setImage(p.url);
+                setSelectedFileName(p.label);
+              }}
+              className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${image === p.url ? 'border-rose-600 ring-2 ring-rose-500/30' : 'border-border/70 opacity-70 hover:opacity-100'
                 }`}
-              >
-                {c}
-              </button>
-            ))}
+                  >
+              <img src={p.url} alt={p.label} className="w-full h-full object-cover" />
+              {image === p.url && (
+                <div className="absolute inset-0 bg-rose-600/30 flex items-center justify-center text-white">
+                  <Check className="w-3.5 h-3.5" />
+                </div>
+              )}
+            </button>
+              ))}
           </div>
         </div>
-
-        {/* Detailed Overview */}
-        <div>
-          <label className="block text-xs font-bold text-foreground mb-1.5">
-            Detailed Overview & Silhouette Notes <span className="text-rose-500">*</span>
-          </label>
-          <textarea
-            required
-            rows={4}
-            value={overview}
-            onChange={(e) => setOverview(e.target.value)}
-            placeholder="Describe the fabric weave, fit notes, styling recommendations, and story behind this piece..."
-            className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-foreground"
-          />
-        </div>
-
-        {/* Actions */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
-          <button
-            type="button"
-            onClick={() => router.back()}
-            disabled={submitting}
-            className="px-5 py-2.5 text-xs font-semibold rounded-xl border border-border hover:bg-accent text-foreground"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            disabled={submitting}
-            className="px-6 py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white shadow-md hover:shadow-rose-500/25 transition-all flex items-center gap-2 disabled:opacity-50"
-          >
-            <PlusCircle className="w-4 h-4" />
-            <span>{submitting ? 'Publishing...' : 'Publish Clothing Listing'}</span>
-          </button>
-        </div>
-      </form>
     </div>
+
+        {/* Care Instructions (Checkboxes/Tags) */ }
+  <div>
+    <label className="block text-xs font-bold text-foreground mb-2">
+      Care Instructions (Tags)
+    </label>
+    <div className="flex flex-wrap gap-2">
+      {careOptions.map((c) => (
+        <button
+          key={c}
+          type="button"
+          onClick={() => handleCareToggle(c)}
+          className={`px-3 py-1.5 text-xs font-medium rounded-xl border transition-all ${careInstructions.includes(c)
+            ? 'bg-primary text-primary-foreground border-primary'
+            : 'bg-background border-border text-muted-foreground hover:bg-muted'
+            }`}
+        >
+          {c}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  {/* Detailed Overview */ }
+  <div>
+    <label className="block text-xs font-bold text-foreground mb-1.5">
+      Detailed Overview & Silhouette Notes <span className="text-rose-500">*</span>
+    </label>
+    <textarea
+      required
+      rows={4}
+      value={overview}
+      onChange={(e) => setOverview(e.target.value)}
+      placeholder="Describe the fabric weave, fit notes, styling recommendations, and story behind this piece..."
+      className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-foreground"
+    />
+  </div>
+
+  {/* Actions */ }
+  <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
+    <button
+      type="button"
+      onClick={() => router.back()}
+      disabled={submitting}
+      className="px-5 py-2.5 text-xs font-semibold rounded-xl border border-border hover:bg-accent text-foreground"
+    >
+      Cancel
+    </button>
+    <button
+      type="submit"
+      disabled={submitting}
+      className="px-6 py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white shadow-md hover:shadow-rose-500/25 transition-all flex items-center gap-2 disabled:opacity-50"
+    >
+      <PlusCircle className="w-4 h-4" />
+      <span>{submitting ? 'Publishing...' : 'Publish Clothing Listing'}</span>
+    </button>
+  </div>
+      </form >
+    </div >
   );
 }
 

@@ -3,12 +3,9 @@
 import React from 'react';
 import Link from 'next/link';
 import {
-  Sparkles,
-  Heart,
   Globe2,
   Users,
   ShieldCheck,
-  Award,
   ArrowRight
 } from 'lucide-react';
 
@@ -57,7 +54,7 @@ export default function AboutUsPage() {
               The Artisan Atelier
             </span>
             <p className="text-base font-black mt-1">
-              "We don't manufacture trends. We circulate masterpieces."
+              &ldquo;We don&apos;t manufacture trends. We circulate masterpieces.&rdquo;
             </p>
           </div>
         </div>

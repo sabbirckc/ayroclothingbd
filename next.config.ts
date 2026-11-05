@@ -5,6 +5,15 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   reactCompiler: true,
+  async redirects() {
+    return [
+      {
+        source: '/verify-otp',
+        destination: '/',
+        permanent: false,
+      },
+    ];
+  },
   turbopack: {
     rules: {
       "*.css": {

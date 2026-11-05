@@ -298,3 +298,4 @@ export function SearchModal() {
     </div>
   );
 }
+
