@@ -190,11 +190,10 @@ export default function MyListingsPage() {
                       {/* Stock */}
                       <td className="py-4 px-4">
                         <span
-                          className={`font-mono font-bold px-2 py-0.5 rounded text-[11px] ${
-                            isLow
+                          className={`font-mono font-bold px-2 py-0.5 rounded text-[11px] ${isLow
                               ? 'bg-rose-500/10 text-rose-600'
                               : 'bg-emerald-500/10 text-emerald-600'
-                          }`}
+                            }`}
                         >
                           {item.stock} left
                         </span>

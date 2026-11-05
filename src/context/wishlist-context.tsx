@@ -17,7 +17,7 @@ const WishlistContext = createContext<WishlistContextType>({
   wishlistIds: [],
   wishlistItems: [],
   isInWishlist: () => false,
-  toggleWishlist: async () => {},
+  toggleWishlist: async () => { },
   loading: false,
 });
 
