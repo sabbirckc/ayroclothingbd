@@ -134,123 +134,219 @@ export default function MyListingsPage() {
           </div>
         </div>
       ) : listings.length > 0 ? (
-        <div className="rounded-3xl border border-border bg-card shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-border/80 bg-muted/40 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                  <th className="py-3.5 px-4 sm:px-6">Apparel Piece</th>
-                  <th className="py-3.5 px-4">Category</th>
-                  <th className="py-3.5 px-4">Price</th>
-                  <th className="py-3.5 px-4">Stock</th>
-                  <th className="py-3.5 px-4">Sizes</th>
-                  <th className="py-3.5 px-4 sm:px-6 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/60 text-xs">
-                {listings.map((item) => {
-                  const itemId = item.id || item._id;
-                  const isLow = Number(item.stock) <= 2;
-                  return (
-                    <tr key={itemId} className="hover:bg-muted/20 transition-colors">
-                      {/* Apparel Info */}
-                      <td className="py-4 px-4 sm:px-6">
-                        <div className="flex items-center gap-3">
-                          <img
-                            src={item.image || '/image-1.jpg'}
-                            alt={item.title}
-                            className="w-12 h-14 rounded-xl object-cover shrink-0 border border-border"
-                          />
-                          <div className="min-w-0">
-                            <Link
-                              href={`/clothes/${itemId}`}
-                              className="font-heading font-bold text-sm text-foreground hover:text-rose-600 transition-colors line-clamp-1"
-                            >
-                              {item.title}
-                            </Link>
-                            <p className="text-[11px] text-muted-foreground truncate max-w-xs">
-                              Fabric: {item.fabric}
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-
-                      {/* Category */}
-                      <td className="py-4 px-4">
-                        <span className="px-2.5 py-1 rounded-full bg-muted text-[11px] font-semibold text-foreground border border-border">
-                          {item.category}
+        <div className="space-y-4">
+          {/* Mobile Card View (screens < lg) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:hidden">
+            {listings.map((item) => {
+              const itemId = item.id || item._id;
+              const isLow = Number(item.stock) <= 2;
+              return (
+                <div
+                  key={itemId}
+                  className="p-4 rounded-2xl border border-border bg-card shadow-sm space-y-3 hover:border-border/80 transition-all"
+                >
+                  <div className="flex items-start gap-3">
+                    <img
+                      src={item.image || '/image-1.jpg'}
+                      alt={item.title}
+                      className="w-16 h-20 rounded-xl object-cover shrink-0 border border-border"
+                    />
+                    <div className="min-w-0 flex-1 space-y-1">
+                      <span className="px-2 py-0.5 rounded-full bg-muted text-[10px] font-semibold text-foreground border border-border">
+                        {item.category}
+                      </span>
+                      <Link
+                        href={`/clothes/${itemId}`}
+                        className="font-heading font-bold text-sm text-foreground hover:text-rose-600 transition-colors line-clamp-1 block pt-0.5"
+                      >
+                        {item.title}
+                      </Link>
+                      <p className="text-[11px] text-muted-foreground truncate">
+                        {item.fabric}
+                      </p>
+                      <div className="flex items-center gap-2 pt-1">
+                        <span className="font-heading font-black text-sm text-foreground">
+                          ${Number(item.price).toFixed(0)}
                         </span>
-                      </td>
-
-                      {/* Price */}
-                      <td className="py-4 px-4 font-heading font-black text-sm text-foreground">
-                        ${Number(item.price).toFixed(0)}
-                      </td>
-
-                      {/* Stock */}
-                      <td className="py-4 px-4">
                         <span
-                          className={`font-mono font-bold px-2 py-0.5 rounded text-[11px] ${isLow
+                          className={`font-mono font-bold px-1.5 py-0.5 rounded text-[10px] ${
+                            isLow
                               ? 'bg-rose-500/10 text-rose-600'
                               : 'bg-emerald-500/10 text-emerald-600'
-                            }`}
+                          }`}
                         >
                           {item.stock} left
                         </span>
-                      </td>
+                      </div>
+                    </div>
+                  </div>
 
-                      {/* Sizes */}
-                      <td className="py-4 px-4">
-                        <div className="flex gap-1 flex-wrap">
-                          {item.sizes && item.sizes.length > 0 ? (
-                            item.sizes.map((s: string) => (
-                              <span
-                                key={s}
-                                className="px-1.5 py-0.5 rounded border border-border/80 bg-muted/30 text-[10px] font-mono"
+                  <div className="flex items-center justify-between pt-2 border-t border-border/60 gap-2">
+                    <div className="flex gap-1 flex-wrap">
+                      {item.sizes && item.sizes.length > 0 ? (
+                        item.sizes.slice(0, 4).map((s: string) => (
+                          <span
+                            key={s}
+                            className="px-1.5 py-0.5 rounded border border-border/80 bg-muted/30 text-[10px] font-mono text-muted-foreground"
+                          >
+                            {s}
+                          </span>
+                        ))
+                      ) : (
+                        <span className="text-muted-foreground text-[10px]">-</span>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <Link
+                        href={`/clothes/${itemId}`}
+                        title="View details"
+                        className="p-1.5 rounded-lg border border-border hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </Link>
+                      <Link
+                        href={`/clothes/edit/${itemId}`}
+                        title="Edit piece"
+                        className="p-1.5 rounded-lg border border-border hover:bg-amber-500/10 text-muted-foreground hover:text-amber-600 transition-colors"
+                      >
+                        <Edit className="w-3.5 h-3.5" />
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => handleDeletePrompt(item)}
+                        title="Delete piece"
+                        className="p-1.5 rounded-lg border border-border hover:bg-rose-500/10 text-muted-foreground hover:text-rose-600 transition-colors cursor-pointer"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Desktop Table View (screens >= lg) */}
+          <div className="hidden lg:block rounded-3xl border border-border bg-card shadow-sm overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-border/80 bg-muted/40 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                    <th className="py-3.5 px-4 sm:px-6">Apparel Piece</th>
+                    <th className="py-3.5 px-4">Category</th>
+                    <th className="py-3.5 px-4">Price</th>
+                    <th className="py-3.5 px-4">Stock</th>
+                    <th className="py-3.5 px-4">Sizes</th>
+                    <th className="py-3.5 px-4 sm:px-6 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border/60 text-xs">
+                  {listings.map((item) => {
+                    const itemId = item.id || item._id;
+                    const isLow = Number(item.stock) <= 2;
+                    return (
+                      <tr key={itemId} className="hover:bg-muted/20 transition-colors">
+                        {/* Apparel Info */}
+                        <td className="py-4 px-4 sm:px-6">
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={item.image || '/image-1.jpg'}
+                              alt={item.title}
+                              className="w-12 h-14 rounded-xl object-cover shrink-0 border border-border"
+                            />
+                            <div className="min-w-0">
+                              <Link
+                                href={`/clothes/${itemId}`}
+                                className="font-heading font-bold text-sm text-foreground hover:text-rose-600 transition-colors line-clamp-1"
                               >
-                                {s}
-                              </span>
-                            ))
-                          ) : (
-                            <span className="text-muted-foreground text-[11px]">-</span>
-                          )}
-                        </div>
-                      </td>
+                                {item.title}
+                              </Link>
+                              <p className="text-[11px] text-muted-foreground truncate max-w-xs">
+                                Fabric: {item.fabric}
+                              </p>
+                            </div>
+                          </div>
+                        </td>
 
-                      {/* Actions */}
-                      <td className="py-4 px-4 sm:px-6 text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          <Link
-                            href={`/clothes/${itemId}`}
-                            title="View public details"
-                            className="p-2 rounded-lg border border-border hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
-                          >
-                            <ExternalLink className="w-3.5 h-3.5" />
-                          </Link>
+                        {/* Category */}
+                        <td className="py-4 px-4">
+                          <span className="px-2.5 py-1 rounded-full bg-muted text-[11px] font-semibold text-foreground border border-border">
+                            {item.category}
+                          </span>
+                        </td>
 
-                          <Link
-                            href={`/clothes/edit/${itemId}`}
-                            title="Edit piece"
-                            className="p-2 rounded-lg border border-border hover:bg-amber-500/10 text-muted-foreground hover:text-amber-600 transition-colors"
-                          >
-                            <Edit className="w-3.5 h-3.5" />
-                          </Link>
+                        {/* Price */}
+                        <td className="py-4 px-4 font-heading font-black text-sm text-foreground">
+                          ${Number(item.price).toFixed(0)}
+                        </td>
 
-                          <button
-                            type="button"
-                            onClick={() => handleDeletePrompt(item)}
-                            title="Delete piece"
-                            className="p-2 rounded-lg border border-border hover:bg-rose-500/10 text-muted-foreground hover:text-rose-600 transition-colors"
+                        {/* Stock */}
+                        <td className="py-4 px-4">
+                          <span
+                            className={`font-mono font-bold px-2 py-0.5 rounded text-[11px] ${
+                              isLow
+                                ? 'bg-rose-500/10 text-rose-600'
+                                : 'bg-emerald-500/10 text-emerald-600'
+                            }`}
                           >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                            {item.stock} left
+                          </span>
+                        </td>
+
+                        {/* Sizes */}
+                        <td className="py-4 px-4">
+                          <div className="flex gap-1 flex-wrap">
+                            {item.sizes && item.sizes.length > 0 ? (
+                              item.sizes.map((s: string) => (
+                                <span
+                                  key={s}
+                                  className="px-1.5 py-0.5 rounded border border-border/80 bg-muted/30 text-[10px] font-mono"
+                                >
+                                  {s}
+                                </span>
+                              ))
+                            ) : (
+                              <span className="text-muted-foreground text-[11px]">-</span>
+                            )}
+                          </div>
+                        </td>
+
+                        {/* Actions */}
+                        <td className="py-4 px-4 sm:px-6 text-right">
+                          <div className="flex items-center justify-end gap-2">
+                            <Link
+                              href={`/clothes/${itemId}`}
+                              title="View public details"
+                              className="p-2 rounded-lg border border-border hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </Link>
+
+                            <Link
+                              href={`/clothes/edit/${itemId}`}
+                              title="Edit piece"
+                              className="p-2 rounded-lg border border-border hover:bg-amber-500/10 text-muted-foreground hover:text-amber-600 transition-colors"
+                            >
+                              <Edit className="w-3.5 h-3.5" />
+                            </Link>
+
+                            <button
+                              type="button"
+                              onClick={() => handleDeletePrompt(item)}
+                              title="Delete piece"
+                              className="p-2 rounded-lg border border-border hover:bg-rose-500/10 text-muted-foreground hover:text-rose-600 transition-colors"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       ) : (

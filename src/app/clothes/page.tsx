@@ -195,7 +195,7 @@ function ClothesCatalogContent() {
           </div>
 
           {/* Quick Category Pills */}
-          <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-border/50">
+          <div className="flex items-center gap-1.5 pt-2 border-t border-border/50 overflow-x-auto pb-1 sm:pb-0 sm:flex-wrap">
             <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mr-1">
               Category:
             </span>

@@ -138,14 +138,14 @@ export function Navbar() {
         </nav>
 
         {/* Right Action Icons & Auth */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
           {/* Search Shortcut */}
           <button
             type="button"
             onClick={handleSearchClick}
             aria-label="Search Apparel"
             title="Search clothing on home page"
-            className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
           >
             <Search className="w-4 h-4" />
           </button>
@@ -154,7 +154,7 @@ export function Navbar() {
           <button
             onClick={toggleTheme}
             aria-label="Toggle Theme"
-            className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
           >
             {theme === 'dark' ? (
               <Sun className="w-4 h-4 text-amber-400" />
@@ -167,7 +167,7 @@ export function Navbar() {
           <Link
             href="/clothes?wishlist=true"
             aria-label="Wishlist"
-            className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors relative"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors relative"
           >
             <Heart className="w-4 h-4" />
             {wishlistIds.length > 0 && (
@@ -181,7 +181,7 @@ export function Navbar() {
           <Link
             href="/my-orders"
             aria-label="My Orders"
-            className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors relative"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors relative"
           >
             <ShoppingBag className="w-4 h-4" />
           </Link>
@@ -195,7 +195,7 @@ export function Navbar() {
             >
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-full border border-border bg-card hover:bg-accent/80 transition-all duration-200 cursor-pointer shadow-xs"
+                className="flex items-center gap-2 sm:gap-2.5 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-full border border-border bg-card hover:bg-accent/80 transition-all duration-200 cursor-pointer shadow-xs"
                 aria-label="User Menu"
               >
                   <Image
@@ -293,10 +293,10 @@ export function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden w-9 h-9 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-accent cursor-pointer"
+            className="lg:hidden w-8 h-8 sm:w-9 sm:h-9 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-accent cursor-pointer"
             aria-label="Open Mobile Menu"
           >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileMenuOpen ? <X className="w-4 h-4 sm:w-5 sm:h-5" /> : <Menu className="w-4 h-4 sm:w-5 sm:h-5" />}
           </button>
         </div>
       </div>
@@ -311,11 +311,11 @@ export function Navbar() {
             aria-hidden="true"
           />
 
-          <div className="lg:hidden relative z-50 border-b border-border bg-card px-4 pt-3 pb-6 space-y-4 animate-in fade-in slide-in-from-top-2 duration-150 shadow-2xl">
+          <div className="lg:hidden relative z-50 border-b border-border bg-card px-4 pt-3 pb-6 space-y-4 animate-in fade-in slide-in-from-top-2 duration-150 shadow-2xl max-h-[calc(100vh-4rem)] overflow-y-auto">
             {user && (
-              <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/40 border border-border">
-                  <Image
-                            src={user.photoURL || '/client-review-1.jpg'}
+              <div className="flex items-center gap-3 p-3 rounded-2xl bg-muted/40 border border-border">
+                <Image
+                  src={user.photoURL || '/client-review-1.jpg'}
                   alt={user.name || 'User avatar'}
                   width={40}
                   height={40}
@@ -342,9 +342,9 @@ export function Navbar() {
                       window.dispatchEvent(new CustomEvent('reset-home-view'));
                     }
                   }}
-                  className={`px-3 py-2 rounded-lg text-sm font-medium tracking-wide ${isActive(link.href)
-                    ? 'text-rose-600 font-semibold bg-accent'
-                    : 'text-muted-foreground'
+                  className={`px-3.5 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-colors ${isActive(link.href)
+                    ? 'text-rose-600 font-bold bg-rose-500/10 dark:bg-rose-950/30'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/40'
                     }`}
                 >
                   {link.name}
@@ -352,19 +352,68 @@ export function Navbar() {
               ))}
             </nav>
 
-            {!user && (
+            {user ? (
+              <div className="pt-3 border-t border-border/70 space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground px-3.5 block mb-1">
+                  Atelier Dashboard
+                </span>
+                <Link
+                  href="/add-cloth"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-foreground hover:bg-rose-500/10 hover:text-rose-600 transition-colors"
+                >
+                  <PlusCircle className="w-4 h-4 text-rose-500" />
+                  <span>Add New Clothing</span>
+                </Link>
+                <Link
+                  href="/my-listings"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-foreground hover:bg-accent transition-colors"
+                >
+                  <Package className="w-4 h-4 text-amber-500" />
+                  <span>My Listings</span>
+                </Link>
+                <Link
+                  href="/my-orders"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-foreground hover:bg-accent transition-colors"
+                >
+                  <ShoppingBag className="w-4 h-4 text-blue-500" />
+                  <span>My Orders</span>
+                </Link>
+                <Link
+                  href="/dashboard"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-foreground hover:bg-accent transition-colors"
+                >
+                  <LayoutDashboard className="w-4 h-4 text-indigo-500" />
+                  <span>Designer Dashboard</span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    logout();
+                  }}
+                  className="w-full flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Sign Out</span>
+                </button>
+              </div>
+            ) : (
               <div className="pt-3 border-t border-border flex gap-2">
                 <Link
                   href="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex-1 py-2 text-center text-xs font-semibold border border-border rounded-lg tracking-wide hover:bg-accent"
+                  className="flex-1 py-2.5 text-center text-xs font-bold border border-border rounded-xl tracking-wide hover:bg-accent transition-colors"
                 >
                   Login
                 </Link>
                 <Link
                   href="/register"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex-1 py-2 text-center text-xs font-semibold text-white bg-rose-600 rounded-lg tracking-wide hover:bg-rose-500"
+                  className="flex-1 py-2.5 text-center text-xs font-bold text-white bg-rose-600 rounded-xl tracking-wide hover:bg-rose-500 transition-colors shadow-sm"
                 >
                   Register
                 </Link>

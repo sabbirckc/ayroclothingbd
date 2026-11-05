@@ -470,7 +470,7 @@ function EditClothContent() {
             <span className="text-[11px] font-semibold text-muted-foreground block mb-2">
               Or select alternative catalog photo:
             </span>
-            <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-11 gap-2">
+            <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-6 lg:grid-cols-11 gap-2">
               {presetImages.map((p) => (
                 <button
                   key={p.url}
