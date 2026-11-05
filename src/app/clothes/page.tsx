@@ -116,20 +116,8 @@ function ClothesCatalogContent() {
           </p>
         </div>
 
-        {/* View Toggle */}
+        {/* View Count */}
         <div className="flex items-center gap-2">
-          {wishlistOnly && (
-            <button
-              onClick={() => {
-                setWishlistOnly(false);
-                router.push('/clothes');
-              }}
-              className="px-3 py-1.5 rounded-lg border border-border text-xs font-semibold hover:bg-accent flex items-center gap-1.5"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Show All Clothes</span>
-            </button>
-          )}
           <span className="text-xs font-bold text-muted-foreground bg-muted/60 px-3 py-1.5 rounded-lg">
             {clothes.length} {clothes.length === 1 ? 'Piece' : 'Pieces'} Found
           </span>
@@ -190,113 +178,112 @@ function ClothesCatalogContent() {
               </select>
             </div>
 
-            {/* Sort By Dropdown */}
-            <div>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-foreground font-medium"
-              >
-                <option value="newest">Sort: Newest Drops First</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="rating">Highest Rated Tailors</option>
-                <option value="popular">Most Popular Pieces</option>
-              </select>
+              {/* Sort By Dropdown */}
+              <div>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-foreground font-medium"
+                >
+                  <option value="newest">Sort: Newest Drops First</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="rating">Highest Rated Tailors</option>
+                  <option value="popular">Most Popular Pieces</option>
+                </select>
+              </div>
             </div>
-          </div>
 
-          {/* Quick Category Pills */}
-          <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-border/50">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mr-1">
-              Category:
-            </span>
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setCategory(cat)}
-                className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${
-                  category === cat
-                    ? 'bg-rose-600 text-white shadow-sm'
-                    : 'bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                {cat === 'all' ? 'All' : cat}
-              </button>
-            ))}
+              {/* Quick Category Pills */}
+              <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-border/50">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mr-1">
+                  Category:
+                </span>
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setCategory(cat)}
+                    className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${category === cat
+                        ? 'bg-rose-600 text-white shadow-sm'
+                        : 'bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground'
+                      }`}
+                  >
+                    {cat === 'all' ? 'All' : cat}
+                  </button>
+                ))}
 
-            {(category !== 'all' || selectedSize !== 'all' || search || sortBy !== 'newest') && (
-              <button
-                onClick={resetFilters}
-                className="ml-auto text-xs text-rose-600 hover:text-rose-500 underline font-semibold flex items-center gap-1"
-              >
-                <RotateCcw className="w-3 h-3" />
-                <span>Reset Filters</span>
-              </button>
-            )}
-          </div>
-        </div>
+                {(category !== 'all' || selectedSize !== 'all' || search || sortBy !== 'newest') && (
+                  <button
+                    onClick={resetFilters}
+                    className="ml-auto text-xs text-rose-600 hover:text-rose-500 underline font-semibold flex items-center gap-1"
+                  >
+                    <RotateCcw className="w-3 h-3" />
+                    <span>Reset Filters</span>
+                  </button>
+                )}
+              </div>
+            </div>
       )}
 
-      {/* Grid Results or Skeleton */}
-      {loading ? (
-        <ClothGridSkeleton count={8} />
-      ) : clothes.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {clothes.map((cloth) => (
-            <ClothCard key={cloth.id || cloth._id} item={cloth} />
-          ))}
-        </div>
-      ) : wishlistOnly ? (
-        /* Dedicated Wishlist Empty State */
-        <div className="text-center py-16 px-4 rounded-3xl border border-dashed border-border bg-card max-w-lg mx-auto space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center mx-auto shadow-inner">
-            <Heart className="w-8 h-8 fill-rose-500/20" />
-          </div>
-          <div className="space-y-1.5">
-            <h3 className="font-heading font-bold text-lg text-foreground">
-              Your Wishlist is Empty
-            </h3>
-            <p className="text-xs text-muted-foreground leading-relaxed max-w-xs mx-auto">
-              You haven&apos;t saved any clothing pieces yet. Tap the heart icon on any piece to save it to your wishlist.
-            </p>
-          </div>
-          <button
-            onClick={() => {
-              setWishlistOnly(false);
-              router.push('/clothes');
-            }}
-            className="px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-xs font-bold shadow-md hover:bg-rose-600 transition-colors inline-flex items-center gap-2"
-          >
-            <Shirt className="w-3.5 h-3.5" />
-            <span>Explore Designer Apparel</span>
-          </button>
-        </div>
-      ) : (
-        /* Catalog Empty State - No "Clear All Filters" button */
-        <div className="text-center py-16 px-4 rounded-3xl border border-dashed border-border bg-card max-w-lg mx-auto space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-muted text-muted-foreground flex items-center justify-center mx-auto shadow-inner">
-            <Shirt className="w-8 h-8" />
-          </div>
-          <div className="space-y-1.5">
-            <h3 className="font-heading font-bold text-lg text-foreground">
-              No Apparel Matching Your Criteria
-            </h3>
-            <p className="text-xs text-muted-foreground leading-relaxed max-w-xs mx-auto">
-              We couldn&apos;t find any designer pieces matching your current filters.
-            </p>
-          </div>
-        </div>
+          {/* Grid Results or Skeleton */}
+          {loading ? (
+            <ClothGridSkeleton count={8} />
+          ) : clothes.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {clothes.map((cloth) => (
+                <ClothCard key={cloth.id || cloth._id} item={cloth} />
+              ))}
+            </div>
+          ): wishlistOnly ? (
+          /* Dedicated Wishlist Empty State */
+          <div className="text-center py-16 px-4 rounded-3xl border border-dashed border-border bg-card max-w-lg mx-auto space-y-4">
+              <div className="w-16 h-16 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center mx-auto shadow-inner">
+                <Heart className="w-8 h-8 fill-rose-500/20" />
+              </div>
+              <div className="space-y-1.5">
+                <h3 className="font-heading font-bold text-lg text-foreground">
+                  Your Wishlist is Empty
+                </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed max-w-xs mx-auto">
+                    You haven&apos;t saved any clothing pieces yet. Tap the heart icon on any piece to save it to your wishlist.
+                  </p>
+              </div>
+              <button
+                onClick={() => {
+                  setWishlistOnly(false);
+                  router.push('/clothes');
+                }}
+                className="px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-xs font-bold shadow-md hover:bg-rose-600 transition-colors inline-flex items-center gap-2"
+              >
+                <Shirt className="w-3.5 h-3.5" />
+                <span>Explore Designer Apparel</span>
+              </button>
+            </div>
+            ) : (
+            /* Catalog Empty State - No "Clear All Filters" button */
+            <div className="text-center py-16 px-4 rounded-3xl border border-dashed border-border bg-card max-w-lg mx-auto space-y-4">
+              <div className="w-16 h-16 rounded-2xl bg-muted text-muted-foreground flex items-center justify-center mx-auto shadow-inner">
+                <Shirt className="w-8 h-8" />
+              </div>
+              <div className="space-y-1.5">
+                <h3 className="font-heading font-bold text-lg text-foreground">
+                  No Apparel Matching Your Criteria
+                </h3>
+                <p className="text-xs text-muted-foreground leading-relaxed max-w-xs mx-auto">
+                  We couldn&apos;t find any designer pieces matching your current filters.
+                </p>
+              </div>
+            </div>
       )}
-    </div>
-  );
+          </div>
+          );
 }
 
-export default function ClothesPage() {
+          export default function ClothesPage() {
   return (
-    <Suspense fallback={<div className="container mx-auto px-4 py-12"><ClothGridSkeleton count={8} /></div>}>
-      <ClothesCatalogContent />
-    </Suspense>
-  );
+          <Suspense fallback={<div className="container mx-auto px-4 py-12"><ClothGridSkeleton count={8} /></div>}>
+            <ClothesCatalogContent />
+          </Suspense>
+          );
 }
 
