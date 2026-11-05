@@ -204,23 +204,16 @@ export function Navbar() {
               )}
             </div>
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="hidden lg:flex items-center gap-2">
               <Link
                 href="/login"
-                className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors sm:hidden"
-                title="Login / Account"
-              >
-                <UserIcon className="w-4 h-4" />
-              </Link>
-              <Link
-                href="/login"
-                className="hidden sm:inline-flex px-4 py-1.5 text-xs font-semibold text-foreground hover:bg-accent rounded-lg transition-colors tracking-wide"
+                className="px-4 py-1.5 text-xs font-semibold text-foreground hover:bg-accent rounded-lg transition-colors tracking-wide"
               >
                 Login
               </Link>
               <Link
                 href="/register"
-                className="hidden sm:inline-flex px-4 py-1.5 text-xs font-semibold text-white bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 rounded-lg shadow-sm hover:shadow transition-all tracking-wide"
+                className="px-4 py-1.5 text-xs font-semibold text-white bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 rounded-lg shadow-sm hover:shadow transition-all tracking-wide"
               >
                 Register
               </Link>
