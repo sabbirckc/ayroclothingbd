@@ -24,6 +24,20 @@ interface AuthContextType {
   updateUser: (updated: Partial<User>) => void;
 }
 
+interface BetterAuthPayload {
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+    image?: string | null;
+  };
+  session?: {
+    id?: string;
+    token?: string;
+  };
+  token?: string;
+}
+
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
@@ -63,15 +77,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         photoURL: baUser.image || '/client-review-1.jpg',
         role: 'designer',
       };
-      setUser((prev) => {
-        if (prev?.id === userObj.id && prev?.email === userObj.email) return prev;
-        return userObj;
-      });
 
+      const sessionPayload = session.data as unknown as BetterAuthPayload;
       const authToken =
-        (session.data as Record<string, any>)?.session?.token ||
-        (session.data as Record<string, any>)?.token ||
-        (session.data as Record<string, any>)?.session?.id;
+        sessionPayload?.session?.token ||
+        sessionPayload?.token ||
+        sessionPayload?.session?.id;
 
       if (authToken) {
         setToken(authToken);
@@ -85,7 +96,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .catch(() => { });
 
       localStorage.setItem('clothspace_user', JSON.stringify(userObj));
-      setLoading(false);
+
+      // Asynchronous state synchronization to avoid cascading renders
+      queueMicrotask(() => {
+        setUser((prev) => {
+          if (prev?.id === userObj.id && prev?.email === userObj.email) return prev;
+          return userObj;
+        });
+        setLoading(false);
+      });
     }
   }, [session.data]);
 
@@ -129,10 +148,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               role: 'designer',
             };
             setUser(userObj);
+            const sessionPayload = sessionRes.data as unknown as BetterAuthPayload;
             const authToken =
-              (sessionRes.data as any)?.session?.token ||
-              (sessionRes.data as any)?.token ||
-              (sessionRes.data as any)?.session?.id;
+              sessionPayload?.session?.token ||
+              sessionPayload?.token ||
+              sessionPayload?.session?.id;
             if (authToken) {
               setToken(authToken);
             }
@@ -197,10 +217,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             role: 'designer',
           };
           setUser(userObj);
+          const dataPayload = res.data as unknown as BetterAuthPayload;
           const authToken =
-            (res.data as any)?.token ||
-            (res.data as any)?.session?.token ||
-            (res.data as any)?.session?.id;
+            dataPayload?.token ||
+            dataPayload?.session?.token ||
+            dataPayload?.session?.id;
           if (authToken) {
             setToken(authToken);
           } else {
@@ -229,8 +250,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return true;
       }
       return false;
-    } catch (err: any) {
-      toast.error(err.message || 'Login failed. Please check your credentials.');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Login failed. Please check your credentials.';
+      toast.error(message);
       return false;
     }
   };
@@ -264,10 +286,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             role: 'designer',
           };
           setUser(userObj);
+          const dataPayload = res.data as unknown as BetterAuthPayload;
           const authToken =
-            (res.data as any)?.token ||
-            (res.data as any)?.session?.token ||
-            (res.data as any)?.session?.id;
+            dataPayload?.token ||
+            dataPayload?.session?.token ||
+            dataPayload?.session?.id;
           if (authToken) {
             setToken(authToken);
           } else {
@@ -311,8 +334,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return true;
       }
       return false;
-    } catch (err: any) {
-      toast.error(err.message || 'Registration failed. Please try again.');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Registration failed. Please try again.';
+      toast.error(message);
       return false;
     }
   };
@@ -325,66 +349,67 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         ? callbackUrl
         : `${origin}${callbackUrl.startsWith('/') ? callbackUrl : `/${callbackUrl}`}`;
 
-  await authClient.signIn.social({
-    provider: 'google',
-    callbackURL: cleanCallback,
-  });
-  return true;
-} catch (err: any) {
-  toast.error(err.message || 'Google authentication failed.');
-  return false;
-}
+      await authClient.signIn.social({
+        provider: 'google',
+        callbackURL: cleanCallback,
+      });
+      return true;
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Google authentication failed.';
+      toast.error(message);
+      return false;
+    }
   };
 
-const quickLoginExaminer = async (): Promise<boolean> => {
-  try {
-    return await login('examiner@clothspace.com', 'ClothSpace2026!');
-  } catch {
-    toast.error('Quick test login failed.');
-    return false;
-  }
-};
-
-const logout = async () => {
-  try {
+  const quickLoginExaminer = async (): Promise<boolean> => {
     try {
-      await authClient.signOut();
-    } catch (baSignOutErr) {
-      console.warn('Better-Auth signOut error:', baSignOutErr);
+      return await login('examiner@clothspace.com', 'ClothSpace2026!');
+    } catch {
+      toast.error('Quick test login failed.');
+      return false;
     }
-    await api.post('/api/auth/logout').catch(() => { });
-  } finally {
-    setUser(null);
-    removeToken();
-    toast.success('You have been signed out.');
-  }
-};
+  };
 
-const updateUser = (updated: Partial<User>) => {
-  if (user) {
-    const next = { ...user, ...updated };
-    setUser(next);
-    localStorage.setItem('clothspace_user', JSON.stringify(next));
-  }
-};
+  const logout = async () => {
+    try {
+      try {
+        await authClient.signOut();
+      } catch (baSignOutErr) {
+        console.warn('Better-Auth signOut error:', baSignOutErr);
+      }
+      await api.post('/api/auth/logout').catch(() => { });
+    } finally {
+      setUser(null);
+      removeToken();
+      toast.success('You have been signed out.');
+    }
+  };
 
-return (
-  <AuthContext.Provider
-    value={{
-      user,
-      loading,
-      login,
-      register,
-      loginWithGoogle,
-      quickLoginExaminer,
-      logout,
-      updateUser,
-    }}
-  >
-    {children}
-  </AuthContext.Provider>
-);
-  }
+  const updateUser = (updated: Partial<User>) => {
+    if (user) {
+      const next = { ...user, ...updated };
+      setUser(next);
+      localStorage.setItem('clothspace_user', JSON.stringify(next));
+    }
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        login,
+        register,
+        loginWithGoogle,
+        quickLoginExaminer,
+        logout,
+        updateUser,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
 
 export function useAuth() {
   return useContext(AuthContext);
