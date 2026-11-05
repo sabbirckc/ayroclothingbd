@@ -259,67 +259,7 @@ export function Navbar() {
             ))}
           </nav>
 
-          {user ? (
-            <div className="pt-3 border-t border-border space-y-2">
-              <div className="px-3 py-2 rounded-xl bg-muted/40 border border-border/60 flex items-center gap-2.5">
-                <img
-                  src={user.photoURL || '/client-review-1.jpg'}
-                  alt={user.name}
-                  className="w-8 h-8 rounded-full object-cover border border-border"
-                />
-                <div className="min-w-0 flex-1">
-                  <p className="text-xs font-semibold text-foreground truncate">{user.name}</p>
-                  <p className="text-[10px] text-muted-foreground truncate">{user.email}</p>
-                </div>
-              </div>
-
-              <div className="flex flex-col space-y-1">
-                <Link
-                  href="/dashboard"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-foreground hover:bg-accent"
-                >
-                  <LayoutDashboard className="w-4 h-4 text-rose-500" />
-                  Dashboard
-                </Link>
-                <Link
-                  href="/add-cloth"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-foreground hover:bg-accent"
-                >
-                  <PlusCircle className="w-4 h-4 text-amber-500" />
-                  Add New Clothing
-                </Link>
-                <Link
-                  href="/my-listings"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-foreground hover:bg-accent"
-                >
-                  <Package className="w-4 h-4 text-blue-500" />
-                  My Clothing Listings
-                </Link>
-                <Link
-                  href="/my-orders"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-foreground hover:bg-accent"
-                >
-                  <ShoppingBag className="w-4 h-4 text-emerald-500" />
-                  My Orders
-                </Link>
-              </div>
-
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  logout();
-                }}
-                className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 text-left cursor-pointer"
-              >
-                <LogOut className="w-4 h-4" />
-                Logout
-              </button>
-            </div>
-          ) : (
+          {!user && (
             <div className="pt-3 border-t border-border flex gap-2">
               <Link
                 href="/login"
