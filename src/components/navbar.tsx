@@ -106,273 +106,273 @@ export function Navbar() {
   };
 
   return (
-      <header ref={headerRef} className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/90 backdrop-blur-md transition-colors duration-200">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          {/* AYRO Brand Logo */}
-          <AyroLogo size="md" />
+    <header ref={headerRef} className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/90 backdrop-blur-md transition-colors duration-200">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        {/* AYRO Brand Logo */}
+        <AyroLogo size="md" />
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={(e) => {
-                  if (link.href === '/' && pathname === '/') {
-                    e.preventDefault();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                    window.dispatchEvent(new CustomEvent('reset-home-view'));
-                  }
-                }}
-                className={`px-3.5 py-1.5 rounded-lg text-sm font-medium tracking-wide transition-all duration-150 relative cursor-pointer ${isActive(link.href)
-                  ? 'text-foreground font-semibold'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-accent/40'
-                  }`}
-              >
-                {link.name}
-                {isActive(link.href) && (
-                  <span className="absolute bottom-0 left-3.5 right-3.5 h-0.5 bg-rose-600 rounded-full" />
-                )}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Right Action Icons & Auth */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            {/* Search Shortcut */}
-            <button
-              type="button"
-              onClick={handleSearchClick}
-              aria-label="Search Apparel"
-              title="Search clothing on home page"
-              className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
-            >
-              <Search className="w-4 h-4" />
-            </button>
-
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              aria-label="Toggle Theme"
-              className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
-            >
-              {theme === 'dark' ? (
-                <Sun className="w-4 h-4 text-amber-400" />
-              ) : (
-                <Moon className="w-4 h-4 text-slate-700" />
-              )}
-            </button>
-
-            {/* Wishlist Link */}
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
+          {navLinks.map((link) => (
             <Link
-              href="/clothes?wishlist=true"
-              aria-label="Wishlist"
-              className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors relative"
+              key={link.href}
+              href={link.href}
+              onClick={(e) => {
+                if (link.href === '/' && pathname === '/') {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  window.dispatchEvent(new CustomEvent('reset-home-view'));
+                }
+              }}
+              className={`px-3.5 py-1.5 rounded-lg text-sm font-medium tracking-wide transition-all duration-150 relative cursor-pointer ${isActive(link.href)
+                ? 'text-foreground font-semibold'
+                : 'text-muted-foreground hover:text-foreground hover:bg-accent/40'
+                }`}
             >
-              <Heart className="w-4 h-4" />
-              {wishlistIds.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-600 text-[10px] text-white font-bold rounded-full flex items-center justify-center shadow-sm">
-                  {wishlistIds.length}
-                </span>
+              {link.name}
+              {isActive(link.href) && (
+                <span className="absolute bottom-0 left-3.5 right-3.5 h-0.5 bg-rose-600 rounded-full" />
               )}
             </Link>
+          ))}
+        </nav>
 
-            {/* Orders / Cart Bag Icon */}
-            <Link
-              href="/my-orders"
-              aria-label="My Orders"
-              className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors relative"
+        {/* Right Action Icons & Auth */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Search Shortcut */}
+          <button
+            type="button"
+            onClick={handleSearchClick}
+            aria-label="Search Apparel"
+            title="Search clothing on home page"
+            className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
+          >
+            <Search className="w-4 h-4" />
+          </button>
+
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle Theme"
+            className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-4 h-4 text-amber-400" />
+            ) : (
+              <Moon className="w-4 h-4 text-slate-700" />
+            )}
+          </button>
+
+          {/* Wishlist Link */}
+          <Link
+            href="/clothes?wishlist=true"
+            aria-label="Wishlist"
+            className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors relative"
+          >
+            <Heart className="w-4 h-4" />
+            {wishlistIds.length > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-600 text-[10px] text-white font-bold rounded-full flex items-center justify-center shadow-sm">
+                {wishlistIds.length}
+              </span>
+            )}
+          </Link>
+
+          {/* Orders / Cart Bag Icon */}
+          <Link
+            href="/my-orders"
+            aria-label="My Orders"
+            className="w-9 h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors relative"
+          >
+            <ShoppingBag className="w-4 h-4" />
+          </Link>
+
+          {/* User Auth Section */}
+          {user ? (
+            <div
+              className="relative"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
-              <ShoppingBag className="w-4 h-4" />
-            </Link>
-
-            {/* User Auth Section */}
-            {user ? (
-              <div
-                className="relative"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-full border border-border bg-card hover:bg-accent/80 transition-all duration-200 cursor-pointer shadow-xs"
+                aria-label="User Menu"
               >
-                <button
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-full border border-border bg-card hover:bg-accent/80 transition-all duration-200 cursor-pointer shadow-xs"
-                  aria-label="User Menu"
-                >
                   <Image
                     src={user.photoURL || '/client-review-1.jpg'}
-                    alt={user.name || 'User avatar'}
-                    width={28}
-                    height={28}
-                    unoptimized
-                    className="w-7 h-7 rounded-full object-cover border border-border ring-1 ring-border/50 shrink-0"
-                  />
-                  <div className="flex flex-col text-left hidden sm:flex max-w-[150px] leading-tight">
-                    <span className="text-xs font-semibold text-foreground truncate">{user.name}</span>
-                    <span className="text-[10px] text-muted-foreground truncate">{user.email}</span>
-                  </div>
-                </button>
+                  alt={user.name || 'User avatar'}
+                  width={28}
+                  height={28}
+                  unoptimized
+                  className="w-7 h-7 rounded-full object-cover border border-border ring-1 ring-border/50 shrink-0"
+                />
+                <div className="flex flex-col text-left hidden sm:flex max-w-[150px] leading-tight">
+                  <span className="text-xs font-semibold text-foreground truncate">{user.name}</span>
+                  <span className="text-[10px] text-muted-foreground truncate">{user.email}</span>
+                </div>
+              </button>
 
-                {/* User Dropdown */}
-                {dropdownOpen && (
-                  <div className="absolute right-0 pt-2 w-64 z-50 animate-in fade-in zoom-in-95 duration-150">
-                    <div className="rounded-xl border border-border bg-card p-2 shadow-xl">
-                      <div className="px-3.5 py-2.5 border-b border-border/60 mb-1 bg-muted/30 rounded-lg">
-                        <p className="text-xs font-bold text-foreground truncate">{user.name}</p>
-                        <p className="text-[11px] text-rose-600 dark:text-rose-400 font-medium truncate">{user.email}</p>
-                      </div>
-
-                      <Link
-                        href="/dashboard"
-                        onClick={() => setDropdownOpen(false)}
-                        className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-foreground rounded-lg hover:bg-accent transition-colors"
-                      >
-                        <LayoutDashboard className="w-4 h-4 text-rose-500" />
-                        Dashboard
-                      </Link>
-
-                      <Link
-                        href="/add-cloth"
-                        onClick={() => setDropdownOpen(false)}
-                        className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-foreground rounded-lg hover:bg-accent transition-colors"
-                      >
-                        <PlusCircle className="w-4 h-4 text-amber-500" />
-                        Add New Clothing
-                      </Link>
-
-                      <Link
-                        href="/my-listings"
-                        onClick={() => setDropdownOpen(false)}
-                        className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-foreground rounded-lg hover:bg-accent transition-colors"
-                      >
-                        <Package className="w-4 h-4 text-emerald-500" />
-                        My Clothing Listings
-                      </Link>
-
-                      <Link
-                        href="/my-orders"
-                        onClick={() => setDropdownOpen(false)}
-                        className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-foreground rounded-lg hover:bg-accent transition-colors"
-                      >
-                        <ShoppingBag className="w-4 h-4 text-blue-500" />
-                        My Purchased Orders
-                      </Link>
-
-                      <div className="border-t border-border/60 my-1 pt-1" />
-
-                      <button
-                        onClick={() => {
-                          setDropdownOpen(false);
-                          logout();
-                        }}
-                        className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-rose-600 dark:text-rose-400 rounded-lg hover:bg-rose-500/10 transition-colors cursor-pointer"
-                      >
-                        <LogOut className="w-4 h-4" />
-                        Logout
-                      </button>
+              {/* User Dropdown */}
+              {dropdownOpen && (
+                <div className="absolute right-0 pt-2 w-64 z-50 animate-in fade-in zoom-in-95 duration-150">
+                  <div className="rounded-xl border border-border bg-card p-2 shadow-xl">
+                    <div className="px-3.5 py-2.5 border-b border-border/60 mb-1 bg-muted/30 rounded-lg">
+                      <p className="text-xs font-bold text-foreground truncate">{user.name}</p>
+                      <p className="text-[11px] text-rose-600 dark:text-rose-400 font-medium truncate">{user.email}</p>
                     </div>
+
+                    <Link
+                      href="/dashboard"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-foreground rounded-lg hover:bg-accent transition-colors"
+                    >
+                      <LayoutDashboard className="w-4 h-4 text-rose-500" />
+                      Dashboard
+                    </Link>
+
+                    <Link
+                      href="/add-cloth"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-foreground rounded-lg hover:bg-accent transition-colors"
+                    >
+                      <PlusCircle className="w-4 h-4 text-amber-500" />
+                      Add New Clothing
+                    </Link>
+
+                    <Link
+                      href="/my-listings"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-foreground rounded-lg hover:bg-accent transition-colors"
+                    >
+                      <Package className="w-4 h-4 text-emerald-500" />
+                      My Clothing Listings
+                    </Link>
+
+                    <Link
+                      href="/my-orders"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-foreground rounded-lg hover:bg-accent transition-colors"
+                    >
+                      <ShoppingBag className="w-4 h-4 text-blue-500" />
+                      My Purchased Orders
+                    </Link>
+
+                    <div className="border-t border-border/60 my-1 pt-1" />
+
+                    <button
+                      onClick={() => {
+                        setDropdownOpen(false);
+                        logout();
+                      }}
+                      className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-rose-600 dark:text-rose-400 rounded-lg hover:bg-rose-500/10 transition-colors cursor-pointer"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Logout
+                    </button>
                   </div>
-                )}
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="hidden lg:flex items-center gap-2">
+              <Link
+                href="/login"
+                className="px-4 py-1.5 text-xs font-semibold text-foreground hover:bg-accent rounded-lg transition-colors tracking-wide"
+              >
+                Login
+              </Link>
+              <Link
+                href="/register"
+                className="px-4 py-1.5 text-xs font-semibold text-white bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 rounded-lg shadow-sm hover:shadow transition-all tracking-wide"
+              >
+                Register
+              </Link>
+            </div>
+          )}
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden w-9 h-9 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-accent cursor-pointer"
+            aria-label="Open Mobile Menu"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Drawer & Click-Outside Backdrop */}
+      {mobileMenuOpen && (
+        <>
+          {/* Backdrop outside mobile menu */}
+          <div
+            className="lg:hidden fixed inset-0 top-16 bg-black/50 backdrop-blur-xs z-40 animate-in fade-in duration-200"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+
+          <div className="lg:hidden relative z-50 border-b border-border bg-card px-4 pt-3 pb-6 space-y-4 animate-in fade-in slide-in-from-top-2 duration-150 shadow-2xl">
+            {user && (
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/40 border border-border">
+                  <Image
+                            src={user.photoURL || '/client-review-1.jpg'}
+                  alt={user.name || 'User avatar'}
+                  width={40}
+                  height={40}
+                  unoptimized
+                  className="w-10 h-10 rounded-full object-cover border border-border shrink-0"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-bold text-foreground truncate">{user.name}</p>
+                  <p className="text-xs text-rose-600 dark:text-rose-400 font-medium truncate">{user.email}</p>
+                </div>
               </div>
-            ) : (
-              <div className="hidden lg:flex items-center gap-2">
+            )}
+
+            <nav className="flex flex-col space-y-1">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => {
+                    setMobileMenuOpen(false);
+                    if (link.href === '/' && pathname === '/') {
+                      e.preventDefault();
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                      window.dispatchEvent(new CustomEvent('reset-home-view'));
+                    }
+                  }}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium tracking-wide ${isActive(link.href)
+                    ? 'text-rose-600 font-semibold bg-accent'
+                    : 'text-muted-foreground'
+                    }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </nav>
+
+            {!user && (
+              <div className="pt-3 border-t border-border flex gap-2">
                 <Link
                   href="/login"
-                  className="px-4 py-1.5 text-xs font-semibold text-foreground hover:bg-accent rounded-lg transition-colors tracking-wide"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex-1 py-2 text-center text-xs font-semibold border border-border rounded-lg tracking-wide hover:bg-accent"
                 >
                   Login
                 </Link>
                 <Link
                   href="/register"
-                  className="px-4 py-1.5 text-xs font-semibold text-white bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 rounded-lg shadow-sm hover:shadow transition-all tracking-wide"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex-1 py-2 text-center text-xs font-semibold text-white bg-rose-600 rounded-lg tracking-wide hover:bg-rose-500"
                 >
                   Register
                 </Link>
               </div>
             )}
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden w-9 h-9 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-accent cursor-pointer"
-              aria-label="Open Mobile Menu"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
           </div>
-        </div>
-
-                {/* Mobile Drawer & Click-Outside Backdrop */}
-                {mobileMenuOpen && (
-                  <>
-                    {/* Backdrop outside mobile menu */}
-                    <div
-                      className="lg:hidden fixed inset-0 top-16 bg-black/50 backdrop-blur-xs z-40 animate-in fade-in duration-200"
-                      onClick={() => setMobileMenuOpen(false)}
-                      aria-hidden="true"
-                    />
-
-                    <div className="lg:hidden relative z-50 border-b border-border bg-card px-4 pt-3 pb-6 space-y-4 animate-in fade-in slide-in-from-top-2 duration-150 shadow-2xl">
-                      {user && (
-                        <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/40 border border-border">
-                          <Image
-                            src={user.photoURL || '/client-review-1.jpg'}
-                            alt={user.name || 'User avatar'}
-                            width={40}
-                            height={40}
-                            unoptimized
-                            className="w-10 h-10 rounded-full object-cover border border-border shrink-0"
-                          />
-                          <div className="min-w-0 flex-1">
-                            <p className="text-sm font-bold text-foreground truncate">{user.name}</p>
-                            <p className="text-xs text-rose-600 dark:text-rose-400 font-medium truncate">{user.email}</p>
-                          </div>
-                        </div>
-                      )}
-
-                      <nav className="flex flex-col space-y-1">
-                        {navLinks.map((link) => (
-                          <Link
-                            key={link.href}
-                            href={link.href}
-                            onClick={(e) => {
-                              setMobileMenuOpen(false);
-                              if (link.href === '/' && pathname === '/') {
-                                e.preventDefault();
-                                window.scrollTo({ top: 0, behavior: 'smooth' });
-                                window.dispatchEvent(new CustomEvent('reset-home-view'));
-                              }
-                            }}
-                            className={`px-3 py-2 rounded-lg text-sm font-medium tracking-wide ${isActive(link.href)
-                              ? 'text-rose-600 font-semibold bg-accent'
-                              : 'text-muted-foreground'
-                              }`}
-                          >
-                            {link.name}
-                          </Link>
-                        ))}
-                      </nav>
-
-                    {!user && (
-                      <div className="pt-3 border-t border-border flex gap-2">
-                        <Link
-                          href="/login"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="flex-1 py-2 text-center text-xs font-semibold border border-border rounded-lg tracking-wide hover:bg-accent"
-                        >
-                          Login
-                        </Link>
-                        <Link
-                          href="/register"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="flex-1 py-2 text-center text-xs font-semibold text-white bg-rose-600 rounded-lg tracking-wide hover:bg-rose-500"
-                        >
-                          Register
-                        </Link>
-                      </div>
-                    )}
-                  </div>
-              </>
-            )}
-          </header>
-        );
+        </>
+      )}
+    </header>
+  );
 }

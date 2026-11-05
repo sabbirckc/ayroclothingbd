@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useAuth } from '@/context/auth-context';
 import { api } from '@/lib/api';
 import { toast } from 'sonner';
-import { PlusCircle, Image as ImageIcon, Shirt, Tag, AlertCircle, ArrowLeft, Check, UploadCloud, Trash2 } from 'lucide-react';
+import { PlusCircle, AlertCircle, ArrowLeft, Check, UploadCloud, Trash2 } from 'lucide-react';
 
 export default function AddClothPage() {
   const router = useRouter();
@@ -18,7 +19,7 @@ export default function AddClothPage() {
   const [sizes, setSizes] = useState<string[]>(['M', 'L']);
   const [fabric, setFabric] = useState('');
   const [brandOrigin, setBrandOrigin] = useState('');
-  const [image, setImage] = useState('/image-1.jpg');
+  const [image, setImage] = useState('');
   const [uploadingImage, setUploadingImage] = useState(false);
   const [selectedFileName, setSelectedFileName] = useState('');
   const fileInputRef = React.useRef<HTMLInputElement>(null);
@@ -114,9 +115,10 @@ export default function AddClothPage() {
       } else {
         throw new Error(data.error || 'Failed to upload image');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Image upload failed:', err);
-      toast.error(err.message || 'Image upload failed. Please try again.');
+      const msg = err instanceof Error ? err.message : 'Image upload failed. Please try again.';
+      toast.error(msg);
       setSelectedFileName('');
     } finally {
       setUploadingImage(false);
@@ -149,6 +151,12 @@ export default function AddClothPage() {
       return;
     }
 
+    if (!image.trim()) {
+      setErrorMsg('Please upload an image from your device or select one from catalog presets.');
+      toast.error('Please upload an image or select one.');
+      return;
+    }
+
     if (sizes.length === 0) {
       setErrorMsg('Please select at least one available size.');
       return;
@@ -174,8 +182,8 @@ export default function AddClothPage() {
         toast.success('Apparel listing published successfully!');
         router.push('/my-listings');
       }
-    } catch (err: any) {
-      const msg = err.message || 'Failed to publish clothing listing.';
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Failed to publish clothing listing.';
       setErrorMsg(msg);
       toast.error(msg);
     } finally {
@@ -368,10 +376,12 @@ export default function AddClothPage() {
             {image ? (
               <div className="flex flex-col sm:flex-row items-center gap-4">
                 <div className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-xl overflow-hidden border border-border shadow-xs shrink-0 bg-muted/30">
-                  <img
+                  <Image
                     src={image}
                     alt="Apparel preview"
-                    className="w-full h-full object-cover"
+                    fill
+                    unoptimized
+                    className="object-cover"
                   />
                   {uploadingImage && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
@@ -451,7 +461,7 @@ export default function AddClothPage() {
               className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${image === p.url ? 'border-rose-600 ring-2 ring-rose-500/30' : 'border-border/70 opacity-70 hover:opacity-100'
                 }`}
                   >
-              <img src={p.url} alt={p.label} className="w-full h-full object-cover" />
+              <Image src={p.url} alt={p.label} fill unoptimized className="object-cover" />
               {image === p.url && (
                 <div className="absolute inset-0 bg-rose-600/30 flex items-center justify-center text-white">
                   <Check className="w-3.5 h-3.5" />
