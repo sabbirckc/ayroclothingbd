@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/auth-context';
 import { toast } from 'sonner';
-import { UserPlus, AlertCircle, CheckCircle2, XCircle, ArrowRight } from 'lucide-react';
+import { UserPlus, AlertCircle, CheckCircle2, XCircle } from 'lucide-react';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -13,8 +13,8 @@ export default function RegisterPage() {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [photoURL, setPhotoURL] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -23,12 +23,13 @@ export default function RegisterPage() {
   const hasLowerCase = /[a-z]/.test(password);
   const hasMinLength = password.length >= 6;
   const isPasswordValid = hasUpperCase && hasLowerCase && hasMinLength;
+  const doPasswordsMatch = password.length > 0 && confirmPassword.length > 0 && password === confirmPassword;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
 
-    if (!name.trim() || !email.trim() || !password) {
+    if (!name.trim() || !email.trim() || !password || !confirmPassword) {
       setErrorMsg('Please complete all required fields.');
       return;
     }
@@ -45,13 +46,17 @@ export default function RegisterPage() {
       setErrorMsg('Password must contain at least one lowercase letter (a-z).');
       return;
     }
+    if (password !== confirmPassword) {
+      setErrorMsg('Passwords do not match. Please verify your confirm password.');
+      return;
+    }
 
     setLoading(true);
     const success = await register(
       name.trim(),
       email.trim(),
       password,
-      photoURL.trim() || '/client-review-1.jpg'
+      '/client-review-1.jpg'
     );
     setLoading(false);
 
@@ -125,22 +130,6 @@ export default function RegisterPage() {
 
           <div>
             <label className="block text-xs font-bold text-foreground mb-1.5">
-              Profile Photo URL (Optional)
-            </label>
-            <input
-              type="url"
-              value={photoURL}
-              onChange={(e) => setPhotoURL(e.target.value)}
-              placeholder="https://... or leave empty for default avatar"
-              className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-border bg-card focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-foreground"
-            />
-            <p className="text-[10px] text-muted-foreground mt-1">
-              Supports ImgBB, PostImage, or existing public pictures.
-            </p>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-foreground mb-1.5">
               Password <span className="text-rose-500">*</span>
             </label>
             <input
@@ -174,9 +163,44 @@ export default function RegisterPage() {
             </div>
           </div>
 
+          <div>
+            <label className="block text-xs font-bold text-foreground mb-1.5">
+              Confirm Password <span className="text-rose-500">*</span>
+            </label>
+            <input
+              type="password"
+              required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Re-enter your password to confirm"
+              className={`w-full px-3.5 py-2.5 text-xs rounded-xl border bg-card focus:outline-none focus:ring-2 text-foreground ${
+                confirmPassword.length > 0
+                  ? password === confirmPassword
+                    ? 'border-emerald-500/60 focus:ring-emerald-500/20 focus:border-emerald-500'
+                    : 'border-rose-500/60 focus:ring-rose-500/20 focus:border-rose-500'
+                  : 'border-border focus:ring-rose-500/20 focus:border-rose-500'
+              }`}
+            />
+            {confirmPassword.length > 0 && (
+              <div className="mt-1.5 flex items-center gap-1.5 text-[11px]">
+                {password === confirmPassword ? (
+                  <span className="text-emerald-500 flex items-center gap-1 font-medium">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>Passwords match</span>
+                  </span>
+                ) : (
+                  <span className="text-rose-500 flex items-center gap-1 font-medium">
+                    <XCircle className="w-3.5 h-3.5" />
+                    <span>Passwords do not match</span>
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+
           <button
             type="submit"
-            disabled={loading || (password.length > 0 && !isPasswordValid)}
+            disabled={loading || (password.length > 0 && !isPasswordValid) || (confirmPassword.length > 0 && !doPasswordsMatch)}
             className="w-full py-3 rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold text-xs shadow-md hover:shadow-rose-500/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
           >
             <UserPlus className="w-4 h-4" />
