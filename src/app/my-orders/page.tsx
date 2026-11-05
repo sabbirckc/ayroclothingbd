@@ -37,12 +37,11 @@ export default function MyOrdersPage() {
 
   const fetchOrders = async () => {
     try {
-      setLoading(true);
       const res = await api.get('/api/orders/my-orders');
       if (res.success && Array.isArray(res.data)) {
         setOrders(res.data);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to load orders:', err);
     } finally {
       setLoading(false);

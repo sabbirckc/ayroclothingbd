@@ -126,7 +126,7 @@ export default function HowItWorksPage() {
               Direct Cancellations
             </h4>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              Buyers can cancel any pending order with a single click, instantly replenishing the designer's stock inventory.
+              Buyers can cancel any pending order with a single click, instantly replenishing the designer&apos;s stock inventory.
             </p>
           </div>
         </div>

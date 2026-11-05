@@ -45,7 +45,7 @@ export function DeleteConfirmDialog({
               {title || 'Delete Clothing Listing'}
             </h3>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              Are you sure you want to permanently remove <span className="font-semibold text-foreground">"{itemName}"</span> from ClothSpace? This action cannot be reversed.
+              Are you sure you want to permanently remove <span className="font-semibold text-foreground">&ldquo;{itemName}&rdquo;</span> from ClothSpace? This action cannot be reversed.
             </p>
           </div>
         </div>

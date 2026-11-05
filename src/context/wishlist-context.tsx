@@ -29,8 +29,10 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!user) {
-      setWishlistIds([]);
-      setWishlistItems([]);
+      queueMicrotask(() => {
+        setWishlistIds([]);
+        setWishlistItems([]);
+      });
       return;
     }
 

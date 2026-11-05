@@ -387,7 +387,7 @@ import {
                   ))}
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  "{rev.review}"
+                  &ldquo;{rev.review}&rdquo;
                 </p>
               </div>
             ))}

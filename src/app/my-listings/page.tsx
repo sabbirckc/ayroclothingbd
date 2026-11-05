@@ -41,12 +41,11 @@ export default function MyListingsPage() {
 
   const fetchMyListings = async () => {
     try {
-      setLoading(true);
       const res = await api.get('/api/clothes/my-listings');
       if (res.success && Array.isArray(res.data)) {
         setListings(res.data);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to load listings:', err);
     } finally {
       setLoading(false);
@@ -266,7 +265,7 @@ export default function MyListingsPage() {
               No Clothing Listings Yet
             </h3>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              You haven't published any designer clothing or wardrobe pieces. Share your craftsmanship with the ClothSpace community today!
+              You haven&apos;t published any designer clothing or wardrobe pieces. Share your craftsmanship with the ClothSpace community today!
             </p>
           </div>
           <Link

@@ -18,23 +18,9 @@ const ThemeContext = createContext<ThemeContextType>({
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('light');
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    const saved = localStorage.getItem('clothspace_theme') as Theme | null;
-    if (saved === 'dark' || saved === 'light') {
-      setThemeState(saved);
-      applyTheme(saved);
-    } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const initial = prefersDark ? 'dark' : 'light';
-      setThemeState(initial);
-      applyTheme(initial);
-    }
-  }, []);
 
   const applyTheme = (t: Theme) => {
+    if (typeof document === 'undefined') return;
     const root = document.documentElement;
     if (t === 'dark') {
       root.classList.add('dark');
@@ -42,6 +28,21 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       root.classList.remove('dark');
     }
   };
+
+  useEffect(() => {
+    const saved = localStorage.getItem('clothspace_theme') as Theme | null;
+    let initial: Theme = 'light';
+    if (saved === 'dark' || saved === 'light') {
+      initial = saved;
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      initial = prefersDark ? 'dark' : 'light';
+    }
+    applyTheme(initial);
+    queueMicrotask(() => {
+      setThemeState(initial);
+    });
+  }, []);
 
   const setTheme = (t: Theme) => {
     setThemeState(t);
@@ -64,4 +65,3 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 export function useTheme() {
   return useContext(ThemeContext);
 }
-
