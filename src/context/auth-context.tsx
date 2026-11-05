@@ -80,7 +80,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       const sessionPayload = session.data as unknown as BetterAuthPayload;
       const authToken =
-        sessionPayload?.session?.token ||
+      sessionPayload?.session?.token ||
         sessionPayload?.token ||
         sessionPayload?.session?.id;
 
@@ -150,7 +150,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setUser(userObj);
             const sessionPayload = sessionRes.data as unknown as BetterAuthPayload;
             const authToken =
-              sessionPayload?.session?.token ||
+            sessionPayload?.session?.token ||
               sessionPayload?.token ||
               sessionPayload?.session?.id;
             if (authToken) {
@@ -219,7 +219,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setUser(userObj);
           const dataPayload = res.data as unknown as BetterAuthPayload;
           const authToken =
-            dataPayload?.token ||
+          dataPayload?.token ||
             dataPayload?.session?.token ||
             dataPayload?.session?.id;
           if (authToken) {
@@ -288,7 +288,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setUser(userObj);
           const dataPayload = res.data as unknown as BetterAuthPayload;
           const authToken =
-            dataPayload?.token ||
+          dataPayload?.token ||
             dataPayload?.session?.token ||
             dataPayload?.session?.id;
           if (authToken) {
@@ -349,66 +349,66 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         ? callbackUrl
         : `${origin}${callbackUrl.startsWith('/') ? callbackUrl : `/${callbackUrl}`}`;
 
-      await authClient.signIn.social({
-        provider: 'google',
-        callbackURL: cleanCallback,
-      });
-      return true;
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Google authentication failed.';
-      toast.error(message);
-      return false;
-    }
-  };
+    await authClient.signIn.social({
+      provider: 'google',
+      callbackURL: cleanCallback,
+    });
+    return true;
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Google authentication failed.';
+    toast.error(message);
+    return false;
+  }
+};
 
-  const quickLoginExaminer = async (): Promise<boolean> => {
-    try {
-      return await login('examiner@clothspace.com', 'ClothSpace2026!');
-    } catch {
-      toast.error('Quick test login failed.');
-      return false;
-    }
-  };
+const quickLoginExaminer = async (): Promise<boolean> => {
+  try {
+    return await login('examiner@clothspace.com', 'ClothSpace2026!');
+  } catch {
+    toast.error('Quick test login failed.');
+    return false;
+  }
+};
 
-  const logout = async () => {
-    try {
+    const logout = async () => {
       try {
-        await authClient.signOut();
-      } catch (baSignOutErr) {
-        console.warn('Better-Auth signOut error:', baSignOutErr);
+        try {
+          await authClient.signOut();
+        } catch (baSignOutErr) {
+          console.warn('Better-Auth signOut error:', baSignOutErr);
+        }
+        await api.post('/api/auth/logout').catch(() => { });
+      } finally {
+        setUser(null);
+        removeToken();
+        toast.success('You have been signed out.');
       }
-      await api.post('/api/auth/logout').catch(() => { });
-    } finally {
-      setUser(null);
-      removeToken();
-      toast.success('You have been signed out.');
-    }
-  };
+};
 
-  const updateUser = (updated: Partial<User>) => {
-    if (user) {
-      const next = { ...user, ...updated };
-      setUser(next);
-      localStorage.setItem('clothspace_user', JSON.stringify(next));
-    }
-  };
+const updateUser = (updated: Partial<User>) => {
+  if (user) {
+    const next = { ...user, ...updated };
+    setUser(next);
+    localStorage.setItem('clothspace_user', JSON.stringify(next));
+  }
+};
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        loading,
-        login,
-        register,
-        loginWithGoogle,
-        quickLoginExaminer,
-        logout,
-        updateUser,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+return (
+  <AuthContext.Provider
+    value={{
+      user,
+      loading,
+      login,
+      register,
+      loginWithGoogle,
+      quickLoginExaminer,
+      logout,
+      updateUser,
+    }}
+  >
+    {children}
+  </AuthContext.Provider>
+);
 }
 
 export function useAuth() {
