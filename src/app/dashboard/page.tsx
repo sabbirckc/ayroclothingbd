@@ -416,11 +416,10 @@ export default function DashboardPage() {
 
                     <div className="shrink-0 text-right">
                       <span
-                        className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                          isCancelled
+                        className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${isCancelled
                             ? 'bg-rose-500/10 text-rose-600'
                             : 'bg-emerald-500/10 text-emerald-600'
-                        }`}
+                          }`}
                       >
                         {isCancelled ? 'Cancelled' : 'Confirmed'}
                       </span>
