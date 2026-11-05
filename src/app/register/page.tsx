@@ -77,9 +77,6 @@ export default function RegisterPage() {
       <div className="w-full max-w-md space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-500 to-amber-600 flex items-center justify-center text-white mx-auto shadow-md">
-            <UserPlus className="w-6 h-6" />
-          </div>
           <h1 className="font-heading font-black text-2xl sm:text-3xl text-foreground">
             Join the ClothSpace Collective
           </h1>

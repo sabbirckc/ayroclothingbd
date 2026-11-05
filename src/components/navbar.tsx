@@ -204,75 +204,75 @@ export function Navbar() {
               )}
             </div>
           ) : (
-            <div className="hidden lg:flex items-center gap-2">
-              <Link
-                href="/login"
-                className="px-4 py-1.5 text-xs font-semibold text-foreground hover:bg-accent rounded-lg transition-colors tracking-wide"
-              >
-                Login
-              </Link>
-              <Link
-                href="/register"
-                className="px-4 py-1.5 text-xs font-semibold text-white bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 rounded-lg shadow-sm hover:shadow transition-all tracking-wide"
-              >
-                Register
-              </Link>
-            </div>
-          )}
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden w-9 h-9 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-accent"
-            aria-label="Open Mobile Menu"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Drawer */}
-      {
-        mobileMenuOpen && (
-          <div className="lg:hidden border-b border-border bg-card px-4 pt-2 pb-6 space-y-3">
-            <nav className="flex flex-col space-y-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`px-3 py-2 rounded-lg text-sm font-medium tracking-wide ${isActive(link.href)
-                    ? 'text-rose-600 font-semibold bg-accent'
-                    : 'text-muted-foreground'
-                    }`}
-                >
-                  {link.name}
-                </Link>
-              ))}
-
-            </nav>
-
-            {!user && (
-              <div className="pt-3 border-t border-border flex gap-2">
+              <div className="hidden lg:flex items-center gap-2">
                 <Link
                   href="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex-1 py-2 text-center text-xs font-semibold border border-border rounded-lg tracking-wide"
+                  className="px-4 py-1.5 text-xs font-semibold text-foreground hover:bg-accent rounded-lg transition-colors tracking-wide"
                 >
                   Login
                 </Link>
                 <Link
                   href="/register"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex-1 py-2 text-center text-xs font-semibold text-white bg-rose-600 rounded-lg tracking-wide"
+                  className="px-4 py-1.5 text-xs font-semibold text-white bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 rounded-lg shadow-sm hover:shadow transition-all tracking-wide"
                 >
                   Register
                 </Link>
               </div>
-            )}
-          </div>
-        )
-      }
+          )}
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="lg:hidden w-9 h-9 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-accent"
+                aria-label="Open Mobile Menu"
+              >
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            </div>
+      </div>
+
+        {/* Mobile Drawer */}
+        {
+          mobileMenuOpen && (
+            <div className="lg:hidden border-b border-border bg-card px-4 pt-2 pb-6 space-y-3">
+              <nav className="flex flex-col space-y-1">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium tracking-wide ${isActive(link.href)
+                      ? 'text-rose-600 font-semibold bg-accent'
+                      : 'text-muted-foreground'
+                      }`}
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+
+              </nav>
+
+              {!user && (
+                <div className="pt-3 border-t border-border flex gap-2">
+                  <Link
+                    href="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex-1 py-2 text-center text-xs font-semibold border border-border rounded-lg tracking-wide"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href="/register"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex-1 py-2 text-center text-xs font-semibold text-white bg-rose-600 rounded-lg tracking-wide"
+                  >
+                    Register
+                  </Link>
+                </div>
+              )}
+            </div>
+          )
+        }
     </header >
   );
 }

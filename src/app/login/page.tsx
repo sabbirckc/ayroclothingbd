@@ -62,35 +62,11 @@ function LoginFormContent() {
       <div className="w-full max-w-md space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-500 to-amber-600 flex items-center justify-center text-white mx-auto shadow-md">
-            <LogIn className="w-6 h-6" />
-          </div>
           <h1 className="font-heading font-black text-2xl sm:text-3xl text-foreground">
             Welcome Back to ClothSpace
           </h1>
           <p className="text-xs text-muted-foreground">
             Access your clothing listings, manage incoming orders, and discover designer drops.
-          </p>
-        </div>
-
-        {/* Examiner Quick-Fill Card */}
-        <div className="p-4 rounded-2xl border border-rose-500/30 bg-rose-500/5 space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-rose-600 flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5" />
-              Examiner Test Account
-            </span>
-            <button
-              type="button"
-              onClick={handleExaminerQuickLogin}
-              disabled={loading}
-              className="text-xs font-bold text-rose-600 hover:text-rose-500 underline"
-            >
-              1-Click Auto Login
-            </button>
-          </div>
-          <p className="text-[11px] text-muted-foreground">
-            Email: <code className="font-mono text-foreground">examiner@clothspace.com</code> | Password: <code className="font-mono text-foreground">ClothSpace2026!</code>
           </p>
         </div>
 
