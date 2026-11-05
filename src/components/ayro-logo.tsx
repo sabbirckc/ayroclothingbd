@@ -14,21 +14,21 @@ export function AyroLogo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
 
   const iconSizes = {
     sm: 'w-7 h-7 sm:w-8 sm:h-8',
-    md: 'w-8 h-8 sm:w-10 sm:h-10',
-    lg: 'w-10 h-10 sm:w-12 sm:h-12',
+    md: 'w-7 h-7 sm:w-9 sm:h-9',
+    lg: 'w-9 h-9 sm:w-12 sm:h-12',
   };
 
   const svgSizes = {
     sm: 'w-3.5 h-3.5 sm:w-4 sm:h-4',
-    md: 'w-4 h-4 sm:w-5 sm:h-5',
-    lg: 'w-5 h-5 sm:w-6 sm:h-6',
+    md: 'w-3.5 h-3.5 sm:w-4.5 sm:h-4.5',
+    lg: 'w-4.5 h-4.5 sm:w-6 sm:h-6',
   };
 
   return (
-    <Link href="/" onClick={handleLogoClick} className="flex items-center gap-2 sm:gap-2.5 group cursor-pointer shrink-0">
+    <Link href="/" onClick={handleLogoClick} className="flex items-center gap-1.5 sm:gap-2.5 group cursor-pointer shrink-0">
       {/* Clean Hanger Icon Emblem */}
       <div
-        className={`${iconSizes[size]} rounded-xl bg-stone-900 dark:bg-stone-100 text-stone-100 dark:text-stone-900 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-200 shrink-0 border border-border`}
+        className={`${iconSizes[size]} rounded-xl bg-stone-900 dark:bg-stone-100 text-stone-100 dark:text-stone-900 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform duration-200 shrink-0 border border-border`}
       >
         <svg
           className={`${svgSizes[size]} fill-none stroke-current`}
@@ -43,16 +43,16 @@ export function AyroLogo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
         </svg>
       </div>
 
-      <div className="flex flex-col">
+      <div className="flex flex-col leading-tight">
         <div className="flex items-center gap-1 sm:gap-1.5">
-          <span className="font-heading font-black tracking-tight text-lg sm:text-xl leading-none text-foreground">
+          <span className="font-heading font-black tracking-tight text-base sm:text-xl leading-none text-foreground">
             AYRO
           </span>
-          <span className="text-[10px] sm:text-[11px] px-1.5 sm:px-2 py-0.5 rounded-md bg-muted text-foreground font-sans font-bold tracking-tight border border-border">
+          <span className="text-[9px] sm:text-[11px] px-1.5 sm:px-2 py-0.5 rounded-md bg-muted text-foreground font-sans font-bold tracking-tight border border-border">
             ClothingBD
           </span>
         </div>
-        <span className="hidden xs:inline-block text-[9px] uppercase tracking-[0.16em] text-muted-foreground font-semibold mt-0.5">
+        <span className="hidden sm:inline-block text-[9px] uppercase tracking-[0.16em] text-muted-foreground font-semibold mt-0.5">
           Timeless Essential
         </span>
       </div>

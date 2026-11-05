@@ -80,7 +80,7 @@ export function HeroSlider() {
   return (
     <div
       id="hero-banner"
-      className="scroll-mt-20 relative w-full h-[520px] sm:h-[620px] lg:h-[680px] overflow-hidden bg-black select-none"
+      className="scroll-mt-20 relative w-full min-h-[440px] h-[calc(100vh-5rem)] max-h-[660px] overflow-hidden bg-black select-none"
     >
       {/* Background Images Crossfade */}
       {HERO_SLIDES.map((slide, index) => {
@@ -100,49 +100,49 @@ export function HeroSlider() {
               }`}
             />
             {/* Dark Cinematic Gradients matching StudioSpace */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-black/45" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 to-black/50" />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
           </div>
         );
       })}
 
       {/* Active Slide Text Content */}
-      <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center z-10">
+      <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center pb-10 sm:pb-0 z-10">
         <div
           key={activeSlide.id}
-          className="max-w-2xl space-y-4 sm:space-y-6 animate-in fade-in slide-in-from-bottom-5 duration-500 fill-mode-forwards"
+          className="max-w-2xl space-y-3 sm:space-y-6 animate-in fade-in slide-in-from-bottom-5 duration-500 fill-mode-forwards"
         >
           {/* Feature Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[11px] sm:text-xs font-semibold uppercase tracking-wider">
-            <ActiveIcon className="w-3.5 h-3.5 text-amber-400" />
-            <span>{activeSlide.badge}</span>
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] sm:text-xs font-semibold uppercase tracking-wider max-w-[95%] truncate">
+            <ActiveIcon className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+            <span className="truncate">{activeSlide.badge}</span>
           </div>
 
           {/* Headline */}
-          <h1 className="font-heading font-black text-2xl xs:text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-[1.15] sm:leading-[1.1]">
+          <h1 className="font-heading font-black text-xl xs:text-2xl sm:text-4xl lg:text-6xl text-white tracking-tight leading-snug sm:leading-[1.1]">
             {activeSlide.headline}
           </h1>
 
           {/* Subtext */}
-          <p className="text-xs xs:text-sm sm:text-base lg:text-lg text-white/80 leading-relaxed max-w-xl">
+          <p className="text-xs sm:text-base lg:text-lg text-white/80 leading-relaxed max-w-xl line-clamp-2 sm:line-clamp-none">
             {activeSlide.subtext}
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+          <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2 sm:gap-3 pt-1 sm:pt-2">
             <Link
               href={activeSlide.primaryCtaLink}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white text-black font-semibold text-xs sm:text-sm hover:bg-white/90 shadow-lg hover:shadow-white/20 transition-all group"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3.5 rounded-xl bg-white text-black font-semibold text-xs sm:text-sm hover:bg-white/90 shadow-lg hover:shadow-white/20 transition-all group"
             >
               <span>{activeSlide.primaryCtaText}</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-1" />
             </Link>
 
             <Link
               href={activeSlide.secondaryCtaLink}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white font-semibold text-xs sm:text-sm hover:bg-white/20 transition-all"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white font-semibold text-xs sm:text-sm hover:bg-white/20 transition-all"
             >
-              <Tag className="w-4 h-4 text-amber-400" />
+              <Tag className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
               <span>{activeSlide.secondaryCtaText}</span>
             </Link>
           </div>
@@ -167,14 +167,14 @@ export function HeroSlider() {
       </button>
 
       {/* Navigation Indicators */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+      <div className="absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 sm:gap-2">
         {HERO_SLIDES.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrent(i)}
             aria-label={`Go to slide ${i + 1}`}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              current === i ? 'w-8 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'
+            className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 ${
+              current === i ? 'w-6 sm:w-8 bg-white' : 'w-1.5 sm:w-2 bg-white/40 hover:bg-white/60'
             }`}
           />
         ))}
