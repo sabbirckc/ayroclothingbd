@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
@@ -16,10 +17,8 @@ import {
   Shirt,
   Scissors,
   Layers,
-  Sparkle,
   Compass,
   Star,
-  Quote,
   Search,
   X
 } from 'lucide-react';
@@ -60,7 +59,7 @@ export default function HomePage() {
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('search') === 'open') {
-        setShowSearchSection(true);
+        queueMicrotask(() => setShowSearchSection(true));
       }
     }
 
@@ -93,9 +92,11 @@ export default function HomePage() {
   useEffect(() => {
     const query = searchQuery.trim();
     if (!query) {
-      setSuggestions([]);
-      setShowSuggestions(false);
-      return;
+      const timer = setTimeout(() => {
+        setSuggestions([]);
+        setShowSuggestions(false);
+      }, 0);
+      return () => clearTimeout(timer);
     }
 
     const timer = setTimeout(async () => {
@@ -689,7 +690,7 @@ export default function HomePage() {
                   Verified Atelier Standard
                 </span>
                 <p className="text-base font-bold">
-                  "Sustainable clothing sharing that treats independent designers with the respect they deserve."
+                  &ldquo;Sustainable clothing sharing that treats independent designers with the respect they deserve.&rdquo;
                 </p>
               </div>
             </div>
@@ -743,7 +744,7 @@ export default function HomePage() {
                   ))}
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed italic">
-                  "{item.review}"
+                  &ldquo;{item.review}&rdquo;
                 </p>
               </div>
 
