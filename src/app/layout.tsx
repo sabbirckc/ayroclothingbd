@@ -42,7 +42,9 @@ export default function RootLayout({
                 <SearchModal />
               </Suspense>
               <main className="flex-1 flex flex-col">{children}</main>
-              <Footer />
+              <Suspense fallback={null}>
+                <Footer />
+              </Suspense>
               <Toaster richColors position="top-right" closeButton />
             </WishlistProvider>
           </AuthProvider>

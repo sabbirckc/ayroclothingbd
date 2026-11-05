@@ -2,13 +2,10 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
 export function AyroLogo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
-  const pathname = usePathname();
-
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (pathname === '/') {
+    if (typeof window !== 'undefined' && window.location.pathname === '/') {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       window.dispatchEvent(new CustomEvent('reset-home-view'));
