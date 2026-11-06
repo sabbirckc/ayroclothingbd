@@ -145,38 +145,38 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-      <html lang="en" suppressHydrationWarning className={`${jost.variable} h-full antialiased`}>
-        <head>
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-          />
-        </head>
-        <body
-          suppressHydrationWarning
-          className="min-h-screen w-full max-w-full flex flex-col bg-background text-foreground transition-colors duration-200 font-sans"
-        >
-          <ThemeProvider>
-            <AuthProvider>
-              <WishlistProvider>
-                <Suspense fallback={<div className="h-28 w-full border-b border-border/40 bg-background/70 backdrop-blur-xl" />}>
-                  <Navbar />
-                </Suspense>
-                <Suspense fallback={null}>
-                  <SearchModal />
-                </Suspense>
-                <Suspense fallback={null}>
-                  <SizeChartModal />
-                </Suspense>
-                <main className="flex-1 flex flex-col w-full max-w-full pb-16 lg:pb-0">{children}</main>
-                <Suspense fallback={null}>
-                  <Footer />
-                </Suspense>
-                <Toaster richColors position="top-right" closeButton />
-              </WishlistProvider>
-            </AuthProvider>
-          </ThemeProvider>
-        </body>
-      </html>
-      );
+    <html lang="en" suppressHydrationWarning className={`${jost.variable} h-full antialiased`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
+      <body
+        suppressHydrationWarning
+        className="min-h-screen w-full max-w-full flex flex-col bg-background text-foreground transition-colors duration-200 font-sans"
+      >
+        <ThemeProvider>
+          <AuthProvider>
+            <WishlistProvider>
+              <Suspense fallback={<div className="h-28 w-full border-b border-border/40 bg-background/70 backdrop-blur-xl" />}>
+                <Navbar />
+              </Suspense>
+              <Suspense fallback={null}>
+                <SearchModal />
+              </Suspense>
+              <Suspense fallback={null}>
+                <SizeChartModal />
+              </Suspense>
+              <main className="flex-1 flex flex-col w-full max-w-full pb-16 lg:pb-0">{children}</main>
+              <Suspense fallback={null}>
+                <Footer />
+              </Suspense>
+              <Toaster richColors position="top-right" closeButton />
+            </WishlistProvider>
+          </AuthProvider>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
 }
