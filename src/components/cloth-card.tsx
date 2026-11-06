@@ -53,8 +53,8 @@ export function ClothCard({ item }: { item: ClothItem }) {
           }}
           aria-label={isSaved ? 'Remove from wishlist' : 'Add to wishlist'}
           className={`absolute top-3 right-3 z-10 w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md border transition-all ${isSaved
-              ? 'bg-rose-600 border-rose-600 text-white shadow-md'
-              : 'bg-background/80 hover:bg-background border-border text-muted-foreground hover:text-rose-500'
+            ? 'bg-rose-600 border-rose-600 text-white shadow-md'
+            : 'bg-background/80 hover:bg-background border-border text-muted-foreground hover:text-rose-500'
             }`}
         >
           <Heart className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
@@ -78,59 +78,24 @@ export function ClothCard({ item }: { item: ClothItem }) {
 
       {/* Content Container */}
       <div className="p-4 sm:p-5 flex flex-col flex-1 justify-between gap-3">
-        <div>
-          {/* Origin / Brand & Rating */}
-          <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5">
-            <span className="truncate max-w-[65%] font-medium">
-              {item.brandOrigin || 'Boutique Atelier'}
-            </span>
-            <div className="flex items-center gap-1 text-amber-500 font-bold bg-amber-500/10 px-1.5 py-0.5 rounded text-[11px]">
-              <Star className="w-3 h-3 fill-current" />
-              <span>{Number(item.rating || 4.9).toFixed(1)}</span>
-            </div>
-          </div>
-
-          {/* Title */}
-          <Link href={`/clothes/${clothId}`} className="block">
+        {/* Title & Star Rating */}
+        <div className="flex items-center justify-between gap-2">
+          <Link href={`/clothes/${clothId}`} className="block flex-1 min-w-0">
             <h3 className="font-heading font-bold text-base text-foreground group-hover:text-rose-600 transition-colors line-clamp-1">
               {item.title}
             </h3>
           </Link>
-
-          {/* Fabric details */}
-          <p className="text-xs text-muted-foreground mt-1 line-clamp-1">
-            <span className="font-medium text-foreground/80">Fabric:</span> {item.fabric}
-          </p>
-
-          {/* Available Sizes preview */}
-          {item.sizes && item.sizes.length > 0 && (
-            <div className="flex items-center gap-1 mt-2">
-              <span className="text-[10px] text-muted-foreground uppercase font-semibold">Sizes:</span>
-              <div className="flex items-center gap-1">
-                {item.sizes.slice(0, 4).map((s) => (
-                  <span
-                    key={s}
-                    className="text-[10px] px-1.5 py-0.5 rounded border border-border/80 bg-muted/40 font-mono text-muted-foreground"
-                  >
-                    {s}
-                  </span>
-                ))}
-                {item.sizes.length > 4 && (
-                  <span className="text-[9px] text-muted-foreground">+{item.sizes.length - 4}</span>
-                )}
-              </div>
-            </div>
-          )}
+          <div className="flex items-center gap-1 text-amber-500 font-bold bg-amber-500/10 px-1.5 py-0.5 rounded text-[11px] shrink-0">
+            <Star className="w-3 h-3 fill-current" />
+            <span>{Number(item.rating || 4.9).toFixed(1)}</span>
+          </div>
         </div>
 
         {/* Footer: Price & View Details Button */}
         <div className="pt-3 border-t border-border/60 flex items-center justify-between gap-2">
-          <div>
-            <span className="text-[10px] text-muted-foreground block uppercase font-semibold">Price</span>
-            <span className="font-heading text-lg font-black text-foreground">
-              ${Number(item.price).toFixed(0)}
-            </span>
-          </div>
+          <span className="font-heading text-lg font-black text-foreground">
+            ${Number(item.price).toFixed(0)}
+          </span>
 
           <Link
             href={`/clothes/${clothId}`}
