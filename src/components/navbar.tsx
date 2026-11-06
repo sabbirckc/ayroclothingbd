@@ -106,7 +106,7 @@ export function Navbar() {
   };
 
   return (
-    <header ref={headerRef} className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/90 backdrop-blur-md transition-colors duration-200">
+    <header ref={headerRef} className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/95 backdrop-blur-md transition-colors duration-200">
       <div className="container mx-auto px-2 xs:px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* AYRO Brand Logo */}
         <AyroLogo size="md" />
@@ -179,7 +179,7 @@ export function Navbar() {
 
           {/* Orders / Cart Bag Icon */}
           <Link
-            href="/my-orders"
+            href={user ? '/my-orders' : '/login?redirect=/my-orders'}
             aria-label="My Orders"
             className="w-7.5 h-7.5 xs:w-8 xs:h-8 sm:w-9 sm:h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors relative shrink-0"
           >
@@ -249,7 +249,7 @@ export function Navbar() {
                     </Link>
 
                     <Link
-                      href="/my-orders"
+                      href={user ? '/my-orders' : '/login?redirect=/my-orders'}
                       onClick={() => setDropdownOpen(false)}
                       className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-foreground rounded-lg hover:bg-accent transition-colors"
                     >

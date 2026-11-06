@@ -38,7 +38,7 @@ export default function MyListingsPage() {
     if (!authLoading && !user && !redirectedRef.current) {
       redirectedRef.current = true;
       toast.error('Please log in to view your clothing listings.', { id: 'auth-required' });
-      router.push('/login?redirect=/my-listings');
+      router.replace('/login?redirect=/my-listings');
     }
   }, [user, authLoading, router]);
 
@@ -87,12 +87,46 @@ export default function MyListingsPage() {
     }
   };
 
-  if (authLoading || !user) {
+  if (authLoading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="flex flex-col items-center gap-2">
           <div className="w-8 h-8 border-4 border-rose-600 border-t-transparent rounded-full animate-spin" />
-          <span className="text-xs text-muted-foreground">Loading your listings...</span>
+          <span className="text-xs text-muted-foreground">Checking authentication...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 flex items-center justify-center">
+        <div className="max-w-md w-full p-8 rounded-3xl border border-border bg-card text-center space-y-5 shadow-xs">
+          <div className="w-14 h-14 mx-auto rounded-2xl bg-rose-500/10 text-rose-600 flex items-center justify-center">
+            <Package className="w-7 h-7" />
+          </div>
+          <div className="space-y-1.5">
+            <h2 className="font-heading font-black text-xl text-foreground">
+              Sign In to Manage Listings
+            </h2>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Please sign in to your AYRO designer account to manage your atelier pieces, pricing, and stock inventory.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-2.5 justify-center pt-2">
+            <Link
+              href="/login?redirect=/my-listings"
+              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold text-xs shadow-md transition-all text-center"
+            >
+              Sign In to AYRO
+            </Link>
+            <Link
+              href="/clothes"
+              className="px-5 py-2.5 rounded-xl border border-border bg-muted/40 hover:bg-muted text-foreground font-semibold text-xs transition-colors text-center"
+            >
+              Explore Apparel
+            </Link>
+          </div>
         </div>
       </div>
     );

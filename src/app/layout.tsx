@@ -31,7 +31,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-        <body suppressHydrationWarning className="min-h-full w-full max-w-full overflow-x-hidden flex flex-col bg-background text-foreground transition-colors duration-200">
+        <body suppressHydrationWarning className="min-h-screen w-full max-w-full flex flex-col bg-background text-foreground transition-colors duration-200">
           <ThemeProvider>
             <AuthProvider>
               <WishlistProvider>
@@ -41,7 +41,7 @@ export default function RootLayout({
                 <Suspense fallback={null}>
                   <SearchModal />
                 </Suspense>
-                <main className="flex-1 flex flex-col w-full max-w-full overflow-x-hidden">{children}</main>
+                <main className="flex-1 flex flex-col w-full max-w-full">{children}</main>
                 <Suspense fallback={null}>
                   <Footer />
                 </Suspense>

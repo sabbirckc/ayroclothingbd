@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useAuth } from '@/context/auth-context';
@@ -33,19 +34,53 @@ export default function AddClothPage() {
 
   // Authentication check: don't redirect while loading session!
   useEffect(() => {
-    if (!authLoading && !user && !redirectedRef.current) {
-      redirectedRef.current = true;
-      toast.error('Please log in to add a clothing piece.', { id: 'auth-required' });
-      router.push('/login?redirect=/add-cloth');
-    }
-  }, [user, authLoading, router]);
+      if (!authLoading && !user && !redirectedRef.current) {
+        redirectedRef.current = true;
+        toast.error('Please log in to add a clothing piece.', { id: 'auth-required' });
+        router.push('/login?redirect=/add-cloth');
+      }
+    }, [user, authLoading, router]);
 
-  if (authLoading || !user) {
+  if (authLoading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="flex flex-col items-center gap-2">
           <div className="w-8 h-8 border-4 border-rose-600 border-t-transparent rounded-full animate-spin" />
-          <span className="text-xs text-muted-foreground">Verifying designer authentication...</span>
+          <span className="text-xs text-muted-foreground">Checking authentication...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 flex items-center justify-center">
+        <div className="max-w-md w-full p-8 rounded-3xl border border-border bg-card text-center space-y-5 shadow-xs">
+          <div className="w-14 h-14 mx-auto rounded-2xl bg-rose-500/10 text-rose-600 flex items-center justify-center">
+            <PlusCircle className="w-7 h-7" />
+          </div>
+          <div className="space-y-1.5">
+            <h2 className="font-heading font-black text-xl text-foreground">
+              Sign In to Add Clothing
+            </h2>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Please sign in to publish and showcase your designer garments on AYRO Clothing BD.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-2.5 justify-center pt-2">
+            <Link
+              href="/login?redirect=/add-cloth"
+              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold text-xs shadow-md transition-all text-center"
+            >
+              Sign In to AYRO
+            </Link>
+            <Link
+              href="/clothes"
+              className="px-5 py-2.5 rounded-xl border border-border bg-muted/40 hover:bg-muted text-foreground font-semibold text-xs transition-colors text-center"
+            >
+              Explore Apparel
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -451,86 +486,86 @@ export default function AddClothPage() {
             <span className="text-[11px] font-semibold text-muted-foreground block mb-2">
               Or choose from existing catalog presets:
             </span>
-              <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-6 lg:grid-cols-11 gap-2">
-                {presetImages.map((p) => (
-                  <button
-                    key={p.url}
-                    type="button"
-                    onClick={() => {
-                      setImage(p.url);
-                      setSelectedFileName(p.label);
-                    }}
-                    className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${image === p.url ? 'border-rose-600 ring-2 ring-rose-500/30' : 'border-border/70 opacity-70 hover:opacity-100'
-                      }`}
-                  >
-                    <Image src={p.url} alt={p.label} fill unoptimized className="object-cover" />
-                    {image === p.url && (
-                      <div className="absolute inset-0 bg-rose-600/30 flex items-center justify-center text-white">
-                        <Check className="w-3.5 h-3.5" />
-                      </div>
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Care Instructions (Checkboxes/Tags) */}
-          <div>
-            <label className="block text-xs font-bold text-foreground mb-2">
-              Care Instructions (Tags)
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {careOptions.map((c) => (
+            <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-6 lg:grid-cols-11 gap-2">
+              {presetImages.map((p) => (
                 <button
-                  key={c}
+                  key={p.url}
                   type="button"
-                  onClick={() => handleCareToggle(c)}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-xl border transition-all ${careInstructions.includes(c)
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'bg-background border-border text-muted-foreground hover:bg-muted'
+                  onClick={() => {
+                    setImage(p.url);
+                    setSelectedFileName(p.label);
+                  }}
+                  className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${image === p.url ? 'border-rose-600 ring-2 ring-rose-500/30' : 'border-border/70 opacity-70 hover:opacity-100'
                     }`}
                 >
-                  {c}
+                  <Image src={p.url} alt={p.label} fill unoptimized className="object-cover" />
+                  {image === p.url && (
+                    <div className="absolute inset-0 bg-rose-600/30 flex items-center justify-center text-white">
+                      <Check className="w-3.5 h-3.5" />
+                    </div>
+                  )}
                 </button>
               ))}
             </div>
           </div>
+        </div>
 
-          {/* Detailed Overview */}
-          <div>
-            <label className="block text-xs font-bold text-foreground mb-1.5">
-              Detailed Overview & Silhouette Notes <span className="text-rose-500">*</span>
-            </label>
-            <textarea
-              required
-              rows={4}
-              value={overview}
-              onChange={(e) => setOverview(e.target.value)}
-              placeholder="Describe the fabric weave, fit notes, styling recommendations, and story behind this piece..."
-              className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-foreground"
-            />
+        {/* Care Instructions (Checkboxes/Tags) */}
+        <div>
+          <label className="block text-xs font-bold text-foreground mb-2">
+            Care Instructions (Tags)
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {careOptions.map((c) => (
+              <button
+                key={c}
+                type="button"
+                onClick={() => handleCareToggle(c)}
+                className={`px-3 py-1.5 text-xs font-medium rounded-xl border transition-all ${careInstructions.includes(c)
+                  ? 'bg-primary text-primary-foreground border-primary'
+                  : 'bg-background border-border text-muted-foreground hover:bg-muted'
+                  }`}
+              >
+                {c}
+              </button>
+            ))}
           </div>
+        </div>
 
-          {/* Actions */}
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
-            <button
-              type="button"
-              onClick={() => router.back()}
-              disabled={submitting}
-              className="px-5 py-2.5 text-xs font-semibold rounded-xl border border-border hover:bg-accent text-foreground"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={submitting}
-              className="px-6 py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white shadow-md hover:shadow-rose-500/25 transition-all flex items-center gap-2 disabled:opacity-50"
-            >
-              <PlusCircle className="w-4 h-4" />
-              <span>{submitting ? 'Publishing...' : 'Publish Clothing Listing'}</span>
-            </button>
-          </div>
+        {/* Detailed Overview */}
+        <div>
+          <label className="block text-xs font-bold text-foreground mb-1.5">
+            Detailed Overview & Silhouette Notes <span className="text-rose-500">*</span>
+          </label>
+          <textarea
+            required
+            rows={4}
+            value={overview}
+            onChange={(e) => setOverview(e.target.value)}
+            placeholder="Describe the fabric weave, fit notes, styling recommendations, and story behind this piece..."
+            className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-foreground"
+          />
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
+          <button
+            type="button"
+            onClick={() => router.back()}
+            disabled={submitting}
+            className="px-5 py-2.5 text-xs font-semibold rounded-xl border border-border hover:bg-accent text-foreground"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="px-6 py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white shadow-md hover:shadow-rose-500/25 transition-all flex items-center gap-2 disabled:opacity-50"
+          >
+            <PlusCircle className="w-4 h-4" />
+            <span>{submitting ? 'Publishing...' : 'Publish Clothing Listing'}</span>
+          </button>
+        </div>
       </form >
     </div >
   );
