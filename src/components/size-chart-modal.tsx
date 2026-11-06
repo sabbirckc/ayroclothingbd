@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Ruler, X, Check, HelpCircle, ArrowRight } from 'lucide-react';
 
 interface SizeChartModalProps {
@@ -51,22 +51,36 @@ export function SizeChartModal({
 }: SizeChartModalProps) {
   const [internalIsOpen, setInternalIsOpen] = useState(false);
   const [unit, setUnit] = useState<'in' | 'cm'>('in');
-  const [activeTab, setActiveTab] = useState<'tops' | 'bottoms'>('tops');
+  const [prevCategory, setPrevCategory] = useState(category);
+  const [activeTab, setActiveTab] = useState<'tops' | 'bottoms'>(() => {
+    const cat = (category || '').toLowerCase();
+    return cat.includes('pant') || cat.includes('denim') || cat.includes('trouser') || cat.includes('bottom')
+      ? 'bottoms'
+      : 'tops';
+  });
   const [contextTitle, setContextTitle] = useState<string | undefined>(clothTitle);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const isControlled = controlledIsOpen !== undefined;
   const isOpen = isControlled ? controlledIsOpen : internalIsOpen;
 
-  // Auto-select tab based on category
-  useEffect(() => {
-    const cat = category.toLowerCase();
-    if (cat.includes('pant') || cat.includes('denim') || cat.includes('trouser') || cat.includes('bottom')) {
-      setActiveTab('bottoms');
+  if (category !== prevCategory) {
+    setPrevCategory(category);
+    const cat = (category || '').toLowerCase();
+    setActiveTab(
+      cat.includes('pant') || cat.includes('denim') || cat.includes('trouser') || cat.includes('bottom')
+        ? 'bottoms'
+        : 'tops'
+    );
+  }
+
+  const handleClose = useCallback(() => {
+    if (isControlled && controlledOnClose) {
+      controlledOnClose();
     } else {
-      setActiveTab('tops');
+      setInternalIsOpen(false);
     }
-  }, [category]);
+  }, [isControlled, controlledOnClose]);
 
   // Global event listener for navbar or external triggers
   useEffect(() => {
@@ -94,15 +108,7 @@ export function SizeChartModal({
       window.removeEventListener('open-size-chart-modal', handleOpen as EventListener);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen]);
-
-  const handleClose = () => {
-    if (isControlled && controlledOnClose) {
-      controlledOnClose();
-    } else {
-      setInternalIsOpen(false);
-    }
-  };
+  }, [isOpen, handleClose]);
 
   if (!isOpen) return null;
 
