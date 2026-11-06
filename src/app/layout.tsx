@@ -31,25 +31,25 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body suppressHydrationWarning className="min-h-full w-full max-w-full overflow-x-hidden flex flex-col bg-background text-foreground transition-colors duration-200">
-        <ThemeProvider>
-          <AuthProvider>
-            <WishlistProvider>
-              <Suspense fallback={<div className="h-16 w-full border-b border-border/60 bg-background/90" />}>
-                <Navbar />
-              </Suspense>
-              <Suspense fallback={null}>
-                <SearchModal />
-              </Suspense>
-              <main className="flex-1 flex flex-col w-full max-w-full overflow-x-hidden">{children}</main>
-              <Suspense fallback={null}>
-                <Footer />
-              </Suspense>
-              <Toaster richColors position="top-right" closeButton />
-            </WishlistProvider>
-          </AuthProvider>
-        </ThemeProvider>
-      </body>
+        <body suppressHydrationWarning className="min-h-full w-full max-w-full overflow-x-hidden flex flex-col bg-background text-foreground transition-colors duration-200">
+          <ThemeProvider>
+            <AuthProvider>
+              <WishlistProvider>
+                <Suspense fallback={<div className="h-16 w-full border-b border-border/60 bg-background/90" />}>
+                  <Navbar />
+                </Suspense>
+                <Suspense fallback={null}>
+                  <SearchModal />
+                </Suspense>
+                <main className="flex-1 flex flex-col w-full max-w-full overflow-x-hidden">{children}</main>
+                <Suspense fallback={null}>
+                  <Footer />
+                </Suspense>
+                <Toaster richColors position="top-right" closeButton />
+              </WishlistProvider>
+            </AuthProvider>
+          </ThemeProvider>
+        </body>
     </html>
   );
 }
