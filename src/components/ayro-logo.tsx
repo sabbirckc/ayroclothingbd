@@ -5,26 +5,26 @@ import Link from 'next/link';
 
 export function AyroLogo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (typeof window !== 'undefined' && window.location.pathname === '/') {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      window.dispatchEvent(new CustomEvent('reset-home-view'));
-    }
-  };
+  if (typeof window !== 'undefined' && window.location.pathname === '/') {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.dispatchEvent(new CustomEvent('reset-home-view'));
+  }
+};
 
-  const iconSizes = {
-    sm: 'w-7 h-7 sm:w-8 sm:h-8',
-    md: 'w-8 h-8 sm:w-10 sm:h-10',
-    lg: 'w-10 h-10 sm:w-12 sm:h-12',
-  };
+const iconSizes = {
+  sm: 'w-7 h-7 sm:w-8 sm:h-8',
+  md: 'w-8 h-8 sm:w-10 sm:h-10',
+  lg: 'w-10 h-10 sm:w-12 sm:h-12',
+};
 
-  const svgSizes = {
-    sm: 'w-3.5 h-3.5 sm:w-4 sm:h-4',
-    md: 'w-4 h-4 sm:w-5 sm:h-5',
-    lg: 'w-5 h-5 sm:w-6 sm:h-6',
-  };
+const svgSizes = {
+  sm: 'w-3.5 h-3.5 sm:w-4 sm:h-4',
+  md: 'w-4 h-4 sm:w-5 sm:h-5',
+  lg: 'w-5 h-5 sm:w-6 sm:h-6',
+};
 
-  return (
+    return (
     <Link href="/" onClick={handleLogoClick} className="flex items-center gap-2 sm:gap-2.5 group cursor-pointer shrink-0">
       {/* Clean Hanger Icon Emblem */}
       <div
@@ -43,19 +43,19 @@ export function AyroLogo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
         </svg>
       </div>
 
-      <div className="flex flex-col">
-        <div className="flex items-center gap-1 sm:gap-1.5">
-          <span className="font-heading font-black tracking-tight text-lg sm:text-xl leading-none text-foreground">
-            AYRO
-          </span>
-          <span className="text-[10px] sm:text-[11px] px-1.5 sm:px-2 py-0.5 rounded-md bg-muted text-foreground font-sans font-bold tracking-tight border border-border">
-            ClothingBD
-          </span>
-        </div>
-        <span className="hidden xs:inline-block text-[9px] uppercase tracking-[0.16em] text-muted-foreground font-semibold mt-0.5">
-          Timeless Essential
+    <div className="flex flex-col">
+      <div className="flex items-center gap-1 sm:gap-1.5">
+        <span className="font-heading font-black tracking-tight text-lg sm:text-xl leading-none text-foreground">
+          AYRO
+        </span>
+        <span className="text-[10px] sm:text-[11px] px-1.5 sm:px-2 py-0.5 rounded-md bg-muted text-foreground font-sans font-bold tracking-tight border border-border">
+          ClothingBD
         </span>
       </div>
-    </Link>
-  );
+      <span className="hidden xs:inline-block text-[9px] uppercase tracking-[0.16em] text-muted-foreground font-semibold mt-0.5">
+        Timeless Essential
+      </span>
+    </div>
+  </Link>
+);
 }
