@@ -100,16 +100,6 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/how-it-works" className="hover:text-foreground transition-colors">
-                  How Ordering Works
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="hover:text-foreground transition-colors">
-                  Our Mission & Sustainability
-                </Link>
-              </li>
-              <li>
                 <Link href="/add-cloth" className="hover:text-foreground transition-colors">
                   List Your Apparel
                 </Link>

@@ -134,28 +134,28 @@ export function Navbar() {
     });
   }, [pathname]);
 
-    // Click outside & Escape key listeners
-    useEffect(() => {
-      const handleClickOutside = (e: MouseEvent | TouchEvent) => {
-        const target = e.target as Node;
-        if (headerRef.current && !headerRef.current.contains(target)) {
-          setMobileMenuOpen(false);
-          setDropdownOpen(false);
-          setActiveHoverCategory(null);
-        }
-      };
+  // Click outside & Escape key listeners
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as Node;
+      if (headerRef.current && !headerRef.current.contains(target)) {
+        setMobileMenuOpen(false);
+        setDropdownOpen(false);
+        setActiveHoverCategory(null);
+      }
+    };
 
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') {
-          setMobileMenuOpen(false);
-          setDropdownOpen(false);
-          setActiveHoverCategory(null);
-        }
-      };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setMobileMenuOpen(false);
+        setDropdownOpen(false);
+        setActiveHoverCategory(null);
+      }
+    };
 
-      document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('touchstart', handleClickOutside);
-      window.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -206,13 +206,6 @@ export function Navbar() {
     window.dispatchEvent(new CustomEvent('open-search-modal'));
   };
 
-  const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'Explore Clothes', href: '/clothes' },
-    { name: 'How It Works', href: '/how-it-works' },
-    { name: 'About Us', href: '/about' },
-  ];
-
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (pathname === '/') {
       e.preventDefault();
@@ -229,135 +222,135 @@ export function Navbar() {
       <div className="container mx-auto px-3 sm:px-6 lg:px-8">
         {/* ROW 1: Search (Left), Centered Logo, Action Icons & User (Right) */}
         <div className="h-16 flex items-center justify-between relative">
-                  {/* Left: Search Button (Desktop) & Mobile Hamburger */}
-                  <div className="flex items-center gap-2">
-                    {/* Mobile Menu Button */}
-                    <button
-                      onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                      className="lg:hidden w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border flex items-center justify-center text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
-                      aria-label="Open Mobile Menu"
-                    >
-                      {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-                    </button>
+          {/* Left: Search Button (Desktop) & Mobile Hamburger */}
+          <div className="flex items-center gap-2">
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border flex items-center justify-center text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
+              aria-label="Open Mobile Menu"
+            >
+              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </button>
 
-                    {/* Circular Search Button */}
-                    <button
-                      type="button"
-                      onClick={handleSearchClick}
-                      aria-label="Search Apparel"
-                      title="Search clothing (Ctrl+K)"
-                      className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
-                    >
-                  <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                </button>
+            {/* Circular Search Button */}
+            <button
+              type="button"
+              onClick={handleSearchClick}
+              aria-label="Search Apparel"
+              title="Search clothing (Ctrl+K)"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
+            >
+              <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            </button>
+          </div>
+
+          {/* Center: Brand Logo */}
+          <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
+            <Link
+              href="/"
+              onClick={handleLogoClick}
+              className="flex items-center gap-2 group cursor-pointer select-none"
+            >
+              {/* Modern Coat Hanger Emblem */}
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-stone-900 dark:bg-stone-100 text-stone-100 dark:text-stone-900 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform shrink-0 border border-border">
+                <svg
+                  className="w-4 h-4 fill-none stroke-current"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 2a3 3 0 0 0-3 3c0 .8.3 1.5.8 2.1L3.5 13a2 2 0 0 0 1.2 3.5h14.6a2 2 0 0 0 1.2-3.5L14.2 7.1A3 3 0 0 0 15 5a3 3 0 0 0-3-3z" />
+                  <line x1="4" y1="16.5" x2="20" y2="16.5" />
+                </svg>
               </div>
 
-                  {/* Center: Brand Logo */}
-                  <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
-                    <Link
-                      href="/"
-                      onClick={handleLogoClick}
-                      className="flex items-center gap-2 group cursor-pointer select-none"
-                    >
-                      {/* Modern Coat Hanger Emblem */}
-                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-stone-900 dark:bg-stone-100 text-stone-100 dark:text-stone-900 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform shrink-0 border border-border">
-                        <svg
-                          className="w-4 h-4 fill-none stroke-current"
-                          viewBox="0 0 24 24"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M12 2a3 3 0 0 0-3 3c0 .8.3 1.5.8 2.1L3.5 13a2 2 0 0 0 1.2 3.5h14.6a2 2 0 0 0 1.2-3.5L14.2 7.1A3 3 0 0 0 15 5a3 3 0 0 0-3-3z" />
-                          <line x1="4" y1="16.5" x2="20" y2="16.5" />
-                        </svg>
-                      </div>
+              {/* Bold Spaced Brand Typography */}
+              <span className="font-heading font-black text-xl sm:text-2xl md:text-3xl tracking-[0.22em] text-foreground uppercase">
+                AYRO
+              </span>
+            </Link>
+          </div>
 
-                  {/* Bold Spaced Brand Typography */}
-                  <span className="font-heading font-black text-xl sm:text-2xl md:text-3xl tracking-[0.22em] text-foreground uppercase">
-                    AYRO
-                  </span>
-                </Link>
-              </div>
+          {/* Right: Actions (Sizes Chart, Wishlist, Bag, Theme, User) */}
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+            {/* Sizes Chart Shortcut */}
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent('open-size-chart-modal'))}
+              aria-label="Sizes Chart"
+              title="Garment Size Chart & Measurements"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
+            >
+              <Ruler className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            </button>
 
-                {/* Right: Actions (Sizes Chart, Wishlist, Bag, Theme, User) */}
-                <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-                  {/* Sizes Chart Shortcut */}
-                  <button
-                    type="button"
-                    onClick={() => window.dispatchEvent(new CustomEvent('open-size-chart-modal'))}
-                    aria-label="Sizes Chart"
-                    title="Garment Size Chart & Measurements"
-                    className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
-                  >
-                    <Ruler className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  </button>
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle Theme"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
+              ) : (
+                <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-700" />
+              )}
+            </button>
 
-                  {/* Theme Toggle */}
-                  <button
-                    onClick={toggleTheme}
-                    aria-label="Toggle Theme"
-                    className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
-                  >
-                    {theme === 'dark' ? (
-                      <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
-                    ) : (
-                      <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-700" />
-                    )}
-                  </button>
+            {/* Wishlist Link */}
+            <Link
+              href="/clothes?wishlist=true"
+              aria-label="Wishlist"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors relative shrink-0"
+            >
+              <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              {wishlistIds.length > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-600 text-[10px] text-white font-bold rounded-full flex items-center justify-center shadow-xs">
+                  {wishlistIds.length}
+                </span>
+              )}
+            </Link>
 
-                  {/* Wishlist Link */}
-                  <Link
-                    href="/clothes?wishlist=true"
-                    aria-label="Wishlist"
-                    className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors relative shrink-0"
-                  >
-                    <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                    {wishlistIds.length > 0 && (
-                      <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-600 text-[10px] text-white font-bold rounded-full flex items-center justify-center shadow-xs">
-                        {wishlistIds.length}
-                      </span>
-                    )}
-                  </Link>
+            {/* Orders / Cart Bag Icon */}
+            <Link
+              href={user ? '/my-orders' : '/login?redirect=/my-orders'}
+              onClick={() => {
+                if (!user) {
+                  toast.error('Please log in to review your orders.', { id: 'auth-required' });
+                }
+              }}
+              aria-label="My Orders"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors relative shrink-0"
+            >
+              <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            </Link>
 
-                  {/* Orders / Cart Bag Icon */}
-                  <Link
-                    href={user ? '/my-orders' : '/login?redirect=/my-orders'}
-                    onClick={() => {
-                      if (!user) {
-                        toast.error('Please log in to review your orders.', { id: 'auth-required' });
-                      }
-                    }}
-                    aria-label="My Orders"
-                    className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors relative shrink-0"
-                  >
-                    <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  </Link>
-
-                    {/* User Profile Section */ }
+            {/* User Profile Section */}
             {user ? (
-                    <div
-                      className="relative shrink-0"
-                      onMouseEnter={handleUserMouseEnter}
-                      onMouseLeave={handleUserMouseLeave}
-                    >
-                      <button
-                        onClick={() => setDropdownOpen(!dropdownOpen)}
-                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border overflow-hidden flex items-center justify-center hover:ring-2 hover:ring-rose-500/30 transition-all cursor-pointer shrink-0"
-                        aria-label="User Account Menu"
-                      >
-                        <Image
-                          src={user.photoURL || '/client-review-1.jpg'}
-                          alt={user.name || 'User avatar'}
-                          width={36}
-                          height={36}
-                          unoptimized
-                          className="w-full h-full object-cover"
-                        />
-                      </button>
+              <div
+                className="relative shrink-0"
+                onMouseEnter={handleUserMouseEnter}
+                onMouseLeave={handleUserMouseLeave}
+              >
+                <button
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border overflow-hidden flex items-center justify-center hover:ring-2 hover:ring-rose-500/30 transition-all cursor-pointer shrink-0"
+                  aria-label="User Account Menu"
+                >
+                  <Image
+                    src={user.photoURL || '/client-review-1.jpg'}
+                    alt={user.name || 'User avatar'}
+                    width={36}
+                    height={36}
+                    unoptimized
+                    className="w-full h-full object-cover"
+                  />
+                </button>
 
-                            {/* User Dropdown */}
-                            {dropdownOpen && (
+                {/* User Dropdown */}
+                {dropdownOpen && (
                   <div className="absolute right-0 pt-2 w-64 z-50 animate-in fade-in zoom-in-95 duration-150">
                     <div className="rounded-2xl border border-border bg-card p-2 shadow-2xl">
                       <div className="px-3.5 py-2.5 border-b border-border/60 mb-1 bg-muted/40 rounded-xl">
@@ -414,18 +407,18 @@ export function Navbar() {
                         Logout
                       </button>
                     </div>
-                        </div>
-                      )}
+                  </div>
+                )}
               </div>
-                ) : (
-                <Link
-                  href="/login"
-                  aria-label="Sign In"
-                  title="Account Login"
-                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
-                >
-                  <UserIcon className="w-4 h-4" />
-                </Link>
+            ) : (
+              <Link
+                href="/login"
+                aria-label="Sign In"
+                title="Account Login"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
+              >
+                <UserIcon className="w-4 h-4" />
+              </Link>
             )}
           </div>
         </div>
@@ -477,133 +470,106 @@ export function Navbar() {
             </div>
           ))}
         </nav>
-      </div >
+      </div>
 
-        {/* Mobile Menu Drawer */}
-        {mobileMenuOpen && (
-          <>
-            {/* Backdrop */}
-            <div
-              className="lg:hidden fixed inset-0 top-16 bg-black/50 backdrop-blur-xs z-40 animate-in fade-in duration-200"
-              onClick={() => setMobileMenuOpen(false)}
-              aria-hidden="true"
-            />
+      {/* Mobile Menu Drawer */}
+      {mobileMenuOpen && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="lg:hidden fixed inset-0 top-16 bg-black/50 backdrop-blur-xs z-40 animate-in fade-in duration-200"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
 
-              <div className="lg:hidden relative z-50 border-b border-border bg-card px-4 pt-4 pb-8 space-y-4 animate-in fade-in slide-in-from-top-2 duration-150 shadow-2xl max-h-[calc(100vh-4rem)] overflow-y-auto">
-                {/* User Card if logged in */}
-                {user ? (
-                  <div className="flex items-center gap-3 p-3 rounded-2xl bg-muted/40 border border-border">
-                    <Image
-                      src={user.photoURL || '/client-review-1.jpg'}
-                      alt={user.name || 'User avatar'}
-                      width={40}
-                      height={40}
-                      unoptimized
-                      className="w-10 h-10 rounded-full object-cover border border-border shrink-0"
-                    />
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-bold text-foreground truncate">{user.name}</p>
-                      <p className="text-xs text-rose-600 dark:text-rose-400 font-medium truncate">{user.email}</p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex gap-2 pb-1">
-                    <Link
-                      href="/login"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="flex-1 py-2.5 text-center text-xs font-bold border border-border rounded-xl tracking-wide hover:bg-accent transition-colors"
-                    >
-                      Login
-                    </Link>
-                    <Link
-                      href="/register"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="flex-1 py-2.5 text-center text-xs font-bold text-white bg-gradient-to-r from-rose-600 to-amber-600 rounded-xl tracking-wide hover:from-rose-500 hover:to-amber-500 transition-all shadow-sm"
-                    >
-                      Register
-                    </Link>
-                  </div>
-                )}
-
-                      {/* Mobile Categories Accordion */}
-                      <div className="space-y-1">
-                        <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground block px-1 mb-1">
-                          Apparel Categories
-                        </span>
-                        {CATEGORY_NAV.map((cat) => (
-                          <div key={cat.name} className="border-b border-border/40 last:border-b-0">
-                            <div className="flex items-center justify-between py-2.5 px-1">
-                              <Link
-                                href={cat.href}
-                                onClick={() => setMobileMenuOpen(false)}
-                                className="text-xs font-bold text-foreground hover:text-[#b57a48]"
-                              >
-                                {cat.name}
-                              </Link>
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  setMobileExpandedCat(mobileExpandedCat === cat.name ? null : cat.name)
-                                }
-                                className="p-1 rounded-md text-muted-foreground hover:text-foreground"
-                                aria-label={`Toggle ${cat.name} Subcategories`}
-                              >
-                                <ChevronDown
-                                  className={`w-4 h-4 transition-transform ${mobileExpandedCat === cat.name ? 'rotate-180 text-[#b57a48]' : ''
-                                    }`}
-                                />
-                              </button>
-                            </div>
-
-                      {mobileExpandedCat === cat.name && (
-                        <div className="pl-4 pb-2 space-y-1.5 animate-in fade-in duration-150">
-                          {cat.subcategories.map((sub) => (
-                            <Link
-                              key={sub.name}
-                              href={sub.href}
-                              onClick={() => setMobileMenuOpen(false)}
-                              className="flex items-center gap-1.5 py-1 text-xs text-muted-foreground hover:text-[#b57a48] transition-colors"
-                            >
-                              <ChevronRight className="w-3 h-3 text-[#b57a48]" />
-                              <span>{sub.name}</span>
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                {/* General Site Navigation */}
-                <div className="pt-3 border-t border-border/60 space-y-1">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground block px-1 mb-1">
-                    Explore AYRO
-                  </span>
-                  {navLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={(e) => {
-                        setMobileMenuOpen(false);
-                        if (link.href === '/' && pathname === '/') {
-                          e.preventDefault();
-                          window.scrollTo({ top: 0, behavior: 'smooth' });
-                          window.dispatchEvent(new CustomEvent('reset-home-view'));
-                        }
-                      }}
-                      className={`block px-2 py-2 rounded-lg text-xs font-semibold tracking-wide transition-colors ${pathname === link.href
-                          ? 'text-rose-600 font-bold bg-rose-500/10'
-                          : 'text-muted-foreground hover:text-foreground hover:bg-muted/40'
-                        }`}
-                    >
-                      {link.name}
-                    </Link>
-                  ))}
+          <div className="lg:hidden relative z-50 border-b border-border bg-card px-4 pt-4 pb-8 space-y-4 animate-in fade-in slide-in-from-top-2 duration-150 shadow-2xl max-h-[calc(100vh-4rem)] overflow-y-auto">
+            {/* User Card if logged in */}
+            {user ? (
+              <div className="flex items-center gap-3 p-3 rounded-2xl bg-muted/40 border border-border">
+                <Image
+                  src={user.photoURL || '/client-review-1.jpg'}
+                  alt={user.name || 'User avatar'}
+                  width={40}
+                  height={40}
+                  unoptimized
+                  className="w-10 h-10 rounded-full object-cover border border-border shrink-0"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-bold text-foreground truncate">{user.name}</p>
+                  <p className="text-xs text-rose-600 dark:text-rose-400 font-medium truncate">{user.email}</p>
                 </div>
               </div>
-      </>
-    )
-  }
-    </header >
+            ) : (
+              <div className="flex gap-2 pb-1">
+                <Link
+                  href="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex-1 py-2.5 text-center text-xs font-bold border border-border rounded-xl tracking-wide hover:bg-accent transition-colors"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex-1 py-2.5 text-center text-xs font-bold text-white bg-gradient-to-r from-rose-600 to-amber-600 rounded-xl tracking-wide hover:from-rose-500 hover:to-amber-500 transition-all shadow-sm"
+                >
+                  Register
+                </Link>
+              </div>
+            )}
+
+            {/* Mobile Categories Accordion */}
+            <div className="space-y-1">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground block px-1 mb-1">
+                Apparel Categories
+              </span>
+              {CATEGORY_NAV.map((cat) => (
+                <div key={cat.name} className="border-b border-border/40 last:border-b-0">
+                  <div className="flex items-center justify-between py-2.5 px-1">
+                    <Link
+                      href={cat.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="text-xs font-bold text-foreground hover:text-[#b57a48]"
+                    >
+                      {cat.name}
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setMobileExpandedCat(mobileExpandedCat === cat.name ? null : cat.name)
+                      }
+                      className="p-1 rounded-md text-muted-foreground hover:text-foreground"
+                      aria-label={`Toggle ${cat.name} Subcategories`}
+                    >
+                      <ChevronDown
+                        className={`w-4 h-4 transition-transform ${
+                          mobileExpandedCat === cat.name ? 'rotate-180 text-[#b57a48]' : ''
+                        }`}
+                      />
+                    </button>
+                  </div>
+
+                  {mobileExpandedCat === cat.name && (
+                    <div className="pl-4 pb-2 space-y-1.5 animate-in fade-in duration-150">
+                      {cat.subcategories.map((sub) => (
+                        <Link
+                          key={sub.name}
+                          href={sub.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="flex items-center gap-1.5 py-1 text-xs text-muted-foreground hover:text-[#b57a48] transition-colors"
+                        >
+                          <ChevronRight className="w-3 h-3 text-[#b57a48]" />
+                          <span>{sub.name}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+    </header>
   );
 }

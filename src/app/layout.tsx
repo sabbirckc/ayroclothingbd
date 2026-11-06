@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     template: '%s | AYRO Clothing BD',
   },
   description:
-  'Discover, buy, and trade bespoke designer garments, curated streetwear, and handcrafted apparel. Peer-to-peer sustainable fashion marketplace with real-time atomic inventory deduction.',
+    'Discover, buy, and trade bespoke designer garments, curated streetwear, and handcrafted apparel. Peer-to-peer sustainable fashion marketplace with real-time atomic inventory deduction.',
   keywords: [
     'AYRO Clothing BD',
     'AYRO',
@@ -152,20 +152,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-      <html lang="en" suppressHydrationWarning className={`${jost.variable} ${playfair.variable} h-full antialiased`}>
-        <head>
+    <html lang="en" suppressHydrationWarning className={`${jost.variable} ${playfair.variable} h-full antialiased`}>
+      <head>
         <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-          />
-        </head>
-        <body
-          suppressHydrationWarning
-          className="min-h-screen w-full max-w-full flex flex-col bg-background text-foreground transition-colors duration-200 font-sans"
-        >
-          <ThemeProvider>
-            <AuthProvider>
-              <WishlistProvider>
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
+      <body
+        suppressHydrationWarning
+        className="min-h-screen w-full max-w-full flex flex-col bg-background text-foreground transition-colors duration-200 font-sans"
+      >
+        <ThemeProvider>
+          <AuthProvider>
+            <WishlistProvider>
                 <Suspense fallback={<div className="h-24 w-full border-b border-border/40 bg-background/70 backdrop-blur-xl" />}>
                   <Navbar />
                 </Suspense>
@@ -180,10 +180,10 @@ export default function RootLayout({
                   <Footer />
                 </Suspense>
                 <Toaster richColors position="top-right" closeButton />
-              </WishlistProvider>
-            </AuthProvider>
-          </ThemeProvider>
-        </body>
-      </html>
-      );
+            </WishlistProvider>
+          </AuthProvider>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
 }
