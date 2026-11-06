@@ -18,7 +18,6 @@ import {
   Search,
   LayoutDashboard,
   User as UserIcon,
-  Home,
   Phone,
   Plus,
   Minus,
@@ -133,35 +132,35 @@ export function Navbar() {
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent | TouchEvent) => {
       const target = e.target as Node;
-      if (
-        headerRef.current &&
-        !headerRef.current.contains(target) &&
-        (!drawerRef.current || !drawerRef.current.contains(target))
-      ) {
-        setMobileMenuOpen(false);
-        setDropdownOpen(false);
-        setActiveHoverCategory(null);
-      }
-    };
+        if (
+          headerRef.current &&
+          !headerRef.current.contains(target) &&
+          (!drawerRef.current || !drawerRef.current.contains(target))
+        ) {
+          setMobileMenuOpen(false);
+          setDropdownOpen(false);
+          setActiveHoverCategory(null);
+        }
+      };
 
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setMobileMenuOpen(false);
-        setDropdownOpen(false);
-        setActiveHoverCategory(null);
-      }
-    };
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          setMobileMenuOpen(false);
+          setDropdownOpen(false);
+          setActiveHoverCategory(null);
+        }
+      };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('touchstart', handleClickOutside);
-    window.addEventListener('keydown', handleKeyDown);
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+      window.addEventListener('keydown', handleKeyDown);
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('touchstart', handleClickOutside);
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener('touchstart', handleClickOutside);
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }, []);
 
   // Category Hover Handlers (Smooth 150ms leave delay to prevent flicker)
   const handleCategoryMouseEnter = (catName: string) => {
@@ -453,229 +452,232 @@ export function Navbar() {
                 </Link>
 
                 {/* Dropdown Menu on Mouse Hover */}
-                {activeHoverCategory === cat.name && cat.subcategories.length > 0 && (
-                  <div
-                    className="absolute left-0 top-full pt-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150"
-                    onMouseEnter={() => handleCategoryMouseEnter(cat.name)}
-                    onMouseLeave={handleCategoryMouseLeave}
-                  >
-                    <div className="w-52 sm:w-56 bg-card/95 dark:bg-card/95 backdrop-blur-xl border border-border/70 rounded-xs shadow-xl overflow-hidden py-0">
-                      {cat.subcategories.map((sub, idx) => (
-                        <Link
-                          key={sub.name}
-                          href={sub.href}
-                          onClick={() => setActiveHoverCategory(null)}
-                          className={`block px-6 py-3.5 text-[13.5px] font-medium text-foreground hover:bg-muted/50 hover:text-[#b57a48] dark:hover:text-[#d49767] transition-colors cursor-pointer ${idx !== cat.subcategories.length - 1 ? 'border-b border-border/50' : ''
-                            }`}
-                        >
-                          {sub.name}
-                        </Link>
-                      ))}
+                  { activeHoverCategory === cat.name && cat.subcategories.length > 0 && (
+                    <div
+                      className="absolute left-0 top-full pt-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150"
+                      onMouseEnter={() => handleCategoryMouseEnter(cat.name)}
+                      onMouseLeave={handleCategoryMouseLeave}
+                    >
+                      <div className="w-52 sm:w-56 bg-card/95 dark:bg-card/95 backdrop-blur-xl border border-border/70 rounded-xs shadow-xl overflow-hidden py-0">
+                        {cat.subcategories.map((sub, idx) => (
+                          <Link
+                            key={sub.name}
+                            href={sub.href}
+                            onClick={() => setActiveHoverCategory(null)}
+                            className={`block px-6 py-3.5 text-[13.5px] font-medium text-foreground hover:bg-muted/50 hover:text-[#b57a48] dark:hover:text-[#d49767] transition-colors cursor-pointer ${idx !== cat.subcategories.length - 1 ? 'border-b border-border/50' : ''
+                              }`}
+                          >
+                            {sub.name}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
               </div>
             ))}
           </nav>
         </div>
       </header>
 
-      {/* Mobile Slide-out Side Drawer (Matches Reference) */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden">
-          {/* Backdrop overlay */}
-          <div
-            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-[2px] transition-opacity animate-in fade-in duration-200"
-            onClick={() => setMobileMenuOpen(false)}
-            aria-hidden="true"
-          />
-
-          {/* Drawer Panel */}
-          <div
-            ref={drawerRef}
-            className="fixed inset-y-0 right-0 z-50 w-[84%] max-w-[340px] bg-background border-l border-border/40 shadow-2xl flex flex-col justify-between animate-in slide-in-from-right duration-250 ease-out"
-          >
-            {/* Top Bar: Brand Logo + Camel Circular Close Button */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-border/50 shrink-0">
-              <Link
-                href="/"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  if (pathname === '/') {
-                    window.dispatchEvent(new CustomEvent('reset-home-view'));
-                  }
-                }}
-                className="flex items-center"
-              >
-                <span className="font-heading font-black text-2xl tracking-[0.25em] text-foreground">
-                  AYRO
-                </span>
-              </Link>
-
-              <button
-                type="button"
+          {/* Mobile Slide-out Side Drawer (Matches Reference) */}
+          {mobileMenuOpen && (
+            <div className="lg:hidden">
+              {/* Backdrop overlay */}
+              <div
+                className="fixed inset-0 z-50 bg-black/60 backdrop-blur-[2px] transition-opacity animate-in fade-in duration-200"
                 onClick={() => setMobileMenuOpen(false)}
-                aria-label="Close Navigation Menu"
-                className="w-10 h-10 rounded-full bg-[#b57a48] text-white flex items-center justify-center shadow-xs hover:opacity-90 active:scale-95 transition-all cursor-pointer"
-              >
-                <X className="w-5 h-5 stroke-[2.2]" />
-              </button>
-            </div>
+                aria-hidden="true"
+              />
 
-            {/* Middle: Category Items List (Uppercase with Square [+] Box) */}
-            <div className="flex-1 overflow-y-auto px-6 py-2 divide-y divide-border/50">
-              {CATEGORY_NAV.map((cat) => {
-                const hasSubs = cat.subcategories && cat.subcategories.length > 0;
-                const isExpanded = mobileExpandedCat === cat.name;
-
-                return (
-                  <div key={cat.name} className="py-0.5">
-                    <div className="flex items-center justify-between py-3.5">
-                      <Link
-                        href={cat.href}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="text-[13.5px] sm:text-[14px] font-semibold uppercase tracking-wider text-foreground/90 hover:text-[#b57a48] transition-colors"
-                      >
-                        {cat.name}
-                      </Link>
-
-                      {hasSubs && (
-                        <button
-                          type="button"
-                          onClick={() => setMobileExpandedCat(isExpanded ? null : cat.name)}
-                          className="w-7 h-7 sm:w-7.5 sm:h-7.5 border border-border/80 flex items-center justify-center text-foreground hover:border-[#b57a48] hover:text-[#b57a48] transition-colors cursor-pointer shrink-0"
-                          aria-label={`Toggle ${cat.name} Subcategories`}
-                        >
-                          {isExpanded ? (
-                            <Minus className="w-3.5 h-3.5 stroke-[2]" />
-                          ) : (
-                            <Plus className="w-3.5 h-3.5 stroke-[2]" />
-                          )}
-                        </button>
-                      )}
-                    </div>
-
-                    {/* Subcategories accordion */}
-                    {hasSubs && isExpanded && (
-                      <div className="pl-3 pb-3 space-y-1.5 animate-in fade-in slide-in-from-top-1 duration-150">
-                        {cat.subcategories.map((sub) => (
-                          <Link
-                            key={sub.name}
-                            href={sub.href}
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="block py-1 text-[13px] text-muted-foreground hover:text-[#b57a48] transition-colors"
-                          >
-                            {sub.name}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Optional Bottom User Section if logged in */}
-            {user && (
-              <div className="p-4 border-t border-border/40 bg-muted/20 shrink-0 flex items-center justify-between">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <Image
-                    src={user.photoURL || '/client-review-1.jpg'}
-                    alt={user.name || 'User'}
-                    width={32}
-                    height={32}
-                    unoptimized
-                    className="w-8 h-8 rounded-full object-cover border border-border shrink-0"
-                  />
-                  <div className="min-w-0 truncate">
-                    <p className="text-xs font-semibold text-foreground truncate">{user.name}</p>
-                    <p className="text-[10px] text-muted-foreground truncate">{user.email}</p>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    logout();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="text-xs text-rose-500 hover:text-rose-600 font-semibold px-2 py-1 cursor-pointer"
+                {/* Drawer Panel */}
+                <div
+                  ref={drawerRef}
+                  className="fixed inset-y-0 right-0 z-50 w-[84%] max-w-[340px] bg-background border-l border-border/40 shadow-2xl flex flex-col justify-between animate-in slide-in-from-right duration-250 ease-out"
                 >
-                  Sign out
-                </button>
+                  {/* Top Bar: Brand Logo + Camel Circular Close Button */}
+                  <div className="flex items-center justify-between px-6 py-5 border-b border-border/50 shrink-0">
+                    <Link
+                      href="/"
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        if (pathname === '/') {
+                          window.dispatchEvent(new CustomEvent('reset-home-view'));
+                        }
+                      }}
+                      className="flex items-center"
+                    >
+                      <span className="font-heading font-black text-2xl tracking-[0.25em] text-foreground">
+                        AYRO
+                      </span>
+                    </Link>
+
+                            <button
+                              type="button"
+                              onClick={() => setMobileMenuOpen(false)}
+                              aria-label="Close Navigation Menu"
+                              className="w-10 h-10 rounded-full bg-[#b57a48] text-white flex items-center justify-center shadow-xs hover:opacity-90 active:scale-95 transition-all cursor-pointer"
+                            >
+                              <X className="w-5 h-5 stroke-[2.2]" />
+                            </button>
+                          </div>
+
+                          {/* Middle: Category Items List (Uppercase with Square [+] Box) */}
+                          <div className="flex-1 overflow-y-auto px-6 py-2 divide-y divide-border/50">
+                            {CATEGORY_NAV.map((cat) => {
+                              const hasSubs = cat.subcategories && cat.subcategories.length > 0;
+                              const isExpanded = mobileExpandedCat === cat.name;
+
+                              return (
+                                <div key={cat.name} className="py-0.5">
+                                  <div className="flex items-center justify-between py-3.5">
+                                    <Link
+                                      href={cat.href}
+                                      onClick={() => setMobileMenuOpen(false)}
+                                      className="text-[13.5px] sm:text-[14px] font-semibold uppercase tracking-wider text-foreground/90 hover:text-[#b57a48] transition-colors"
+                                    >
+                                      {cat.name}
+                                    </Link>
+
+                                    {hasSubs && (
+                                      <button
+                                        type="button"
+                                        onClick={() => setMobileExpandedCat(isExpanded ? null : cat.name)}
+                                        className="w-7 h-7 sm:w-7.5 sm:h-7.5 border border-border/80 flex items-center justify-center text-foreground hover:border-[#b57a48] hover:text-[#b57a48] transition-colors cursor-pointer shrink-0"
+                                        aria-label={`Toggle ${cat.name} Subcategories`}
+                                      >
+                                        {isExpanded ? (
+                                          <Minus className="w-3.5 h-3.5 stroke-[2]" />
+                                        ) : (
+                                          <Plus className="w-3.5 h-3.5 stroke-[2]" />
+                                        )}
+                                      </button>
+                                    )}
+                                  </div>
+
+                                      {/* Subcategories accordion */}
+                                      {hasSubs && isExpanded && (
+                                        <div className="pl-3 pb-3 space-y-1.5 animate-in fade-in slide-in-from-top-1 duration-150">
+                                          {cat.subcategories.map((sub) => (
+                                            <Link
+                                              key={sub.name}
+                                              href={sub.href}
+                                              onClick={() => setMobileMenuOpen(false)}
+                                              className="block py-1 text-[13px] text-muted-foreground hover:text-[#b57a48] transition-colors"
+                                            >
+                                              {sub.name}
+                                            </Link>
+                                          ))}
+                                        </div>
+                                      )}
+                                    </div>
+                              );
+                            })}
+                          </div>
+
+                              {/* Optional Bottom User Section if logged in */ }
+                              {
+                                user && (
+                                  <div className="p-4 border-t border-border/40 bg-muted/20 shrink-0 flex items-center justify-between">
+                                    <div className="flex items-center gap-2.5 min-w-0">
+                                      <Image
+                                        src={user.photoURL || '/client-review-1.jpg'}
+                                        alt={user.name || 'User'}
+                                        width={32}
+                                        height={32}
+                                        unoptimized
+                                        className="w-8 h-8 rounded-full object-cover border border-border shrink-0"
+                                      />
+                                      <div className="min-w-0 truncate">
+                                        <p className="text-xs font-semibold text-foreground truncate">{user.name}</p>
+                                        <p className="text-[10px] text-muted-foreground truncate">{user.email}</p>
+                                      </div>
+                                    </div>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        logout();
+                                        setMobileMenuOpen(false);
+                                      }}
+                                      className="text-xs text-rose-500 hover:text-rose-600 font-semibold px-2 py-1 cursor-pointer"
+                                    >
+                                    Sign out
+                                  </button>
               </div>
             )}
-          </div>
-        </div>
+                      </div>
+                  </div>
       )}
 
-      {/* Fixed Mobile Bottom Navigation Bar (Matches Reference cb41fee6.jpg) */}
-      <nav
-        aria-label="Mobile Navigation Bar"
-        className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-xl border-t border-border/60 px-2 sm:px-6 py-2 shadow-[0_-4px_25px_rgba(0,0,0,0.08)]"
-      >
-        <div className="w-full grid grid-cols-5 items-center text-center relative">
-          {/* Tab 1: Category */}
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#b57a48] transition-colors cursor-pointer w-full"
-          >
-            <Menu className="w-5 h-5" />
-            <span className="text-[11px] font-medium leading-none">Category</span>
-          </button>
+                  {/* Fixed Mobile Bottom Navigation Bar (Matches Reference cb41fee6.jpg) */}
+                  <nav
+                    aria-label="Mobile Navigation Bar"
+                    className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-xl border-t border-border/60 px-2 sm:px-6 py-2 shadow-[0_-4px_25px_rgba(0,0,0,0.08)]"
+                  >
+                    <div className="w-full grid grid-cols-5 items-center text-center relative">
+                      {/* Tab 1: Category */}
+                      <button
+                        type="button"
+                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#b57a48] transition-colors cursor-pointer w-full"
+                      >
+                        <Menu className="w-5 h-5" />
+                        <span className="text-[11px] font-medium leading-none">Category</span>
+                      </button>
 
-          {/* Tab 2: Contact */}
-          <a
-            href="tel:+8801700000000"
-            className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#b57a48] transition-colors cursor-pointer w-full"
-          >
-            <Phone className="w-5 h-5" />
-            <span className="text-[11px] font-medium leading-none">Contact</span>
-          </a>
+                      {/* Tab 2: Contact */}
+                      <a
+                        href="tel:+8801700000000"
+                        className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#b57a48] transition-colors cursor-pointer w-full"
+                      >
+                        <Phone className="w-5 h-5" />
+                        <span className="text-[11px] font-medium leading-none">Contact</span>
+                      </a>
 
-          {/* Tab 3: Home (Elevated Camel Circle Button in Center) */}
-          <div className="flex flex-col items-center justify-center -mt-6 w-full">
-            <Link
-              href="/"
-              onClick={(e) => {
-                if (pathname === '/') {
-                  e.preventDefault();
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                  window.dispatchEvent(new CustomEvent('reset-home-view'));
-                }
-              }}
-              className="w-13 h-13 rounded-full bg-[#b57a48] text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer border-2 border-background"
-              aria-label="Home"
-            >
-              <Home className="w-6 h-6" />
-            </Link>
-            <span className="text-[11px] font-semibold text-[#b57a48] mt-1 leading-none">Home</span>
-          </div>
+                      {/* Tab 3: AYRO / Home (Elevated Camel Circle Button in Center) */}
+                      <div className="flex flex-col items-center justify-center -mt-6 w-full">
+                        <Link
+                          href="/"
+                          onClick={(e) => {
+                            if (pathname === '/') {
+                              e.preventDefault();
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                              window.dispatchEvent(new CustomEvent('reset-home-view'));
+                            }
+                          }}
+                          className="w-13 h-13 rounded-full bg-[#b57a48] text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer border-2 border-background"
+                          aria-label="AYRO Home"
+                        >
+                          <span className="font-heading font-black text-[12px] sm:text-[13px] tracking-[0.14em] text-white select-none leading-none">
+                            AYRO
+                          </span>
+                        </Link>
+                        <span className="text-[11px] font-semibold text-[#b57a48] mt-1 leading-none">Home</span>
+                      </div>
 
-          {/* Tab 4: Cart */}
-          <Link
-            href={user ? '/my-orders' : '/login?redirect=/my-orders'}
-            onClick={() => {
-              if (!user) {
-                toast.error('Please log in to review your orders.', { id: 'auth-required' });
-              }
-            }}
-            className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#b57a48] transition-colors cursor-pointer w-full"
-          >
-            <ShoppingBag className="w-5 h-5" />
-            <span className="text-[11px] font-medium leading-none">Cart ({wishlistIds.length > 0 ? wishlistIds.length : 0})</span>
-          </Link>
+                      {/* Tab 4: Cart */}
+                      <Link
+                        href={user ? '/my-orders' : '/login?redirect=/my-orders'}
+                        onClick={() => {
+                          if (!user) {
+                            toast.error('Please log in to review your orders.', { id: 'auth-required' });
+                          }
+                        }}
+                        className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#b57a48] transition-colors cursor-pointer w-full"
+                      >
+                        <ShoppingBag className="w-5 h-5" />
+                        <span className="text-[11px] font-medium leading-none">Cart ({wishlistIds.length > 0 ? wishlistIds.length : 0})</span>
+                      </Link>
 
-          {/* Tab 5: Login / Account */}
-          <Link
-            href={user ? '/dashboard' : '/login'}
-            className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#b57a48] transition-colors cursor-pointer w-full"
-          >
-            <UserIcon className="w-5 h-5" />
-            <span className="text-[11px] font-medium leading-none">{user ? 'Account' : 'Login'}</span>
-          </Link>
-        </div>
-      </nav>
-    </>
-  );
+                      {/* Tab 5: Login / Account */}
+                      <Link
+                        href={user ? '/dashboard' : '/login'}
+                        className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#b57a48] transition-colors cursor-pointer w-full"
+                      >
+                        <UserIcon className="w-5 h-5" />
+                        <span className="text-[11px] font-medium leading-none">{user ? 'Account' : 'Login'}</span>
+                      </Link>
+                    </div>
+                  </nav>
+                </>
+                );
 }
