@@ -33,9 +33,12 @@ function EditClothContent() {
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  const redirectedRef = React.useRef(false);
+
   useEffect(() => {
-    if (!authLoading && !user) {
-      toast.error('Please log in to edit this listing.');
+    if (!authLoading && !user && !redirectedRef.current) {
+      redirectedRef.current = true;
+      toast.error('Please log in to edit this listing.', { id: 'auth-required' });
       router.push(`/login?redirect=/clothes/edit/${id}`);
     }
   }, [user, authLoading, router, id]);

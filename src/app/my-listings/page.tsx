@@ -32,9 +32,12 @@ export default function MyListingsPage() {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [deleting, setDeleting] = useState(false);
 
+  const redirectedRef = React.useRef(false);
+
   useEffect(() => {
-    if (!authLoading && !user) {
-      toast.error('Please log in to view your clothing listings.');
+    if (!authLoading && !user && !redirectedRef.current) {
+      redirectedRef.current = true;
+      toast.error('Please log in to view your clothing listings.', { id: 'auth-required' });
       router.push('/login?redirect=/my-listings');
     }
   }, [user, authLoading, router]);

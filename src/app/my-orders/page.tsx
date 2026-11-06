@@ -27,10 +27,12 @@ export default function MyOrdersPage() {
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [cancellingId, setCancellingId] = useState<string | null>(null);
+  const redirectedRef = React.useRef(false);
 
   useEffect(() => {
-    if (!authLoading && !user) {
-      toast.error('Please log in to review your orders.');
+    if (!authLoading && !user && !redirectedRef.current) {
+      redirectedRef.current = true;
+      toast.error('Please log in to review your orders.', { id: 'auth-required' });
       router.push('/login?redirect=/my-orders');
     }
   }, [user, authLoading, router]);

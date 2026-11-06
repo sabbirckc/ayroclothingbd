@@ -60,7 +60,7 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
 
   const toggleWishlist = async (cloth: any) => {
     if (!user) {
-      toast.error('Please log in to save apparel to your wishlist.');
+      toast.error('Please log in to save apparel to your wishlist.', { id: 'wishlist-auth' });
       return;
     }
 
@@ -79,7 +79,7 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
     try {
       const res = await api.post('/api/wishlist/toggle', { clothId });
       if (res.success) {
-        toast.success(res.message);
+        toast.success(res.message, { id: 'wishlist-toggle' });
       }
     } catch (err: any) {
       // Revert on error

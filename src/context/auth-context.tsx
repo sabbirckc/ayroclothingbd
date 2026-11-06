@@ -233,7 +233,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               .catch(() => { });
           }
           localStorage.setItem('clothspace_user', JSON.stringify(userObj));
-          toast.success(`Welcome back, ${userObj.name}!`);
+          toast.success(`Welcome back, ${userObj.name}!`, { id: 'auth-toast' });
           return true;
         }
       } catch {
@@ -246,7 +246,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(res.user);
         if (res.token) setToken(res.token);
         localStorage.setItem('clothspace_user', JSON.stringify(res.user));
-        toast.success(`Welcome back, ${res.user.name}!`);
+        toast.success(`Welcome back, ${res.user.name}!`, { id: 'auth-toast' });
         return true;
       }
       return false;
@@ -311,7 +311,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             photoURL: defaultPhoto,
           }).catch(() => { });
 
-          toast.success('Registration successful! Welcome to ClothSpace.');
+          toast.success('Registration successful! Welcome to ClothSpace.', { id: 'auth-toast' });
           return true;
         }
       } catch {
@@ -330,7 +330,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(res.user);
         if (res.token) setToken(res.token);
         localStorage.setItem('clothspace_user', JSON.stringify(res.user));
-        toast.success('Registration successful! Welcome to ClothSpace.');
+        toast.success('Registration successful! Welcome to ClothSpace.', { id: 'auth-toast' });
         return true;
       }
       return false;
@@ -381,7 +381,7 @@ const quickLoginExaminer = async (): Promise<boolean> => {
       } finally {
         setUser(null);
         removeToken();
-        toast.success('You have been signed out.');
+        toast.success('You have been signed out.', { id: 'auth-toast' });
       }
 };
 

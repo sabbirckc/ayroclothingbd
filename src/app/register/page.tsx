@@ -52,6 +52,7 @@ export default function RegisterPage() {
     }
 
     setLoading(true);
+    toast.loading('Creating your account...', { id: 'auth-toast' });
     const success = await register(
       name.trim(),
       email.trim(),
@@ -61,7 +62,7 @@ export default function RegisterPage() {
     setLoading(false);
 
     if (success) {
-      toast.success('Registration completed! Welcome to ClothSpace.');
+      toast.success('Registration completed! Welcome to ClothSpace.', { id: 'auth-toast' });
       router.push('/');
       router.refresh();
     } else {
@@ -71,6 +72,7 @@ export default function RegisterPage() {
 
   const handleGoogleRegister = async () => {
     setLoading(true);
+    toast.loading('Connecting with Google...', { id: 'auth-toast' });
     await loginWithGoogle('/');
   };
 

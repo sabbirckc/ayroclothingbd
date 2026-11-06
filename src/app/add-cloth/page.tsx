@@ -29,11 +29,13 @@ export default function AddClothPage() {
   const [overview, setOverview] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const redirectedRef = React.useRef(false);
 
   // Authentication check: don't redirect while loading session!
   useEffect(() => {
-    if (!authLoading && !user) {
-      toast.error('Please log in to add a clothing piece.');
+    if (!authLoading && !user && !redirectedRef.current) {
+      redirectedRef.current = true;
+      toast.error('Please log in to add a clothing piece.', { id: 'auth-required' });
       router.push('/login?redirect=/add-cloth');
     }
   }, [user, authLoading, router]);

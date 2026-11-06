@@ -51,9 +51,12 @@ export default function DashboardPage() {
   const [catalogCount, setCatalogCount] = useState<number>(0);
   const [loading, setLoading] = useState(true);
 
+  const redirectedRef = React.useRef(false);
+
   useEffect(() => {
-    if (!authLoading && !user) {
-      toast.error('Please log in to access your designer dashboard.');
+    if (!authLoading && !user && !redirectedRef.current) {
+      redirectedRef.current = true;
+      toast.error('Please log in to access your designer dashboard.', { id: 'auth-required' });
       router.push('/login?redirect=/dashboard');
     }
   }, [user, authLoading, router]);

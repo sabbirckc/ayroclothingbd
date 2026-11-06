@@ -26,6 +26,7 @@ function LoginFormContent() {
     }
 
     setLoading(true);
+    toast.loading('Signing in to your account...', { id: 'auth-toast' });
     const success = await login(email, password);
     setLoading(false);
 
@@ -34,11 +35,13 @@ function LoginFormContent() {
       router.refresh();
     } else {
       setErrorMsg('Invalid email or password. Please verify your credentials.');
+      toast.error('Invalid email or password. Please verify your credentials.', { id: 'auth-toast' });
     }
   };
 
   const handleGoogleLogin = async () => {
     setLoading(true);
+    toast.loading('Redirecting to Google sign in...', { id: 'auth-toast' });
     await loginWithGoogle('/');
   };
 

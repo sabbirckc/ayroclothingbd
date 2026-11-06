@@ -64,6 +64,7 @@ export function OrderModal({ isOpen, onClose, cloth, onOrderSuccess }: OrderModa
 
     try {
       setSubmitting(true);
+    toast.loading('Placing your order...', { id: 'order-toast' });
       const res = await api.post('/api/orders', {
         clothId: cloth.id || cloth._id,
         size: selectedSize,
@@ -75,7 +76,7 @@ export function OrderModal({ isOpen, onClose, cloth, onOrderSuccess }: OrderModa
       });
 
       if (res.success) {
-        toast.success('Your order has been placed! The designer will prepare your piece.');
+        toast.success('Your order has been placed! The designer will prepare your piece.', { id: 'order-toast' });
         onOrderSuccess(res.data);
         onClose();
         router.push('/my-orders');
@@ -83,7 +84,7 @@ export function OrderModal({ isOpen, onClose, cloth, onOrderSuccess }: OrderModa
     } catch (err: any) {
       const msg = err.message || 'Failed to place order.';
       setErrorMsg(msg);
-      toast.error(msg);
+      toast.error(msg, { id: 'order-toast' });
     } finally {
       setSubmitting(false);
     }
