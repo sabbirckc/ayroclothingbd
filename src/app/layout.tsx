@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Suspense } from 'react';
-import { Jost, Playfair_Display } from 'next/font/google';
+import { Jost } from 'next/font/google';
 import './globals.css';
 
 import { ThemeProvider } from '@/context/theme-context';
@@ -16,13 +16,6 @@ const jost = Jost({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700', '800', '900'],
   variable: '--font-sans',
-  display: 'swap',
-});
-
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  weight: ['600', '700'],
-  variable: '--font-serif',
   display: 'swap',
 });
 
@@ -152,7 +145,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${jost.variable} ${playfair.variable} h-full antialiased`}>
+    <html lang="en" suppressHydrationWarning className={`${jost.variable} h-full antialiased`}>
       <head>
         <script
           type="application/ld+json"
@@ -166,20 +159,20 @@ export default function RootLayout({
         <ThemeProvider>
           <AuthProvider>
             <WishlistProvider>
-                <Suspense fallback={<div className="h-32 w-full border-b border-border/40 bg-background/70 backdrop-blur-xl" />}>
-                  <Navbar />
-                </Suspense>
-                <Suspense fallback={null}>
-                  <SearchModal />
-                </Suspense>
-                <Suspense fallback={null}>
-                  <SizeChartModal />
-                </Suspense>
-                <main className="flex-1 flex flex-col w-full max-w-full">{children}</main>
-                <Suspense fallback={null}>
-                  <Footer />
-                </Suspense>
-                <Toaster richColors position="top-right" closeButton />
+              <Suspense fallback={<div className="h-28 w-full border-b border-border/40 bg-background/70 backdrop-blur-xl" />}>
+                <Navbar />
+              </Suspense>
+              <Suspense fallback={null}>
+                <SearchModal />
+              </Suspense>
+              <Suspense fallback={null}>
+                <SizeChartModal />
+              </Suspense>
+              <main className="flex-1 flex flex-col w-full max-w-full">{children}</main>
+              <Suspense fallback={null}>
+                <Footer />
+              </Suspense>
+              <Toaster richColors position="top-right" closeButton />
             </WishlistProvider>
           </AuthProvider>
         </ThemeProvider>
