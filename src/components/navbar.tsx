@@ -216,16 +216,16 @@ export function Navbar() {
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* ROW 1: Search (Left), Centered Logo, Action Icons & User (Right) */}
-        <div className="h-20 sm:h-22 flex items-center justify-between relative">
+        <div className="h-16 sm:h-18 flex items-center justify-between relative">
           {/* Left: Search Button (Desktop) & Mobile Hamburger */}
-          <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-2.5">
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-border flex items-center justify-center text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
+              className="lg:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
               aria-label="Open Mobile Menu"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? <X className="w-4.5 h-4.5" /> : <Menu className="w-4.5 h-4.5" />}
             </button>
 
             {/* Circular Search Button */}
@@ -234,9 +234,9 @@ export function Navbar() {
               onClick={handleSearchClick}
               aria-label="Search Apparel"
               title="Search clothing (Ctrl+K)"
-              className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
             >
-              <Search className="w-5 h-5 sm:w-5.5 sm:h-5.5" />
+              <Search className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
             </button>
           </div>
 
@@ -248,24 +248,24 @@ export function Navbar() {
               className="flex items-center group cursor-pointer select-none"
             >
               {/* Bold Spaced Brand Typography */}
-              <span className="font-heading font-black text-2xl sm:text-3xl md:text-4xl tracking-[0.25em] text-foreground uppercase group-hover:opacity-80 transition-opacity">
+              <span className="font-heading font-black text-2xl sm:text-[28px] md:text-[32px] tracking-[0.24em] text-foreground uppercase group-hover:opacity-80 transition-opacity">
                 AYRO
               </span>
             </Link>
           </div>
 
           {/* Right: Actions (Wishlist when logged in, Bag, User) */}
-          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
             {/* Wishlist Link (Only shown when logged in) */}
             {user && (
               <Link
                 href="/clothes?wishlist=true"
                 aria-label="Wishlist"
-                className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors relative shrink-0"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors relative shrink-0"
               >
-                <Heart className="w-5 h-5 sm:w-5.5 sm:h-5.5" />
+                <Heart className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
                 {wishlistIds.length > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-rose-600 text-[11px] text-white font-bold rounded-full flex items-center justify-center shadow-xs">
+                  <span className="absolute -top-1 -right-1 w-4.5 h-4.5 bg-rose-600 text-[10px] text-white font-bold rounded-full flex items-center justify-center shadow-xs">
                     {wishlistIds.length}
                   </span>
                 )}
@@ -281,9 +281,9 @@ export function Navbar() {
                 }
               }}
               aria-label="My Orders"
-              className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors relative shrink-0"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors relative shrink-0"
             >
-              <ShoppingBag className="w-5 h-5 sm:w-5.5 sm:h-5.5" />
+              <ShoppingBag className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
             </Link>
 
             {/* User Profile Section */}
@@ -295,14 +295,14 @@ export function Navbar() {
               >
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-border overflow-hidden flex items-center justify-center hover:ring-2 hover:ring-rose-500/30 transition-all cursor-pointer shrink-0"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border overflow-hidden flex items-center justify-center hover:ring-2 hover:ring-rose-500/30 transition-all cursor-pointer shrink-0"
                   aria-label="User Account Menu"
                 >
                   <Image
                     src={user.photoURL || '/client-review-1.jpg'}
                     alt={user.name || 'User avatar'}
-                    width={44}
-                    height={44}
+                    width={40}
+                    height={40}
                     unoptimized
                     className="w-full h-full object-cover"
                   />
@@ -394,9 +394,9 @@ export function Navbar() {
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                   aria-label="Account Menu"
                   title="Sign in or Register"
-                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
                 >
-                  <UserIcon className="w-5 h-5 sm:w-5.5 sm:h-5.5" />
+                  <UserIcon className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
                 </button>
 
                 {/* Guest Account Dropdown (Sign in / Register) */}
@@ -426,7 +426,7 @@ export function Navbar() {
         </div>
 
         {/* ROW 2: Desktop Categories Navigation with Hover Dropdowns */}
-        <nav className="hidden lg:flex items-center justify-center gap-9 md:gap-12 xl:gap-14 pb-4 pt-1">
+        <nav className="hidden lg:flex items-center justify-center gap-7 sm:gap-9 xl:gap-11 pb-3 pt-0.5 border-t border-border/25">
           {CATEGORY_NAV.map((cat) => (
             <div
               key={cat.name}
@@ -434,12 +434,12 @@ export function Navbar() {
               onMouseEnter={() => handleCategoryMouseEnter(cat.name)}
               onMouseLeave={handleCategoryMouseLeave}
             >
-              {/* Category Link */}
+              {/* Category Link (14px Jost font) */}
               <Link
                 href={cat.href}
-                className={`text-[15.5px] sm:text-[16.5px] font-medium sm:font-semibold tracking-wide transition-colors duration-150 cursor-pointer block select-none px-1.5 py-0.5 ${
+                className={`text-[13.5px] sm:text-[14px] font-medium tracking-normal transition-colors duration-150 cursor-pointer block select-none px-1 py-0.5 ${
                   activeHoverCategory === cat.name
-                    ? 'text-[#b57a48] dark:text-[#d49767] font-bold'
+                    ? 'text-[#b57a48] dark:text-[#d49767] font-semibold'
                     : 'text-foreground/90 hover:text-[#b57a48] dark:hover:text-[#d49767]'
                 }`}
               >
@@ -453,13 +453,13 @@ export function Navbar() {
                   onMouseEnter={() => handleCategoryMouseEnter(cat.name)}
                   onMouseLeave={handleCategoryMouseLeave}
                 >
-                  <div className="w-56 sm:w-64 bg-card/90 dark:bg-card/90 backdrop-blur-xl border border-border/70 rounded-xs shadow-xl overflow-hidden py-0">
+                  <div className="w-52 sm:w-56 bg-card/95 dark:bg-card/95 backdrop-blur-xl border border-border/70 rounded-xs shadow-xl overflow-hidden py-0">
                     {cat.subcategories.map((sub, idx) => (
                       <Link
                         key={sub.name}
                         href={sub.href}
                         onClick={() => setActiveHoverCategory(null)}
-                        className={`block px-6 py-4 text-sm sm:text-[14.5px] font-medium text-foreground hover:bg-muted/50 hover:text-[#b57a48] dark:hover:text-[#d49767] transition-colors cursor-pointer ${
+                        className={`block px-6 py-3.5 text-[13.5px] font-medium text-foreground hover:bg-muted/50 hover:text-[#b57a48] dark:hover:text-[#d49767] transition-colors cursor-pointer ${
                           idx !== cat.subcategories.length - 1 ? 'border-b border-border/50' : ''
                         }`}
                       >
@@ -479,22 +479,22 @@ export function Navbar() {
         <>
           {/* Backdrop */}
           <div
-            className="lg:hidden fixed inset-0 top-20 bg-black/50 backdrop-blur-xs z-40 animate-in fade-in duration-200"
+            className="lg:hidden fixed inset-0 top-16 bg-black/50 backdrop-blur-xs z-40 animate-in fade-in duration-200"
             onClick={() => setMobileMenuOpen(false)}
             aria-hidden="true"
           />
 
-          <div className="lg:hidden relative z-50 border-b border-border bg-card px-5 pt-5 pb-8 space-y-5 animate-in fade-in slide-in-from-top-2 duration-150 shadow-2xl max-h-[calc(100vh-5rem)] overflow-y-auto">
+          <div className="lg:hidden relative z-50 border-b border-border bg-card px-5 pt-5 pb-8 space-y-5 animate-in fade-in slide-in-from-top-2 duration-150 shadow-2xl max-h-[calc(100vh-4rem)] overflow-y-auto">
             {/* User Card if logged in */}
             {user ? (
               <div className="flex items-center gap-3.5 p-3.5 rounded-2xl bg-muted/40 border border-border">
                 <Image
                   src={user.photoURL || '/client-review-1.jpg'}
                   alt={user.name || 'User avatar'}
-                  width={48}
-                  height={48}
+                  width={44}
+                  height={44}
                   unoptimized
-                  className="w-12 h-12 rounded-full object-cover border border-border shrink-0"
+                  className="w-11 h-11 rounded-full object-cover border border-border shrink-0"
                 />
                 <div className="min-w-0 flex-1">
                   <p className="text-base font-bold text-foreground truncate">{user.name}</p>
