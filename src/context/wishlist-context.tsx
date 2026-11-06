@@ -44,7 +44,7 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
           setWishlistIds(res.ids || []);
           setWishlistItems(res.data || []);
         }
-      } catch (err) {
+      } catch {
         // Silently catch or handle
       } finally {
         setLoading(false);

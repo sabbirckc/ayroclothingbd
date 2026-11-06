@@ -17,16 +17,7 @@ import {
   ShieldCheck,
   ShoppingBag,
   ArrowLeft,
-  Truck,
-  RotateCcw,
-  Sparkles,
-  Scissors,
-  Tag,
-  Check,
-  User,
-  PackageCheck,
-  Clock,
-  Sparkle
+  User
 } from 'lucide-react';
 
 function ClothDetailsContent() {
@@ -55,7 +46,7 @@ function ClothDetailsContent() {
             setSelectedSize(res.data.sizes[0]);
           }
         }
-      } catch (err: any) {
+      } catch {
         toast.error('Failed to load apparel details.');
       } finally {
         setLoading(false);

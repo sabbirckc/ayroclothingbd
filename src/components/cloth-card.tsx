@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Star, Heart, ArrowUpRight, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Star, Heart, ArrowUpRight } from 'lucide-react';
 import { useWishlist } from '@/context/wishlist-context';
 
 export interface ClothItem {

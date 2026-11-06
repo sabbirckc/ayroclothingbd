@@ -15,7 +15,7 @@ export function Footer() {
       toast.error('Please enter a valid email address.');
       return;
     }
-    toast.success('Thank you for subscribing to the ClothSpace Designer Dispatch!');
+    toast.success('Thank you for subscribing to the AYRO Designer Dispatch!');
     setEmail('');
   };
 

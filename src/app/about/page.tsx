@@ -18,7 +18,7 @@ export default function AboutUsPage() {
           Our Story & Philosophy
         </span>
         <h1 className="font-heading font-black text-3xl sm:text-4xl md:text-5xl text-foreground">
-          About ClothSpace
+          About AYRO Clothing BD
         </h1>
         <p className="text-sm text-muted-foreground leading-relaxed">
           Championing independent clothing designers, artisanal ateliers, and sustainable wardrobe circularity since 2026.
@@ -32,7 +32,7 @@ export default function AboutUsPage() {
             A New Horizon for Independent Apparel
           </h2>
           <p>
-            Mass production fashion has diluted the artistry of garments. ClothSpace was founded on a simple conviction: the most exquisite clothing in the world is created by independent makers, boutique tailors, and passionate collectors.
+            Mass production fashion has diluted the artistry of garments. AYRO Clothing BD was founded on a simple conviction: the most exquisite clothing in the world is created by independent makers, boutique tailors, and passionate collectors.
           </p>
           <p>
             Whether it is an oversized 480 GSM French Terry streetwear hoodie, a hand-stitched Milanese wool blazer, or a vintage Japanese selvedge bomber jacket, every piece on our platform is a celebration of textile integrity and enduring design.

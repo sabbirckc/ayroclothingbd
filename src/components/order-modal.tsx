@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { X, ShoppingBag, Truck, ShieldCheck, AlertCircle } from 'lucide-react';
+import { X, ShoppingBag, Truck, AlertCircle } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'sonner';
 

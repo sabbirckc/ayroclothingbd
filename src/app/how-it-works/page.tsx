@@ -8,9 +8,7 @@ import {
   Shirt,
   Sparkles,
   ShieldCheck,
-  CheckCircle2,
   RotateCcw,
-  Headphones,
   Lock,
   ArrowRight
 } from 'lucide-react';
@@ -70,9 +68,14 @@ export default function HowItWorksPage() {
               className="p-8 rounded-3xl border border-border bg-card shadow-sm hover:border-rose-500/50 transition-all space-y-4"
             >
               <div className="flex items-center justify-between">
-                <span className="font-mono text-3xl font-black text-rose-500">
-                  {item.step}
-                </span>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-3xl font-black text-rose-500">
+                    {item.step}
+                  </span>
+                  <div className="w-8 h-8 rounded-xl bg-rose-500/10 flex items-center justify-center text-rose-600">
+                    <Icon className="w-4 h-4" />
+                  </div>
+                </div>
                 <span className="px-3 py-1 rounded-full bg-rose-500/10 text-rose-600 text-[11px] font-bold uppercase tracking-wider">
                   {item.badge}
                 </span>

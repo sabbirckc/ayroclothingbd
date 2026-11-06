@@ -1,12 +1,12 @@
-# ClothSpace — Peer-to-Peer Apparel Marketplace & Designer Clothing Sharing Platform
+# AYRO Clothing BD — Timeless Essential Apparel Marketplace
 
-> **Live Application URL**: [https://clothspace-marketplace.vercel.app](https://clothspace-marketplace.vercel.app) *(Deployable to Vercel / Render)*  
+> **Live Application URL**: [https://ayroclothingbd.vercel.app](https://ayroclothingbd.vercel.app)  
 > **Server Repository**: [https://github.com/sabbirckc/ayroclothingbd-server](https://github.com/sabbirckc/ayroclothingbd-server)  
 > **Client Repository**: [https://github.com/sabbirckc/ayroclothingbd](https://github.com/sabbirckc/ayroclothingbd)
 
 ---
 
-## 🌟 Key Features of ClothSpace
+## 🌟 Key Features of AYRO Clothing BD
 
 - **Peer-to-Peer Designer Wardrobe Marketplace**: Direct discovery and ordering between independent fashion designers, boutique ateliers, and discerning clothing connoisseurs, championing sustainable wardrobe circulation and slow fashion.
 - **Dynamic Sizing & Real-Time Stock Inspection**: Detailed fabric compositions, authentic origins, and dynamic size availability (S, M, L, XL, XXL) with zero Lorem Ipsum text.

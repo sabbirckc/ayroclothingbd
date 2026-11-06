@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/auth-context';
 import { api } from '@/lib/api';
 import { DeleteConfirmDialog } from '@/components/delete-confirm-dialog';
-import { TableRowSkeleton } from '@/components/skeletons';
+
 import { toast } from 'sonner';
 import {
   Package,
@@ -15,9 +15,9 @@ import {
   Trash2,
   ExternalLink,
   Shirt,
-  AlertCircle,
-  Clock,
-  Sparkles
+
+
+
 } from 'lucide-react';
 
 export default function MyListingsPage() {
@@ -206,11 +206,10 @@ export default function MyListingsPage() {
                           ${Number(item.price).toFixed(0)}
                         </span>
                         <span
-                          className={`font-mono font-bold px-1.5 py-0.5 rounded text-[10px] ${
-                            isLow
+                          className={`font-mono font-bold px-1.5 py-0.5 rounded text-[10px] ${isLow
                               ? 'bg-rose-500/10 text-rose-600'
                               : 'bg-emerald-500/10 text-emerald-600'
-                          }`}
+                            }`}
                         >
                           {item.stock} left
                         </span>
@@ -321,11 +320,10 @@ export default function MyListingsPage() {
                         {/* Stock */}
                         <td className="py-4 px-4">
                           <span
-                            className={`font-mono font-bold px-2 py-0.5 rounded text-[11px] ${
-                              isLow
+                            className={`font-mono font-bold px-2 py-0.5 rounded text-[11px] ${isLow
                                 ? 'bg-rose-500/10 text-rose-600'
                                 : 'bg-emerald-500/10 text-emerald-600'
-                            }`}
+                              }`}
                           >
                             {item.stock} left
                           </span>

@@ -30,102 +30,102 @@ export default function MyOrdersPage() {
   const redirectedRef = React.useRef(false);
 
   useEffect(() => {
-    if (!authLoading && !user && !redirectedRef.current) {
-      redirectedRef.current = true;
-      toast.error('Please log in to review your orders.', { id: 'auth-required' });
-      router.replace('/login?redirect=/my-orders');
-    }
-  }, [user, authLoading, router]);
+  if (!authLoading && !user && !redirectedRef.current) {
+    redirectedRef.current = true;
+    toast.error('Please log in to review your orders.', { id: 'auth-required' });
+    router.replace('/login?redirect=/my-orders');
+  }
+}, [user, authLoading, router]);
 
-  const fetchOrders = async () => {
-    try {
-      setLoading(true);
-      const res = await api.get('/api/orders/my-orders');
-      if (res.success && Array.isArray(res.data)) {
-        setOrders(res.data);
-      }
-    } catch (err: unknown) {
-      console.error('Failed to load orders:', err);
-    } finally {
-      setLoading(false);
+const fetchOrders = async () => {
+  try {
+    setLoading(true);
+    const res = await api.get('/api/orders/my-orders');
+    if (res.success && Array.isArray(res.data)) {
+      setOrders(res.data);
     }
-  };
+  } catch (err: unknown) {
+    console.error('Failed to load orders:', err);
+  } finally {
+    setLoading(false);
+  }
+};
 
-  useEffect(() => {
-    if (user) {
-      fetchOrders();
-    } else if (!authLoading) {
-      setLoading(false);
-    }
+useEffect(() => {
+  if (user) {
+    fetchOrders();
+  } else if (!authLoading) {
+    setLoading(false);
+  }
   }, [user, authLoading]);
 
-  const handleCancelOrder = async (orderId: string) => {
-    try {
-      setCancellingId(orderId);
-      const res = await api.patch(`/api/orders/${orderId}/cancel`);
-      if (res.success) {
-        toast.success('Order cancelled. Atelier inventory restored.');
-        // Update local order status
-        setOrders((prev) =>
-          prev.map((o) =>
-            (o.id || o._id) === orderId ? { ...o, status: 'Cancelled' } : o
-          )
-        );
-      }
-    } catch (err: any) {
-      toast.error(err.message || 'Failed to cancel order.');
-    } finally {
-      setCancellingId(null);
+const handleCancelOrder = async (orderId: string) => {
+  try {
+    setCancellingId(orderId);
+    const res = await api.patch(`/api/orders/${orderId}/cancel`);
+    if (res.success) {
+      toast.success('Order cancelled. Atelier inventory restored.');
+      // Update local order status
+      setOrders((prev) =>
+        prev.map((o) =>
+          (o.id || o._id) === orderId ? { ...o, status: 'Cancelled' } : o
+        )
+      );
     }
-  };
+  } catch (err: any) {
+    toast.error(err.message || 'Failed to cancel order.');
+  } finally {
+    setCancellingId(null);
+  }
+};
 
-  const handleDownloadInvoice = (order: any) => {
-    try {
-      generateOrderInvoice(order);
-      toast.success('Invoice PDF downloaded successfully!');
-    } catch (err) {
-      toast.error('Failed to generate PDF receipt.');
-    }
-  };
+const handleDownloadInvoice = (order: any) => {
+  try {
+    generateOrderInvoice(order);
+    toast.success('Invoice PDF downloaded successfully!');
+  } catch (err) {
+    toast.error('Failed to generate PDF receipt.');
+  }
+};
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'Pending':
-        return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20">
-            <Clock className="w-3.5 h-3.5 animate-spin" />
-            <span>Pending</span>
-          </span>
-        );
-      case 'Confirmed':
-        return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-500/10 text-blue-600 border border-blue-500/20">
-            <CheckCircle2 className="w-3.5 h-3.5" />
-            <span>Confirmed</span>
-          </span>
-        );
-      case 'Shipped':
-        return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
-            <Truck className="w-3.5 h-3.5" />
-            <span>Shipped</span>
-          </span>
-        );
-      case 'Cancelled':
-        return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-500/10 text-rose-600 border border-rose-500/20">
-            <XCircle className="w-3.5 h-3.5" />
-            <span>Cancelled</span>
-          </span>
-        );
-      default:
-        return (
-          <span className="px-3 py-1 rounded-full text-xs font-bold bg-muted text-muted-foreground">
-            {status}
-          </span>
-        );
-    }
-  };
+const getStatusBadge = (status: string) => {
+  switch (status) {
+    case 'Pending':
+      return (
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20">
+          <Clock className="w-3.5 h-3.5 animate-spin" />
+          <span>Pending</span>
+        </span>
+      );
+    case 'Confirmed':
+      return (
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-500/10 text-blue-600 border border-blue-500/20">
+          <CheckCircle2 className="w-3.5 h-3.5" />
+          <span>Confirmed</span>
+        </span>
+      );
+    case 'Shipped':
+      return (
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+          <Truck className="w-3.5 h-3.5" />
+          <span>Shipped</span>
+        </span>
+      );
+    case 'Cancelled':
+      return (
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-500/10 text-rose-600 border border-rose-500/20">
+          <XCircle className="w-3.5 h-3.5" />
+          <span>Cancelled</span>
+        </span>
+      );
+    default:
+      return (
+        <span className="px-3 py-1 rounded-full text-xs font-bold bg-muted text-muted-foreground">
+          {status}
+        </span>
+      );
+  }
+};
 
   if (authLoading) {
     return (
