@@ -313,33 +313,19 @@ export function Navbar() {
 
           <div className="lg:hidden relative z-50 border-b border-border bg-card px-4 pt-3 pb-6 space-y-4 animate-in fade-in slide-in-from-top-2 duration-150 shadow-2xl max-h-[calc(100vh-4rem)] overflow-y-auto">
             {user && (
-              <div className="flex items-center justify-between p-3 rounded-2xl bg-muted/40 border border-border">
-                <div className="flex items-center gap-3 min-w-0">
-                  <Image
-                    src={user.photoURL || '/client-review-1.jpg'}
-                    alt={user.name || 'User avatar'}
-                    width={40}
-                    height={40}
-                    unoptimized
-                    className="w-10 h-10 rounded-full object-cover border border-border shrink-0"
-                  />
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-bold text-foreground truncate">{user.name}</p>
-                    <p className="text-xs text-rose-600 dark:text-rose-400 font-medium truncate">{user.email}</p>
-                  </div>
+              <div className="flex items-center gap-3 p-3 rounded-2xl bg-muted/40 border border-border">
+                <Image
+                  src={user.photoURL || '/client-review-1.jpg'}
+                  alt={user.name || 'User avatar'}
+                  width={40}
+                  height={40}
+                  unoptimized
+                  className="w-10 h-10 rounded-full object-cover border border-border shrink-0"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-bold text-foreground truncate">{user.name}</p>
+                  <p className="text-xs text-rose-600 dark:text-rose-400 font-medium truncate">{user.email}</p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    logout();
-                  }}
-                  title="Sign Out"
-                  aria-label="Sign Out"
-                  className="p-2 rounded-xl text-rose-600 hover:bg-rose-500/10 transition-colors cursor-pointer shrink-0"
-                >
-                  <LogOut className="w-4 h-4" />
-                </button>
               </div>
             )}
 
