@@ -201,15 +201,6 @@ function ClothDetailsContent() {
               <Heart className={`w-5 h-5 ${isSaved ? 'fill-current' : ''}`} />
             </button>
 
-            {/* Category Pill */}
-            <div className="absolute top-4 left-4 z-10 pointer-events-none">
-              <span className="px-3 py-1 rounded-full bg-background/90 backdrop-blur-md text-foreground font-bold text-xs uppercase tracking-wider border border-border shadow-sm">
-                {cloth.category}
-              </span>
-            </div>
-
-
-
             {/* Fullscreen Expand Button (Bottom Left) */}
             <button
               type="button"

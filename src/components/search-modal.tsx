@@ -133,25 +133,6 @@ export function SearchModal() {
         className="w-full max-w-2xl bg-card border border-border rounded-2xl shadow-2xl p-5 sm:p-6 relative animate-in zoom-in-95 slide-in-from-top-4 duration-200"
       >
         {/* Header with Title & Close Button */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center">
-              <Search className="w-4 h-4" />
-            </div>
-            <div>
-              <h3 className="text-sm font-bold text-foreground">Search Designer Apparel</h3>
-              <p className="text-[11px] text-muted-foreground">Find pieces by name, fabric type, or collection</p>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={handleClose}
-            className="w-8 h-8 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
-            title="Close search (Esc)"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
 
         {/* Search Input Form */}
         <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row gap-3 relative">
@@ -167,9 +148,7 @@ export function SearchModal() {
               }}
               onFocus={() => {
                 if (searchQuery.trim().length > 0) setShowSuggestions(true);
-              }}
-              placeholder="Search clothing by name, fabric, style (e.g. Cotton, Linen, Formal, Blazer)..."
-              className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all font-sans"
+              }} className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all font-sans"
               autoComplete="off"
               autoFocus
             />

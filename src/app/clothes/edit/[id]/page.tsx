@@ -96,17 +96,11 @@ function EditClothContent() {
   ];
 
   const presetImages = [
-    { label: 'Wool Blazer', url: '/image-1.jpg' },
-    { label: 'Hoodie', url: '/image-2.jpg' },
-    { label: 'Denim Bomber', url: '/image-3.jpg' },
-    { label: 'Knit Cardigan', url: '/image-4.jpg' },
-    { label: 'Linen Trousers', url: '/image-5.jpg' },
-    { label: 'Velvet Gown', url: '/image-6.jpg' },
-    { label: 'Cargo Trench', url: '/image-7.jpg' },
-    { label: 'Silk Kimono', url: '/image-8.jpg' },
-    { label: 'Mohair Pullover', url: '/image-9.jpg' },
-    { label: 'Selvedge Shirt', url: '/image-10.jpg' },
-    { label: 'Avant Parka', url: '/image-11.jpg' },
+    { label: 'Burgundy Pinstripe', url: '/image-1.jpg' },
+    { label: 'Deep Plum Oxford', url: '/image-2.jpg' },
+    { label: 'Sky Blue Chambray', url: '/image-3.jpg' },
+    { label: 'Earth Taupe Weave', url: '/image-4.jpg' },
+    { label: 'Minimalist Olive Linen', url: '/image-5.jpg' },
   ];
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {

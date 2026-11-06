@@ -44,13 +44,6 @@ export function ClothCard({ item }: { item: ClothItem }) {
         {/* Gradient Shade on hover */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-        {/* Category Badge top-left */}
-        <div className="absolute top-3 left-3 z-10">
-          <span className="px-2.5 py-1 text-[11px] font-bold tracking-wide uppercase rounded-full bg-background/90 backdrop-blur-md text-foreground border border-border shadow-sm">
-            {item.category}
-          </span>
-        </div>
-
         {/* Wishlist Heart Button top-right */}
         <button
           onClick={(e) => {
