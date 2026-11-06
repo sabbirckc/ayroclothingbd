@@ -19,7 +19,13 @@ import {
   ShoppingBag,
   ArrowLeft,
   User,
-  Ruler
+  Ruler,
+  ZoomIn,
+  ZoomOut,
+  Maximize2,
+  Plus,
+  Minus,
+  X
 } from 'lucide-react';
 
 function ClothDetailsContent() {
@@ -36,6 +42,55 @@ function ClothDetailsContent() {
   const [loading, setLoading] = useState(true);
   const [orderModalOpen, setOrderModalOpen] = useState(false);
   const [sizeChartOpen, setSizeChartOpen] = useState(false);
+
+  // Image Zoom & Lightbox states
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [zoomOrigin, setZoomOrigin] = useState({ x: 50, y: 50 });
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxZoom, setLightboxZoom] = useState(1);
+
+  const handleImageClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isZoomed) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      setZoomOrigin({ x, y });
+      setIsZoomed(true);
+    } else {
+      setIsZoomed(false);
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isZoomed) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setZoomOrigin({ x, y });
+  };
+
+  const handleMouseLeave = () => {
+    if (isZoomed) {
+      setIsZoomed(false);
+    }
+  };
+
+  // Reset zoom when active image changes
+  useEffect(() => {
+    setIsZoomed(false);
+    setLightboxZoom(1);
+  }, [activeImage]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && lightboxOpen) {
+        setLightboxOpen(false);
+        setLightboxZoom(1);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxOpen]);
 
   useEffect(() => {
     async function fetchDetails() {
@@ -114,18 +169,34 @@ function ClothDetailsContent() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
         {/* Gallery Carousel & Thumbnails (5 cols) */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-border bg-muted shadow-lg">
+          {/* Main Hero Image with Click-to-Zoom */}
+          <div
+            onClick={handleImageClick}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className={`relative aspect-[4/5] rounded-3xl overflow-hidden border border-border bg-muted shadow-lg select-none transition-colors ${
+              isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'
+            }`}
+            title={isZoomed ? 'Click to zoom out' : 'Click to zoom in'}
+          >
             <img
               src={activeImage || cloth.image}
               alt={cloth.title}
-              className="w-full h-full object-cover object-center transition-all duration-300"
+              style={{
+                transform: isZoomed ? 'scale(2.2)' : 'scale(1)',
+                transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`,
+              }}
+              className="w-full h-full object-cover object-center transition-transform duration-200 ease-out pointer-events-none"
             />
 
             {/* Wishlist Heart Button */}
             <button
-              onClick={() => toggleWishlist(cloth)}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleWishlist(cloth);
+              }}
               aria-label="Save to Wishlist"
-              className={`absolute top-4 right-4 w-11 h-11 rounded-full flex items-center justify-center backdrop-blur-md border transition-all ${isSaved
+              className={`absolute top-4 right-4 w-11 h-11 rounded-full flex items-center justify-center backdrop-blur-md border transition-all z-10 ${isSaved
                 ? 'bg-rose-600 border-rose-600 text-white shadow-lg'
                 : 'bg-background/80 hover:bg-background border-border text-muted-foreground hover:text-rose-500'
                 }`}
@@ -134,14 +205,45 @@ function ClothDetailsContent() {
             </button>
 
             {/* Category Pill */}
-            <div className="absolute top-4 left-4">
+            <div className="absolute top-4 left-4 z-10 pointer-events-none">
               <span className="px-3 py-1 rounded-full bg-background/90 backdrop-blur-md text-foreground font-bold text-xs uppercase tracking-wider border border-border shadow-sm">
                 {cloth.category}
               </span>
             </div>
 
+            {/* Zoom Hint Pill (Bottom Right) */}
+            <div className="absolute bottom-4 right-4 pointer-events-none z-10">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-background/90 backdrop-blur-md text-foreground text-[11px] font-bold border border-border/80 shadow-md">
+                {isZoomed ? (
+                  <>
+                    <ZoomOut className="w-3.5 h-3.5 text-rose-500" />
+                    <span>Zoom Out</span>
+                  </>
+                ) : (
+                  <>
+                    <ZoomIn className="w-3.5 h-3.5 text-rose-500" />
+                    <span>Click to Zoom</span>
+                  </>
+                )}
+              </span>
+            </div>
+
+            {/* Fullscreen Expand Button (Bottom Left) */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxOpen(true);
+              }}
+              aria-label="Fullscreen View"
+              title="Open Fullscreen Lightbox"
+              className="absolute bottom-4 left-4 w-8 h-8 rounded-full bg-background/90 backdrop-blur-md border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-card transition-colors shadow-sm cursor-pointer z-10"
+            >
+              <Maximize2 className="w-3.5 h-3.5" />
+            </button>
+
             {isOutOfStock && (
-              <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+              <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-20 pointer-events-none">
                 <span className="px-4 py-2 rounded-full bg-rose-600 text-white font-bold text-sm uppercase tracking-widest shadow-xl">
                   Out of Stock
                 </span>
@@ -418,6 +520,123 @@ function ClothDetailsContent() {
         selectedSize={selectedSize}
         clothTitle={cloth?.title}
       />
+
+      {/* Fullscreen Lightbox / Zoom Modal */}
+      {lightboxOpen && (
+        <div
+          onClick={() => {
+            setLightboxOpen(false);
+            setLightboxZoom(1);
+          }}
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex flex-col items-center justify-between p-4 sm:p-6 animate-in fade-in duration-200"
+        >
+          {/* Top Bar: Title & Zoom Controls */}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-5xl flex items-center justify-between text-white pb-3 z-10"
+          >
+            <div className="space-y-0.5">
+              <h3 className="font-heading font-bold text-sm sm:text-base text-white/95">
+                {cloth.title}
+              </h3>
+              <p className="text-xs text-white/60">
+                Click image to toggle 2x zoom • Click outside to close (Esc)
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setLightboxZoom((prev) => Math.max(1, +(prev - 0.5).toFixed(1)))}
+                disabled={lightboxZoom <= 1}
+                className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 disabled:opacity-40 flex items-center justify-center text-white transition-colors cursor-pointer"
+                title="Zoom Out (-)"
+              >
+                <Minus className="w-4 h-4" />
+              </button>
+
+              <span className="text-xs font-mono font-bold px-2 text-white/80 min-w-10 text-center">
+                {Math.round(lightboxZoom * 100)}%
+              </span>
+
+              <button
+                type="button"
+                onClick={() => setLightboxZoom((prev) => Math.min(3, +(prev + 0.5).toFixed(1)))}
+                disabled={lightboxZoom >= 3}
+                className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 disabled:opacity-40 flex items-center justify-center text-white transition-colors cursor-pointer"
+                title="Zoom In (+)"
+              >
+                <Plus className="w-4 h-4" />
+              </button>
+
+              {lightboxZoom > 1 && (
+                <button
+                  type="button"
+                  onClick={() => setLightboxZoom(1)}
+                  className="px-2.5 py-1 text-xs rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold transition-colors cursor-pointer"
+                  title="Reset Zoom (100%)"
+                >
+                  Reset
+                </button>
+              )}
+
+              <button
+                type="button"
+                onClick={() => {
+                  setLightboxOpen(false);
+                  setLightboxZoom(1);
+                }}
+                className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors cursor-pointer ml-2"
+                title="Close Lightbox (Esc)"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Center Zoomable Image View */}
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightboxZoom((prev) => (prev > 1 ? 1 : 2));
+            }}
+            className={`flex-1 w-full max-w-4xl flex items-center justify-center overflow-hidden my-2 select-none ${
+              lightboxZoom > 1 ? 'cursor-zoom-out' : 'cursor-zoom-in'
+            }`}
+            title={lightboxZoom > 1 ? 'Click to zoom out' : 'Click to zoom in'}
+          >
+            <img
+              src={activeImage || cloth.image}
+              alt={cloth.title}
+              style={{
+                transform: `scale(${lightboxZoom})`,
+                transition: 'transform 0.25s cubic-bezier(0.2, 0, 0, 1)',
+              }}
+              className="max-h-[75vh] max-w-full object-contain pointer-events-none"
+            />
+          </div>
+
+          {/* Bottom Thumbnails */}
+          {gallery.length > 1 && (
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center gap-2 overflow-x-auto p-2 bg-white/10 rounded-2xl backdrop-blur-md max-w-md z-10"
+            >
+              {gallery.map((img: string, idx: number) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveImage(img)}
+                  className={`w-14 h-16 rounded-xl overflow-hidden border-2 shrink-0 transition-all cursor-pointer ${
+                    activeImage === img ? 'border-rose-500 scale-105' : 'border-transparent opacity-60 hover:opacity-100'
+                  }`}
+                >
+                  <img src={img} alt="Thumbnail" className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -321,3 +321,4 @@ export function SizeChartModal({
     </div>
   );
 }
+
