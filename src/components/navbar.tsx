@@ -245,24 +245,10 @@ export function Navbar() {
             <Link
               href="/"
               onClick={handleLogoClick}
-              className="flex items-center gap-2.5 sm:gap-3 group cursor-pointer select-none"
+              className="flex items-center group cursor-pointer select-none"
             >
-              {/* Modern Coat Hanger Emblem */}
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-stone-900 dark:bg-stone-100 text-stone-100 dark:text-stone-900 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform shrink-0 border border-border">
-                <svg
-                  className="w-5 h-5 sm:w-5.5 sm:h-5.5 fill-none stroke-current"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 2a3 3 0 0 0-3 3c0 .8.3 1.5.8 2.1L3.5 13a2 2 0 0 0 1.2 3.5h14.6a2 2 0 0 0 1.2-3.5L14.2 7.1A3 3 0 0 0 15 5a3 3 0 0 0-3-3z" />
-                  <line x1="4" y1="16.5" x2="20" y2="16.5" />
-                </svg>
-              </div>
-
               {/* Bold Spaced Brand Typography */}
-              <span className="font-heading font-black text-2xl sm:text-3xl md:text-4xl tracking-[0.25em] text-foreground uppercase">
+              <span className="font-heading font-black text-2xl sm:text-3xl md:text-4xl tracking-[0.25em] text-foreground uppercase group-hover:opacity-80 transition-opacity">
                 AYRO
               </span>
             </Link>
