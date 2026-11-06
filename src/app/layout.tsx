@@ -168,7 +168,7 @@ export default function RootLayout({
                 <Suspense fallback={null}>
                   <SizeChartModal />
                 </Suspense>
-                <main className="flex-1 flex flex-col w-full max-w-full">{children}</main>
+                <main className="flex-1 flex flex-col w-full max-w-full pb-16 lg:pb-0">{children}</main>
                 <Suspense fallback={null}>
                   <Footer />
                 </Suspense>
