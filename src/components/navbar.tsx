@@ -23,7 +23,7 @@ import {
   LayoutDashboard,
   User as UserIcon,
   ChevronDown,
-  ChevronRight
+  ChevronRight,
 } from 'lucide-react';
 
 interface SubcategoryItem {
