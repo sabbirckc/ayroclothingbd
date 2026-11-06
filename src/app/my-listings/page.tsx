@@ -102,7 +102,7 @@ export default function MyListingsPage() {
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 text-rose-600 text-xs font-bold uppercase tracking-wider mb-2">
             <Package className="w-3.5 h-3.5" />
-            <span>My Listings</span>
+            <span>Designer Dashboard</span>
           </div>
           <h1 className="font-heading font-black text-2xl sm:text-3xl text-foreground">
             My Clothing Listings
