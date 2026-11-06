@@ -9,15 +9,23 @@ interface HeroSlide {
   image: string;
   alt: string;
   href?: string;
+  position?: string;
 }
 
-// Keep single picture for now. Add more pictures after photography.
 const HERO_SLIDES: HeroSlide[] = [
   {
     id: 1,
     image: '/hero-banner.jpg',
     alt: 'AYRO Timeless Essentials - Men\'s Fashion',
     href: '/clothes',
+    position: 'object-center',
+  },
+  {
+    id: 2,
+    image: '/hero-banner-2.jpg',
+    alt: 'AYRO Premium Button-Down Shirt Collection',
+    href: '/clothes',
+    position: 'object-[center_15%]',
   },
 ];
 
@@ -28,7 +36,7 @@ export function HeroSlider() {
     if (HERO_SLIDES.length <= 1) return;
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % HERO_SLIDES.length);
-    }, 5500);
+    }, 5000);
     return () => clearInterval(timer);
   }, []);
 
@@ -59,7 +67,7 @@ export function HeroSlider() {
             <img
               src={slide.image}
               alt={slide.alt}
-              className={`w-full h-full object-cover transition-transform duration-7000 ease-out ${
+              className={`w-full h-full object-cover ${slide.position || 'object-center'} transition-transform duration-7000 ease-out ${
                 isActive ? 'scale-105' : 'scale-100'
               }`}
             />
