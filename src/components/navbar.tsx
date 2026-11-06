@@ -398,14 +398,43 @@ export function Navbar() {
                 )}
               </div>
             ) : (
-              <Link
-                href="/login"
-                aria-label="Sign In"
-                title="Account Login"
-                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
+              <div
+                className="relative shrink-0"
+                onMouseEnter={handleUserMouseEnter}
+                onMouseLeave={handleUserMouseLeave}
               >
-                <UserIcon className="w-4 h-4" />
-              </Link>
+                <button
+                  type="button"
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  aria-label="Account Menu"
+                  title="Sign in or Register"
+                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
+                >
+                  <UserIcon className="w-4 h-4" />
+                </button>
+
+                {/* Guest Account Dropdown (Sign in / Register) */}
+                {dropdownOpen && (
+                  <div className="absolute right-0 pt-1.5 w-36 sm:w-40 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                    <div className="rounded-md border border-border/80 bg-card/95 backdrop-blur-xl py-1.5 shadow-xl overflow-hidden">
+                      <Link
+                        href="/login"
+                        onClick={() => setDropdownOpen(false)}
+                        className="block px-4 py-2 text-[13px] font-medium text-foreground hover:bg-muted/50 hover:text-[#b57a48] dark:hover:text-[#d49767] transition-colors cursor-pointer"
+                      >
+                        Sign in
+                      </Link>
+                      <Link
+                        href="/register"
+                        onClick={() => setDropdownOpen(false)}
+                        className="block px-4 py-2 text-[13px] font-medium text-foreground hover:bg-muted/50 hover:text-[#b57a48] dark:hover:text-[#d49767] transition-colors cursor-pointer"
+                      >
+                        Register
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -523,38 +552,38 @@ export function Navbar() {
                       onClick={() =>
                         setMobileExpandedCat(mobileExpandedCat === cat.name ? null : cat.name)
                       }
-                    className="p-1 rounded-md text-muted-foreground hover:text-foreground"
-                    aria-label={`Toggle ${cat.name} Subcategories`}
+                      className="p-1 rounded-md text-muted-foreground hover:text-foreground"
+                      aria-label={`Toggle ${cat.name} Subcategories`}
                     >
-                    <ChevronDown
-                      className={`w-4 h-4 transition-transform ${mobileExpandedCat === cat.name ? 'rotate-180 text-[#b57a48]' : ''
-                        }`}
-                    />
-                  </button>
-                </div>
-
-                      { mobileExpandedCat === cat.name && (
-                  <div className="pl-4 pb-2 space-y-1.5 animate-in fade-in duration-150">
-                    {cat.subcategories.map((sub) => (
-                      <Link
-                        key={sub.name}
-                        href={sub.href}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="flex items-center gap-1.5 py-1 text-xs text-muted-foreground hover:text-[#b57a48] transition-colors"
-                      >
-                        <ChevronRight className="w-3 h-3 text-[#b57a48]" />
-                        <span>{sub.name}</span>
-                      </Link>
-                    ))}
+                      <ChevronDown
+                        className={`w-4 h-4 transition-transform ${mobileExpandedCat === cat.name ? 'rotate-180 text-[#b57a48]' : ''
+                          }`}
+                      />
+                    </button>
                   </div>
-                )}
-            </div>
+
+                  {mobileExpandedCat === cat.name && (
+                    <div className="pl-4 pb-2 space-y-1.5 animate-in fade-in duration-150">
+                      {cat.subcategories.map((sub) => (
+                        <Link
+                          key={sub.name}
+                          href={sub.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="flex items-center gap-1.5 py-1 text-xs text-muted-foreground hover:text-[#b57a48] transition-colors"
+                        >
+                          <ChevronRight className="w-3 h-3 text-[#b57a48]" />
+                          <span>{sub.name}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
+            </div>
           </div>
-        </div>
-    </>
-  )
-}
+        </>
+      )
+      }
     </header >
   );
 }
