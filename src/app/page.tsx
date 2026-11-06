@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { HeroSlider } from '@/components/hero-slider';
 import { ClothCard, ClothItem } from '@/components/cloth-card';
 import { ClothGridSkeleton } from '@/components/skeletons';
 import { api } from '@/lib/api';
@@ -133,11 +132,8 @@ export default function HomePage() {
 
   return (
     <div id="home-top" className="flex flex-col w-full max-w-full overflow-x-hidden space-y-12 sm:space-y-16 md:space-y-24 pb-20 scroll-mt-20">
-      {/* 1. Hero Slider Section - Full Width Edge-to-Edge */}
-      <HeroSlider />
-
-      {/* 2. Featured Clothes & Live Search Section */}
-      <section id="clothes-section" className="container mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
+      {/* Featured Clothes & Live Search Section */}
+      <section id="clothes-section" className="container mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 scroll-mt-24">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
