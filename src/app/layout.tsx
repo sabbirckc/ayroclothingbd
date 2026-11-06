@@ -166,7 +166,7 @@ export default function RootLayout({
         <ThemeProvider>
           <AuthProvider>
             <WishlistProvider>
-                <Suspense fallback={<div className="h-24 w-full border-b border-border/40 bg-background/70 backdrop-blur-xl" />}>
+                <Suspense fallback={<div className="h-32 w-full border-b border-border/40 bg-background/70 backdrop-blur-xl" />}>
                   <Navbar />
                 </Suspense>
                 <Suspense fallback={null}>
