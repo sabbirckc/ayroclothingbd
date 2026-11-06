@@ -59,11 +59,10 @@ export function ClothCard({ item }: { item: ClothItem }) {
             toggleWishlist(item);
           }}
           aria-label={isSaved ? 'Remove from wishlist' : 'Add to wishlist'}
-          className={`absolute top-3 right-3 z-10 w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md border transition-all ${
-            isSaved
+          className={`absolute top-3 right-3 z-10 w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md border transition-all ${isSaved
               ? 'bg-rose-600 border-rose-600 text-white shadow-md'
               : 'bg-background/80 hover:bg-background border-border text-muted-foreground hover:text-rose-500'
-          }`}
+            }`}
         >
           <Heart className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
         </button>

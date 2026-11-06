@@ -20,6 +20,7 @@ import {
   Menu,
   X,
   Search,
+  Ruler,
   LayoutDashboard
 } from 'lucide-react';
 
@@ -149,6 +150,17 @@ export function Navbar() {
             className="w-7.5 h-7.5 xs:w-8 xs:h-8 sm:w-9 sm:h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
           >
             <Search className="w-3.5 h-3.5 xs:w-4 xs:h-4" />
+          </button>
+
+          {/* Sizes Chart Shortcut */}
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new CustomEvent('open-size-chart-modal'))}
+            aria-label="Sizes Chart"
+            title="View Apparel Size Chart & Measurement Guide"
+            className="w-7.5 h-7.5 xs:w-8 xs:h-8 sm:w-9 sm:h-9 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
+          >
+            <Ruler className="w-3.5 h-3.5 xs:w-4 xs:h-4" />
           </button>
 
           {/* Theme Toggle */}

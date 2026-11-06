@@ -8,6 +8,7 @@ import { AuthProvider } from '@/context/auth-context';
 import { WishlistProvider } from '@/context/wishlist-context';
 import { Navbar } from '@/components/navbar';
 import { SearchModal } from '@/components/search-modal';
+import { SizeChartModal } from '@/components/size-chart-modal';
 import { Footer } from '@/components/footer';
 import { Toaster } from 'sonner';
 
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
     template: '%s | AYRO Clothing BD',
   },
   description:
-    'Discover, buy, and trade bespoke designer garments, curated streetwear, and handcrafted apparel. Peer-to-peer sustainable fashion marketplace with real-time atomic inventory deduction.',
+  'Discover, buy, and trade bespoke designer garments, curated streetwear, and handcrafted apparel. Peer-to-peer sustainable fashion marketplace with real-time atomic inventory deduction.',
   keywords: [
     'AYRO Clothing BD',
     'AYRO',
@@ -151,35 +152,38 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${jost.variable} ${playfair.variable} h-full antialiased`}>
-      <head>
+      <html lang="en" suppressHydrationWarning className={`${jost.variable} ${playfair.variable} h-full antialiased`}>
+        <head>
         <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </head>
-      <body
-        suppressHydrationWarning
-        className="min-h-screen w-full max-w-full flex flex-col bg-background text-foreground transition-colors duration-200 font-sans"
-      >
-        <ThemeProvider>
-          <AuthProvider>
-            <WishlistProvider>
-              <Suspense fallback={<div className="h-16 w-full border-b border-border/60 bg-background/90" />}>
-                <Navbar />
-              </Suspense>
-              <Suspense fallback={null}>
-                <SearchModal />
-              </Suspense>
-              <main className="flex-1 flex flex-col w-full max-w-full">{children}</main>
-              <Suspense fallback={null}>
-                <Footer />
-              </Suspense>
-              <Toaster richColors position="top-right" closeButton />
-            </WishlistProvider>
-          </AuthProvider>
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+        </head>
+        <body
+          suppressHydrationWarning
+          className="min-h-screen w-full max-w-full flex flex-col bg-background text-foreground transition-colors duration-200 font-sans"
+        >
+          <ThemeProvider>
+            <AuthProvider>
+              <WishlistProvider>
+                <Suspense fallback={<div className="h-16 w-full border-b border-border/60 bg-background/90" />}>
+                  <Navbar />
+                </Suspense>
+                <Suspense fallback={null}>
+                  <SearchModal />
+                </Suspense>
+                <Suspense fallback={null}>
+                  <SizeChartModal />
+                </Suspense>
+                <main className="flex-1 flex flex-col w-full max-w-full">{children}</main>
+                <Suspense fallback={null}>
+                  <Footer />
+                </Suspense>
+                <Toaster richColors position="top-right" closeButton />
+              </WishlistProvider>
+            </AuthProvider>
+          </ThemeProvider>
+        </body>
+      </html>
+      );
 }

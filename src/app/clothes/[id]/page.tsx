@@ -9,6 +9,7 @@ import { api } from '@/lib/api';
 import { useAuth } from '@/context/auth-context';
 import { useWishlist } from '@/context/wishlist-context';
 import { OrderModal } from '@/components/order-modal';
+import { SizeChartModal } from '@/components/size-chart-modal';
 import { DetailSkeleton } from '@/components/skeletons';
 import { toast } from 'sonner';
 import {
@@ -17,7 +18,8 @@ import {
   ShieldCheck,
   ShoppingBag,
   ArrowLeft,
-  User
+  User,
+  Ruler
 } from 'lucide-react';
 
 function ClothDetailsContent() {
@@ -33,6 +35,7 @@ function ClothDetailsContent() {
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [orderModalOpen, setOrderModalOpen] = useState(false);
+  const [sizeChartOpen, setSizeChartOpen] = useState(false);
 
   useEffect(() => {
     async function fetchDetails() {
@@ -242,7 +245,15 @@ function ClothDetailsContent() {
               <label className="text-xs font-bold text-foreground">
                 Available Sizes
               </label>
-              <span className="text-[11px] text-muted-foreground">Dynamic fit verification</span>
+              <button
+                type="button"
+                onClick={() => setSizeChartOpen(true)}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-border bg-card hover:bg-accent text-xs font-semibold text-rose-600 dark:text-rose-400 transition-all cursor-pointer shadow-xs group"
+                title="Open Sizes Chart & Measurement Guide"
+              >
+                <Ruler className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform" />
+                <span>Sizes Chart</span>
+              </button>
             </div>
             <div className="flex flex-wrap gap-2">
               {cloth.sizes && cloth.sizes.length > 0 ? (
@@ -397,6 +408,15 @@ function ClothDetailsContent() {
             stock: Math.max(0, Number(prev.stock) - order.quantity),
           }));
         }}
+      />
+
+      {/* Sizes Chart Modal */}
+      <SizeChartModal
+        isOpen={sizeChartOpen}
+        onClose={() => setSizeChartOpen(false)}
+        category={cloth?.category}
+        selectedSize={selectedSize}
+        clothTitle={cloth?.title}
       />
     </div>
   );
