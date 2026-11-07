@@ -56,9 +56,17 @@ export default function MyListingsPage() {
   };
 
   useEffect(() => {
+    let ignore = false;
     if (user) {
-      fetchMyListings();
+      queueMicrotask(() => {
+        if (!ignore) {
+          fetchMyListings();
+        }
+      });
     }
+    return () => {
+      ignore = true;
+    };
   }, [user]);
 
   const handleDeletePrompt = (item: any) => {

@@ -7,11 +7,8 @@ import { ClothGridSkeleton } from '@/components/skeletons';
 import { useWishlist } from '@/context/wishlist-context';
 import { api } from '@/lib/api';
 import {
-  Search,
   Shirt,
-  X,
   Heart,
-  RotateCcw
 } from 'lucide-react';
 
 function ClothesCatalogContent() {
@@ -21,28 +18,17 @@ function ClothesCatalogContent() {
   const initialCategory = searchParams.get('category') || 'all';
   const initialWishlistOnly = searchParams.get('wishlist') === 'true';
 
-  const { wishlistItems, wishlistIds } = useWishlist();
+  const { wishlistItems } = useWishlist();
 
   const [clothes, setClothes] = useState<ClothItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Filters state
-  const [search, setSearch] = useState('');
+  const [search] = useState('');
   const [category, setCategory] = useState(initialCategory);
-  const [selectedSize, setSelectedSize] = useState('all');
-  const [sortBy, setSortBy] = useState('newest');
+  const [selectedSize] = useState('all');
+  const [sortBy] = useState('newest');
   const [wishlistOnly, setWishlistOnly] = useState(initialWishlistOnly);
-
-  const categories = [
-    'all',
-    'Streetwear',
-    'Formal Wear',
-    'Casual Essentials',
-    'Vintage & Retro',
-    'Handcrafted Knitwear',
-  ];
-
-  const sizes = ['all', 'XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
   // Sync category or wishlist if searchParams change
   useEffect(() => {
@@ -87,15 +73,6 @@ function ClothesCatalogContent() {
 
     return () => clearTimeout(timer);
   }, [search, category, selectedSize, sortBy, wishlistOnly, wishlistItems]);
-
-  const resetFilters = () => {
-    setSearch('');
-    setCategory('all');
-    setSelectedSize('all');
-    setSortBy('newest');
-    setWishlistOnly(false);
-    router.push('/clothes');
-  };
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">

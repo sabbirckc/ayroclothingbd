@@ -99,9 +99,8 @@ export function HeroSlider() {
                 type="button"
                 onClick={() => setCurrent(i)}
                 aria-label={`Go to slide ${i + 1}`}
-                className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                  current === i ? 'w-7 sm:w-8 bg-white' : 'w-2 bg-white/40 hover:bg-white/70'
-                }`}
+                className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 cursor-pointer ${current === i ? 'w-7 sm:w-8 bg-white' : 'w-2 bg-white/40 hover:bg-white/70'
+                  }`}
               />
             ))}
           </div>

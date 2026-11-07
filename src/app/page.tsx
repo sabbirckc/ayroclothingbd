@@ -8,7 +8,6 @@ import { ClothGridSkeleton } from '@/components/skeletons';
 import { api } from '@/lib/api';
 import {
   Sparkles,
-  ArrowRight,
   ShieldCheck,
   RotateCcw,
   Headphones,
@@ -18,7 +17,6 @@ import {
   Layers,
   Compass,
   Star,
-  Search,
   X
 } from 'lucide-react';
 
