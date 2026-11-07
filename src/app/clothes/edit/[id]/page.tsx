@@ -38,10 +38,16 @@ function EditClothContent() {
   const redirectedRef = React.useRef(false);
 
   useEffect(() => {
-    if (!authLoading && !user && !redirectedRef.current) {
-      redirectedRef.current = true;
-      toast.error('Please log in to edit this listing.', { id: 'auth-required' });
-      router.push(`/login?redirect=/clothes/edit/${id}`);
+    if (!authLoading) {
+      if (!user && !redirectedRef.current) {
+        redirectedRef.current = true;
+        toast.error('Please log in to edit this listing.', { id: 'auth-required' });
+        router.push(`/login?redirect=/clothes/edit/${id}`);
+      } else if (user && user.role !== 'admin' && !redirectedRef.current) {
+        redirectedRef.current = true;
+        toast.error('Access denied. Admin permission required.', { id: 'admin-required' });
+        router.push('/');
+      }
     }
   }, [user, authLoading, router, id]);
 
@@ -227,33 +233,27 @@ function EditClothContent() {
     );
   }
 
-  if (!user) {
+  if (!user || user.role !== 'admin') {
     return (
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 flex items-center justify-center">
         <div className="max-w-md w-full p-8 rounded-3xl border border-border bg-card text-center space-y-5 shadow-xs">
-          <div className="w-14 h-14 mx-auto rounded-2xl bg-rose-500/10 text-rose-600 flex items-center justify-center">
-            <Edit className="w-7 h-7" />
+          <div className="w-14 h-14 mx-auto rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
+            <AlertCircle className="w-7 h-7" />
           </div>
           <div className="space-y-1.5">
             <h2 className="font-heading font-black text-xl text-foreground">
-              Sign In to Edit Listing
+              Admin Access Required
             </h2>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              Please sign in to edit your apparel piece.
+              Only verified store administrators are authorized to edit apparel listings.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-2.5 justify-center pt-2">
+          <div className="pt-2">
             <Link
-              href={`/login?redirect=/clothes/edit/${id}`}
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold text-xs shadow-md transition-all text-center"
+              href="/"
+              className="inline-block px-5 py-2.5 rounded-xl bg-black dark:bg-white text-white dark:text-black font-semibold text-xs transition-colors"
             >
-              Sign In to AYRO
-            </Link>
-            <Link
-              href="/clothes"
-              className="px-5 py-2.5 rounded-xl border border-border bg-muted/40 hover:bg-muted text-foreground font-semibold text-xs transition-colors text-center"
-            >
-              Explore Apparel
+              Return to Store
             </Link>
           </div>
         </div>

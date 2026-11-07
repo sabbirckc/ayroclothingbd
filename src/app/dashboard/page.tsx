@@ -55,10 +55,16 @@ export default function DashboardPage() {
   const redirectedRef = React.useRef(false);
 
   useEffect(() => {
-    if (!authLoading && !user && !redirectedRef.current) {
-      redirectedRef.current = true;
-      toast.error('Please log in to access your designer dashboard.', { id: 'auth-required' });
-      router.push('/login?redirect=/dashboard');
+    if (!authLoading) {
+      if (!user && !redirectedRef.current) {
+        redirectedRef.current = true;
+        toast.error('Please log in to access the dashboard.', { id: 'auth-required' });
+        router.push('/login?redirect=/dashboard');
+      } else if (user && user.role !== 'admin' && !redirectedRef.current) {
+        redirectedRef.current = true;
+        toast.info('Redirecting to your orders...', { id: 'customer-redirect' });
+        router.replace('/my-orders');
+      }
     }
   }, [user, authLoading, router]);
 
@@ -105,7 +111,7 @@ export default function DashboardPage() {
     );
   }
 
-  if (!user) {
+  if (!user || user.role !== 'admin') {
     return (
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 flex items-center justify-center">
         <div className="max-w-md w-full p-8 rounded-3xl border border-border bg-card text-center space-y-5 shadow-xs">
@@ -114,18 +120,18 @@ export default function DashboardPage() {
           </div>
           <div className="space-y-1.5">
             <h2 className="font-heading font-black text-xl text-foreground">
-              Sign In to Designer Dashboard
+              Admin Access Required
             </h2>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              Please sign in to access atelier analytics, manage inventory metrics, and track order fulfillment.
+              This inventory and analytics dashboard is reserved for administrators. Customers can view their purchase history in My Orders.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-2.5 justify-center pt-2">
             <Link
-              href="/login?redirect=/dashboard"
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold text-xs shadow-md transition-all text-center"
+              href="/my-orders"
+              className="px-5 py-2.5 rounded-xl bg-black dark:bg-white text-white dark:text-black font-semibold text-xs shadow-md transition-all text-center"
             >
-              Sign In to AYRO
+              Go to My Orders
             </Link>
             <Link
               href="/clothes"
@@ -155,7 +161,7 @@ export default function DashboardPage() {
           <div className="space-y-1">
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-rose-500/10 text-rose-600 text-[10px] font-bold uppercase tracking-wider">
               <Sparkles className="w-3 h-3" />
-              <span>{user.role === 'designer' ? 'Master Artisan' : 'Fashion Collector'}</span>
+              <span>{user.role === 'admin' ? 'Store Administrator' : 'Customer'}</span>
             </div>
             <h1 className="font-heading font-black text-2xl sm:text-3xl text-foreground">
               Welcome, {user.name}

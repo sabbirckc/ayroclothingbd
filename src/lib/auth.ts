@@ -14,6 +14,16 @@ export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
   secret: process.env.BETTER_AUTH_SECRET || 'clothspace_better_auth_secret_key_2026_super_secure_random',
   database: mongodbAdapter(db),
+  user: {
+    additionalFields: {
+      role: {
+        type: 'string',
+        required: false,
+        defaultValue: 'customer',
+        input: false,
+      },
+    },
+  },
   emailAndPassword: {
     enabled: true,
   },
@@ -25,3 +35,5 @@ export const auth = betterAuth({
   },
   plugins: [nextCookies()],
 });
+
+export { db, client };

@@ -30,6 +30,7 @@ interface BetterAuthPayload {
     name: string;
     email: string;
     image?: string | null;
+    role?: string;
   };
   session?: {
     id?: string;
@@ -69,18 +70,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Sync Better-Auth session reactively (e.g. after Google OAuth redirect)
   useEffect(() => {
     if (session.data?.user) {
-      const baUser = session.data.user;
+      const baUser = session.data.user as any;
       const userObj: User = {
         id: baUser.id,
         name: baUser.name,
         email: baUser.email,
         photoURL: baUser.image || '/client-review-1.jpg',
-        role: 'designer',
+        role: baUser.role || 'customer',
       };
 
       const sessionPayload = session.data as unknown as BetterAuthPayload;
       const authToken =
-      sessionPayload?.session?.token ||
+        sessionPayload?.session?.token ||
         sessionPayload?.token ||
         sessionPayload?.session?.id;
 
@@ -92,6 +93,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .then((r) => r.json())
         .then((data) => {
           if (data?.token) setToken(data.token);
+          if (data?.user?.role) {
+            setUser((prev) => {
+              const updated = {
+                ...(prev || userObj),
+                role: data.user.role,
+              };
+              localStorage.setItem('clothspace_user', JSON.stringify(updated));
+              return updated;
+            });
+          }
         })
         .catch(() => { });
 
@@ -100,11 +111,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Asynchronous state synchronization to avoid cascading renders
       queueMicrotask(() => {
         setUser((prev) => {
-          if (prev?.id === userObj.id && prev?.email === userObj.email) return prev;
+          if (prev?.id === userObj.id && prev?.email === userObj.email && prev?.role === userObj.role) {
+            return prev;
+          }
           return userObj;
         });
         setLoading(false);
       });
+
+      // Synchronize latest role from database
+      api.get('/api/auth/me')
+        .then((res) => {
+          if (res?.success && res.user) {
+            setUser(res.user);
+            localStorage.setItem('clothspace_user', JSON.stringify(res.user));
+          }
+        })
+        .catch(() => { });
     }
   }, [session.data]);
 
@@ -123,11 +146,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 name: tokenRes.user.name,
                 email: tokenRes.user.email,
                 photoURL: tokenRes.user.image || '/client-review-1.jpg',
-                role: 'designer',
+                role: tokenRes.user.role || 'customer',
               };
               setUser(userObj);
               localStorage.setItem('clothspace_user', JSON.stringify(userObj));
               setLoading(false);
+
+              // Background fetch latest user permissions from database
+              api.get('/api/auth/me')
+                .then((meRes) => {
+                  if (meRes?.success && meRes.user) {
+                    setUser(meRes.user);
+                    localStorage.setItem('clothspace_user', JSON.stringify(meRes.user));
+                  }
+                })
+                .catch(() => { });
               return;
             }
           }
@@ -139,18 +172,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
           const sessionRes = await authClient.getSession();
           if (sessionRes?.data?.user) {
-            const baUser = sessionRes.data.user;
+            const baUser = sessionRes.data.user as any;
             const userObj: User = {
               id: baUser.id,
               name: baUser.name,
               email: baUser.email,
               photoURL: baUser.image || '/client-review-1.jpg',
-              role: 'designer',
+              role: baUser.role || 'customer',
             };
             setUser(userObj);
             const sessionPayload = sessionRes.data as unknown as BetterAuthPayload;
             const authToken =
-            sessionPayload?.session?.token ||
+              sessionPayload?.session?.token ||
               sessionPayload?.token ||
               sessionPayload?.session?.id;
             if (authToken) {
@@ -158,6 +191,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             }
             localStorage.setItem('clothspace_user', JSON.stringify(userObj));
             setLoading(false);
+
+            api.get('/api/auth/me')
+              .then((meRes) => {
+                if (meRes?.success && meRes.user) {
+                  setUser(meRes.user);
+                  localStorage.setItem('clothspace_user', JSON.stringify(meRes.user));
+                }
+              })
+              .catch(() => { });
             return;
           }
         } catch (baErr) {
@@ -208,18 +250,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
 
         if (res && !res.error && res.data?.user) {
-          const baUser = res.data.user;
+          const baUser = res.data.user as any;
           const userObj: User = {
             id: baUser.id,
             name: baUser.name,
             email: baUser.email,
             photoURL: baUser.image || '/client-review-1.jpg',
-            role: 'designer',
+            role: baUser.role || 'customer',
           };
           setUser(userObj);
           const dataPayload = res.data as unknown as BetterAuthPayload;
           const authToken =
-          dataPayload?.token ||
+            dataPayload?.token ||
             dataPayload?.session?.token ||
             dataPayload?.session?.id;
           if (authToken) {
@@ -233,6 +275,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               .catch(() => { });
           }
           localStorage.setItem('clothspace_user', JSON.stringify(userObj));
+
+          // Fetch fresh permissions
+          api.get('/api/auth/me')
+            .then((meRes) => {
+              if (meRes?.success && meRes.user) {
+                setUser(meRes.user);
+                localStorage.setItem('clothspace_user', JSON.stringify(meRes.user));
+              }
+            })
+            .catch(() => { });
+
           toast.success(`Welcome back, ${userObj.name}!`, { id: 'auth-toast' });
           return true;
         }
@@ -277,18 +330,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
 
         if (res && !res.error && res.data?.user) {
-          const baUser = res.data.user;
+          const baUser = res.data.user as any;
           const userObj: User = {
             id: baUser.id,
             name: baUser.name,
             email: baUser.email,
             photoURL: baUser.image || defaultPhoto,
-            role: 'designer',
+            role: 'customer',
           };
           setUser(userObj);
           const dataPayload = res.data as unknown as BetterAuthPayload;
           const authToken =
-          dataPayload?.token ||
+            dataPayload?.token ||
             dataPayload?.session?.token ||
             dataPayload?.session?.id;
           if (authToken) {
@@ -303,7 +356,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
           localStorage.setItem('clothspace_user', JSON.stringify(userObj));
 
-          // Also notify backend registration so legacy collections stay in sync
+          // Also notify backend registration so collections stay in sync
           await api.post('/api/auth/register', {
             name: name.trim(),
             email: normalizedEmail,
@@ -349,66 +402,66 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         ? callbackUrl
         : `${origin}${callbackUrl.startsWith('/') ? callbackUrl : `/${callbackUrl}`}`;
 
-    await authClient.signIn.social({
-      provider: 'google',
-      callbackURL: cleanCallback,
-    });
-    return true;
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : 'Google authentication failed.';
-    toast.error(message);
-    return false;
-  }
-};
+      await authClient.signIn.social({
+        provider: 'google',
+        callbackURL: cleanCallback,
+      });
+      return true;
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Google authentication failed.';
+      toast.error(message);
+      return false;
+    }
+  };
 
-const quickLoginExaminer = async (): Promise<boolean> => {
-  try {
-    return await login('examiner@clothspace.com', 'ClothSpace2026!');
-  } catch {
-    toast.error('Quick test login failed.');
-    return false;
-  }
-};
+  const quickLoginExaminer = async (): Promise<boolean> => {
+    try {
+      return await login('examiner@clothspace.com', 'ClothSpace2026!');
+    } catch {
+      toast.error('Quick test login failed.');
+      return false;
+    }
+  };
 
-    const logout = async () => {
+  const logout = async () => {
+    try {
       try {
-        try {
-          await authClient.signOut();
-        } catch (baSignOutErr) {
-          console.warn('Better-Auth signOut error:', baSignOutErr);
-        }
-        await api.post('/api/auth/logout').catch(() => { });
-      } finally {
-        setUser(null);
-        removeToken();
-        toast.success('You have been signed out.', { id: 'auth-toast' });
+        await authClient.signOut();
+      } catch (baSignOutErr) {
+        console.warn('Better-Auth signOut error:', baSignOutErr);
       }
-};
+      await api.post('/api/auth/logout').catch(() => { });
+    } finally {
+      setUser(null);
+      removeToken();
+      toast.success('You have been signed out.', { id: 'auth-toast' });
+    }
+  };
 
-const updateUser = (updated: Partial<User>) => {
-  if (user) {
-    const next = { ...user, ...updated };
-    setUser(next);
-    localStorage.setItem('clothspace_user', JSON.stringify(next));
-  }
-};
+  const updateUser = (updated: Partial<User>) => {
+    if (user) {
+      const next = { ...user, ...updated };
+      setUser(next);
+      localStorage.setItem('clothspace_user', JSON.stringify(next));
+    }
+  };
 
-return (
-  <AuthContext.Provider
-    value={{
-      user,
-      loading,
-      login,
-      register,
-      loginWithGoogle,
-      quickLoginExaminer,
-      logout,
-      updateUser,
-    }}
-  >
-    {children}
-  </AuthContext.Provider>
-);
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        login,
+        register,
+        loginWithGoogle,
+        quickLoginExaminer,
+        logout,
+        updateUser,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {

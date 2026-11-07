@@ -14,7 +14,6 @@ import {
   CheckCircle,
   Shirt,
   Scissors,
-  Layers,
   Compass,
   Star,
   X
@@ -91,44 +90,6 @@ export default function HomePage() {
     setSearchResults(null);
   };
 
-  const categories = [
-    {
-      name: 'Shirts',
-      description: 'Tailored formal pinstripes, oxford weaves, and breathable chambray workshirts.',
-      image: '/image-1.jpg',
-      count: '5 pieces',
-      slug: 'Shirts',
-    },
-    {
-      name: 'Katua',
-      description: 'Traditional crafted silhouettes with lightweight natural fabrics.',
-      image: '/image-2.jpg',
-      count: 'Coming soon',
-      slug: 'Katua',
-    },
-    {
-      name: 'Panjabi',
-      description: 'Semi-fitted, kabli, and premium cotton artisan tailored cuts.',
-      image: '/image-3.jpg',
-      count: 'Coming soon',
-      slug: 'Panjabi',
-    },
-    {
-      name: 'T-Shirt',
-      description: 'Heavyweight organic cotton crewnecks and relaxed essentials.',
-      image: '/image-4.jpg',
-      count: 'Coming soon',
-      slug: 'T-Shirt',
-    },
-    {
-      name: 'Pant',
-      description: 'Tailored trousers, breathable everyday chinos, and durable denim.',
-      image: '/image-5.jpg',
-      count: 'Coming soon',
-      slug: 'Pant',
-    },
-  ];
-
   return (
     <div id="home-top" className="flex flex-col w-full max-w-full overflow-x-hidden space-y-12 sm:space-y-16 md:space-y-24 pb-20 scroll-mt-20">
       {/* Clean Full-Width Hero Visual Slider */}
@@ -185,50 +146,6 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* 3. Browse by Clothing Categories */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-bold uppercase tracking-wider mb-2">
-            <Layers className="w-3.5 h-3.5" />
-            <span>Apparel Collections</span>
-          </div>
-          <h2 className="font-heading font-black text-2xl sm:text-3xl md:text-4xl text-foreground">
-            Browse by Clothing Categories
-          </h2>
-          <p className="text-sm text-muted-foreground mt-1.5">
-            Filter our peer-to-peer inventory by garment taxonomy, tailoring style, and occasion.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-6">
-          {categories.map((cat) => (
-            <Link
-              key={cat.slug}
-              href={`/clothes?category=${encodeURIComponent(cat.slug)}`}
-              className="group relative flex flex-col justify-end p-5 rounded-2xl overflow-hidden border border-border/80 bg-card hover:border-rose-500/60 shadow-sm hover:shadow-xl transition-all duration-300 min-h-[260px]"
-            >
-              <img
-                src={cat.image}
-                alt={cat.name}
-                className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 filter brightness-[0.6] contrast-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-
-              <div className="relative z-10 space-y-1.5 text-white">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-rose-300">
-                  {cat.count}
-                </span>
-                <h3 className="font-heading font-bold text-lg text-white group-hover:text-[#1C3B27] transition-colors">
-                  {cat.name}
-                </h3>
-                <p className="text-[11px] text-slate-300 line-clamp-2 leading-relaxed font-light">
-                  {cat.description}
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
 
       {/* 4. Extra Section 1: How Ordering Works (4-Step Workflow) */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-8">

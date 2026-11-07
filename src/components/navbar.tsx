@@ -309,37 +309,56 @@ export function Navbar() {
                       <div className="absolute right-0 pt-2 w-72 z-50 animate-in fade-in zoom-in-95 duration-150">
                         <div className="rounded-2xl border border-border bg-card p-2.5 shadow-2xl">
                           <div className="px-3.5 py-2.5 border-b border-border/60 mb-1 bg-muted/40 rounded-xl">
-                            <p className="text-sm font-bold text-foreground truncate">{user.name}</p>
-                            <p className="text-xs text-rose-600 dark:text-rose-400 font-medium truncate">{user.email}</p>
+                            <div className="flex items-center justify-between gap-2">
+                              <p className="text-sm font-bold text-foreground truncate">{user.name}</p>
+                              <span
+                                className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${
+                                  user.role === 'admin'
+                                    ? 'bg-rose-500/10 text-rose-600 border border-rose-500/20'
+                                    : 'bg-muted text-muted-foreground'
+                                }`}
+                              >
+                                {user.role === 'admin' ? 'Admin' : 'Customer'}
+                              </span>
+                            </div>
+                            <p className="text-xs text-rose-600 dark:text-rose-400 font-medium truncate mt-0.5">{user.email}</p>
                           </div>
 
-                          <Link
-                            href="/dashboard"
-                            onClick={() => setDropdownOpen(false)}
-                            className="flex items-center gap-3 px-3.5 py-2.5 text-xs sm:text-sm font-medium text-foreground rounded-lg hover:bg-accent transition-colors"
-                          >
-                            <LayoutDashboard className="w-4.5 h-4.5 text-rose-500" />
-                            Dashboard
-                          </Link>
+                          {/* Admin Only Navigation Links */}
+                          {user.role === 'admin' && (
+                            <>
+                              <Link
+                                href="/dashboard"
+                                onClick={() => setDropdownOpen(false)}
+                                className="flex items-center gap-3 px-3.5 py-2.5 text-xs sm:text-sm font-medium text-foreground rounded-lg hover:bg-accent transition-colors"
+                              >
+                                <LayoutDashboard className="w-4.5 h-4.5 text-rose-500" />
+                                Admin Dashboard
+                              </Link>
 
-                          <Link
-                            href="/add-cloth"
-                            onClick={() => setDropdownOpen(false)}
-                            className="flex items-center gap-3 px-3.5 py-2.5 text-xs sm:text-sm font-medium text-foreground rounded-lg hover:bg-accent transition-colors"
-                          >
-                            <PlusCircle className="w-4.5 h-4.5 text-rose-500" />
-                            Add Clothing
-                          </Link>
+                              <Link
+                                href="/add-cloth"
+                                onClick={() => setDropdownOpen(false)}
+                                className="flex items-center gap-3 px-3.5 py-2.5 text-xs sm:text-sm font-medium text-foreground rounded-lg hover:bg-accent transition-colors"
+                              >
+                                <PlusCircle className="w-4.5 h-4.5 text-rose-500" />
+                                Add Clothing
+                              </Link>
 
-                          <Link
-                            href="/my-listings"
-                            onClick={() => setDropdownOpen(false)}
-                            className="flex items-center gap-3 px-3.5 py-2.5 text-xs sm:text-sm font-medium text-foreground rounded-lg hover:bg-accent transition-colors"
-                          >
-                            <Package className="w-4.5 h-4.5 text-amber-500" />
-                            My Listings
-                          </Link>
+                              <Link
+                                href="/my-listings"
+                                onClick={() => setDropdownOpen(false)}
+                                className="flex items-center gap-3 px-3.5 py-2.5 text-xs sm:text-sm font-medium text-foreground rounded-lg hover:bg-accent transition-colors"
+                              >
+                                <Package className="w-4.5 h-4.5 text-amber-500" />
+                                Manage Products
+                              </Link>
 
+                              <div className="border-t border-border/40 my-1" />
+                            </>
+                          )}
+
+                          {/* Customer & Shared Links */}
                           <Link
                             href="/my-orders"
                             onClick={() => setDropdownOpen(false)}
@@ -575,10 +594,10 @@ export function Navbar() {
               })}
             </div>
 
-            {/* Optional Bottom User Section if logged in */}
-            {
-              user && (
-                <div className="p-4 border-t border-border/40 bg-muted/20 shrink-0 flex items-center justify-between">
+            {/* Bottom User Section in Mobile Drawer */}
+            {user && (
+              <div className="border-t border-border/40 bg-muted/20 shrink-0 p-4 space-y-3">
+                <div className="flex items-center justify-between gap-2.5">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <Image
                       src={user.photoURL || '/client-review-1.jpg'}
@@ -589,7 +608,18 @@ export function Navbar() {
                       className="w-8 h-8 rounded-full object-cover border border-border shrink-0"
                     />
                     <div className="min-w-0 truncate">
-                      <p className="text-xs font-semibold text-foreground truncate">{user.name}</p>
+                      <div className="flex items-center gap-1.5">
+                        <p className="text-xs font-semibold text-foreground truncate">{user.name}</p>
+                        <span
+                          className={`text-[9px] font-bold px-1.5 py-0.2 rounded uppercase ${
+                            user.role === 'admin'
+                              ? 'bg-rose-500/10 text-rose-600'
+                              : 'bg-muted text-muted-foreground'
+                          }`}
+                        >
+                          {user.role === 'admin' ? 'Admin' : 'Customer'}
+                        </span>
+                      </div>
                       <p className="text-[10px] text-muted-foreground truncate">{user.email}</p>
                     </div>
                   </div>
@@ -599,12 +629,64 @@ export function Navbar() {
                       logout();
                       setMobileMenuOpen(false);
                     }}
-                    className="text-xs text-rose-500 hover:text-rose-600 font-semibold px-2 py-1 cursor-pointer"
+                    className="text-xs text-rose-500 hover:text-rose-600 font-semibold px-2 py-1 cursor-pointer shrink-0"
                   >
                     Sign out
                   </button>
                 </div>
-              )}
+
+                {/* Mobile Drawer Quick Links */}
+                <div className="grid grid-cols-2 gap-2 pt-1 border-t border-border/40">
+                  {user.role === 'admin' ? (
+                    <>
+                      <Link
+                        href="/dashboard"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center gap-2 px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-card border border-border hover:bg-accent text-foreground"
+                      >
+                        <LayoutDashboard className="w-3.5 h-3.5 text-rose-500" />
+                        Dashboard
+                      </Link>
+                      <Link
+                        href="/add-cloth"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center gap-2 px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-card border border-border hover:bg-accent text-foreground"
+                      >
+                        <PlusCircle className="w-3.5 h-3.5 text-rose-500" />
+                        Add Cloth
+                      </Link>
+                      <Link
+                        href="/my-listings"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="col-span-2 flex items-center justify-center gap-2 px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-card border border-border hover:bg-accent text-foreground"
+                      >
+                        <Package className="w-3.5 h-3.5 text-amber-500" />
+                        Manage All Products
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        href="/my-orders"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center gap-2 px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-card border border-border hover:bg-accent text-foreground"
+                      >
+                        <ShoppingBag className="w-3.5 h-3.5 text-blue-500" />
+                        My Orders
+                      </Link>
+                      <Link
+                        href="/clothes?wishlist=true"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center gap-2 px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-card border border-border hover:bg-accent text-foreground"
+                      >
+                        <Heart className="w-3.5 h-3.5 text-rose-500" />
+                        Wishlist ({wishlistIds.length})
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -659,11 +741,13 @@ export function Navbar() {
 
           {/* Tab 4: Login / Account */}
           <Link
-            href={user ? '/dashboard' : '/login'}
+            href={user ? (user.role === 'admin' ? '/dashboard' : '/my-orders') : '/login'}
             className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#1C3B27] transition-colors cursor-pointer w-full"
           >
             <UserIcon className="w-5 h-5" />
-            <span className="text-[11px] font-medium leading-none">{user ? 'Account' : 'Login'}</span>
+            <span className="text-[11px] font-medium leading-none">
+              {user ? (user.role === 'admin' ? 'Admin' : 'Account') : 'Login'}
+            </span>
           </Link>
         </div>
       </nav>
