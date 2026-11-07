@@ -17,7 +17,8 @@ function EditClothContent() {
   const { user, loading: authLoading } = useAuth();
 
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('Streetwear');
+  const [category, setCategory] = useState('Shirts');
+  const [subCategory, setSubCategory] = useState('Classic Fit');
   const [price, setPrice] = useState('');
   const [stock, setStock] = useState('');
   const [sizes, setSizes] = useState<string[]>([]);
@@ -52,7 +53,8 @@ function EditClothContent() {
         if (res.success && res.data) {
           const item = res.data;
           setTitle(item.title || '');
-          setCategory(item.category || 'Streetwear');
+          setCategory(item.category || 'Shirts');
+          setSubCategory(item.subCategory || 'Classic Fit');
           setPrice(String(item.price || ''));
           setStock(String(item.stock || ''));
           setSizes(item.sizes || ['M', 'L']);
@@ -76,13 +78,21 @@ function EditClothContent() {
   }, [id, user, router]);
 
   const categoryOptions = [
-    'Streetwear',
-    'Formal Wear',
-    'Casual Essentials',
-    'Vintage & Retro',
-    'Handcrafted Knitwear',
-    'Outerwear',
+    'Shirts',
+    'Katua',
+    'Panjabi',
+    'T-Shirt',
+    'Polo Shirt',
+    'Pant',
+    'Winter',
   ];
+
+  const subCategoryOptions: Record<string, string[]> = {
+    Shirts: ['Classic Fit', 'Formal Shirt', 'Half Sleeve', 'Over Shirt'],
+    Panjabi: ['Semi-Fitted Panjabi', 'Kabli Panjabi', 'Premium Cotton Panjabi', 'Silk Panjabi'],
+    Pant: ['Chino Pant', 'Formal Trouser', 'Denim Jeans', 'Cargo Pant'],
+    Winter: ['Hoodies & Sweatshirts', 'Jackets & Windbreakers', 'Sweaters & Knitwear', 'Blazers & Overcoats'],
+  };
 
   const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
@@ -181,6 +191,7 @@ function EditClothContent() {
       const res = await api.put(`/api/clothes/${id}`, {
         title: title.trim(),
         category,
+        subCategory,
         price: Number(price),
         stock: Number(stock),
         sizes,
@@ -294,8 +305,8 @@ function EditClothContent() {
           </div>
         </div>
 
-        {/* Title & Category */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Title, Category & Subcategory */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <label className="block text-xs font-bold text-foreground mb-1.5">
               Clothing Title <span className="text-rose-500">*</span>
@@ -315,7 +326,16 @@ function EditClothContent() {
             </label>
             <select
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => {
+                const newCat = e.target.value;
+                setCategory(newCat);
+                const subOpts = subCategoryOptions[newCat];
+                if (subOpts && subOpts.length > 0) {
+                  setSubCategory(subOpts[0]);
+                } else {
+                  setSubCategory('Standard');
+                }
+              }}
               className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-foreground"
             >
               {categoryOptions.map((cat) => (
@@ -324,6 +344,33 @@ function EditClothContent() {
                 </option>
               ))}
             </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-foreground mb-1.5">
+              Subcategory <span className="text-rose-500">*</span>
+            </label>
+            {subCategoryOptions[category] && subCategoryOptions[category].length > 0 ? (
+              <select
+                value={subCategory}
+                onChange={(e) => setSubCategory(e.target.value)}
+                className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-foreground"
+              >
+                {subCategoryOptions[category].map((sub) => (
+                  <option key={sub} value={sub}>
+                    {sub}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                type="text"
+                value={subCategory}
+                onChange={(e) => setSubCategory(e.target.value)}
+                placeholder="e.g. Standard"
+                className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-foreground"
+              />
+            )}
           </div>
         </div>
 

@@ -14,7 +14,8 @@ export default function AddClothPage() {
   const { user, loading: authLoading } = useAuth();
 
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('Streetwear');
+  const [category, setCategory] = useState('Shirts');
+  const [subCategory, setSubCategory] = useState('Classic Fit');
   const [price, setPrice] = useState('');
   const [stock, setStock] = useState('5');
   const [sizes, setSizes] = useState<string[]>(['M', 'L']);
@@ -87,13 +88,21 @@ export default function AddClothPage() {
   }
 
   const categoryOptions = [
-    'Streetwear',
-    'Formal Wear',
-    'Casual Essentials',
-    'Vintage & Retro',
-    'Handcrafted Knitwear',
-    'Outerwear',
+    'Shirts',
+    'Katua',
+    'Panjabi',
+    'T-Shirt',
+    'Polo Shirt',
+    'Pant',
+    'Winter',
   ];
+
+  const subCategoryOptions: Record<string, string[]> = {
+    Shirts: ['Classic Fit', 'Formal Shirt', 'Half Sleeve', 'Over Shirt'],
+    Panjabi: ['Semi-Fitted Panjabi', 'Kabli Panjabi', 'Premium Cotton Panjabi', 'Silk Panjabi'],
+    Pant: ['Chino Pant', 'Formal Trouser', 'Denim Jeans', 'Cargo Pant'],
+    Winter: ['Hoodies & Sweatshirts', 'Jackets & Windbreakers', 'Sweaters & Knitwear', 'Blazers & Overcoats'],
+  };
 
   const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
@@ -198,6 +207,7 @@ export default function AddClothPage() {
       const res = await api.post('/api/clothes', {
         title: title.trim(),
         category,
+        subCategory,
         price: Number(price),
         stock: Number(stock),
         sizes,
@@ -266,8 +276,8 @@ export default function AddClothPage() {
           </div>
         </div>
 
-        {/* Title & Category */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Title, Category & Subcategory */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <label className="block text-xs font-bold text-foreground mb-1.5">
               Clothing Title <span className="text-rose-500">*</span>
@@ -277,7 +287,7 @@ export default function AddClothPage() {
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. Bespoke Italian Wool Overcoat"
+              placeholder="e.g. AYRO Classic Fit Shirt"
               className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-foreground"
             />
           </div>
@@ -288,7 +298,16 @@ export default function AddClothPage() {
             </label>
             <select
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => {
+                const newCat = e.target.value;
+                setCategory(newCat);
+                const subOpts = subCategoryOptions[newCat];
+                if (subOpts && subOpts.length > 0) {
+                  setSubCategory(subOpts[0]);
+                } else {
+                  setSubCategory('Standard');
+                }
+              }}
               className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-foreground"
             >
               {categoryOptions.map((cat) => (
@@ -297,6 +316,33 @@ export default function AddClothPage() {
                 </option>
               ))}
             </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-foreground mb-1.5">
+              Subcategory <span className="text-rose-500">*</span>
+            </label>
+            {subCategoryOptions[category] && subCategoryOptions[category].length > 0 ? (
+              <select
+                value={subCategory}
+                onChange={(e) => setSubCategory(e.target.value)}
+                className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-foreground"
+              >
+                {subCategoryOptions[category].map((sub) => (
+                  <option key={sub} value={sub}>
+                    {sub}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                type="text"
+                value={subCategory}
+                onChange={(e) => setSubCategory(e.target.value)}
+                placeholder="e.g. Standard"
+                className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-foreground"
+              />
+            )}
           </div>
         </div>
 

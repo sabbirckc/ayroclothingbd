@@ -40,10 +40,10 @@ const CATEGORY_NAV: CategoryNav[] = [
     name: 'Shirts',
     href: '/clothes?category=Shirts',
     subcategories: [
-      { name: 'Classic Fit', href: '/clothes?category=Shirts&search=Classic+Fit' },
-      { name: 'Formal Shirt', href: '/clothes?category=Shirts&search=Formal+Shirt' },
-      { name: 'Half Sleeve', href: '/clothes?category=Shirts&search=Half+Sleeve' },
-      { name: 'Over Shirt', href: '/clothes?category=Shirts&search=Over+Shirt' },
+      { name: 'Classic Fit', href: '/clothes?category=Shirts&subCategory=Classic+Fit' },
+      { name: 'Formal Shirt', href: '/clothes?category=Shirts&subCategory=Formal+Shirt' },
+      { name: 'Half Sleeve', href: '/clothes?category=Shirts&subCategory=Half+Sleeve' },
+      { name: 'Over Shirt', href: '/clothes?category=Shirts&subCategory=Over+Shirt' },
     ],
   },
   {
