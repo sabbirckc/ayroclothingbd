@@ -88,7 +88,7 @@ export default function RegisterPage() {
             Home
           </Link>
           <span>&gt;</span>
-          <span className="text-[#b57a48] font-medium">Register for an account</span>
+          <span className="text-[#1C3B27] font-medium">Register for an account</span>
         </div>
       </div>
 
@@ -241,7 +241,7 @@ export default function RegisterPage() {
                 Already have account?{' '}
                 <Link
                   href="/login"
-                  className="font-bold text-[#b57a48] hover:underline"
+                  className="font-bold text-[#1C3B27] hover:underline"
                 >
                   Login Now!
                 </Link>

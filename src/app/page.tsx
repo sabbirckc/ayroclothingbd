@@ -220,7 +220,7 @@ export default function HomePage() {
                 <span className="text-[10px] font-bold uppercase tracking-widest text-rose-300">
                   {cat.count}
                 </span>
-                <h3 className="font-heading font-bold text-lg text-white group-hover:text-rose-400 transition-colors">
+                <h3 className="font-heading font-bold text-lg text-white group-hover:text-[#1C3B27] transition-colors">
                   {cat.name}
                 </h3>
                 <p className="text-[11px] text-slate-300 line-clamp-2 leading-relaxed font-light">

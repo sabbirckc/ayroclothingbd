@@ -31,7 +31,7 @@ export function ClothCard({ item }: { item: ClothItem }) {
   const isOutOfStock = Number(item.stock) <= 0;
 
   return (
-    <div className="group relative flex flex-col h-full rounded-2xl border border-border/80 bg-card hover:border-rose-500/50 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
+    <div className="group relative flex flex-col h-full rounded-2xl border border-border/80 bg-card hover:border-[#1C3B27]/40 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
       {/* Image Container with fixed uniform aspect ratio */}
       <div className="relative w-full aspect-[4/5] bg-muted overflow-hidden">
         <img
@@ -53,8 +53,8 @@ export function ClothCard({ item }: { item: ClothItem }) {
           }}
           aria-label={isSaved ? 'Remove from wishlist' : 'Add to wishlist'}
           className={`absolute top-3 right-3 z-10 w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md border transition-all ${isSaved
-            ? 'bg-rose-600 border-rose-600 text-white shadow-md'
-            : 'bg-background/80 hover:bg-background border-border text-muted-foreground hover:text-rose-500'
+            ? 'bg-[#1C3B27] border-[#1C3B27] text-white shadow-md'
+            : 'bg-background/80 hover:bg-background border-border text-muted-foreground hover:text-[#1C3B27]'
             }`}
         >
           <Heart className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
@@ -81,7 +81,7 @@ export function ClothCard({ item }: { item: ClothItem }) {
         {/* Title & Star Rating */}
         <div className="flex items-center justify-between gap-2">
           <Link href={`/clothes/${clothId}`} className="block flex-1 min-w-0">
-            <h3 className="font-heading font-bold text-base text-foreground group-hover:text-rose-600 transition-colors line-clamp-1">
+            <h3 className="font-heading font-bold text-base text-foreground group-hover:text-[#1C3B27] transition-colors line-clamp-1">
               {item.title}
             </h3>
           </Link>
@@ -99,7 +99,7 @@ export function ClothCard({ item }: { item: ClothItem }) {
 
           <Link
             href={`/clothes/${clothId}`}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-xl bg-primary text-primary-foreground hover:bg-rose-600 hover:text-white transition-all shadow-sm"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-xl bg-[#1C3B27] text-white hover:bg-[#152e1e] hover:text-white transition-all shadow-sm"
           >
             <span>View Details</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
@@ -107,6 +107,6 @@ export function ClothCard({ item }: { item: ClothItem }) {
         </div>
       </div>
     </div>
-  );
+      );
 }
 

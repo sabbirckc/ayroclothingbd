@@ -56,7 +56,7 @@ function LoginFormContent() {
             Home
           </Link>
           <span>&gt;</span>
-          <span className="text-[#b57a48] font-medium">Login to your Account</span>
+          <span className="text-[#1C3B27] font-medium">Login to your Account</span>
         </div>
       </div>
 
@@ -133,7 +133,7 @@ function LoginFormContent() {
                 Don&apos;t have account?{' '}
                 <Link
                   href="/register"
-                  className="font-bold text-[#b57a48] hover:underline"
+                  className="font-bold text-[#1C3B27] hover:underline"
                 >
                   Sign Up Now!
                 </Link>
@@ -143,7 +143,7 @@ function LoginFormContent() {
                 <button
                   type="button"
                   onClick={() => toast.info('Password reset instructions will be sent to your registered email.')}
-                  className="text-xs text-muted-foreground hover:text-[#b57a48] transition-colors cursor-pointer"
+                  className="text-xs text-muted-foreground hover:text-[#1C3B27] transition-colors cursor-pointer"
                 >
                   Forgot Password!
                 </button>

@@ -303,7 +303,7 @@ const getStatusBadge = (status: string) => {
                     <button
                       onClick={() => handleCancelOrder(orderId)}
                       disabled={cancellingId === orderId}
-                      className="text-xs font-bold text-rose-600 hover:text-rose-500 flex items-center gap-1.5 self-start sm:self-auto disabled:opacity-50"
+                      className="text-xs font-bold text-rose-600 hover:text-[#1C3B27] flex items-center gap-1.5 self-start sm:self-auto disabled:opacity-50"
                     >
                       <RotateCcw className="w-3.5 h-3.5" />
                       <span>{cancellingId === orderId ? 'Restoring Stock...' : 'Cancel Order'}</span>

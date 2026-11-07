@@ -449,7 +449,7 @@ export default function AddClothPage() {
                         setImage('');
                         setSelectedFileName('');
                       }}
-                      className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg border border-border text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg border border-border text-muted-foreground hover:text-[#1C3B27] hover:bg-[#1C3B27]/10 transition-colors cursor-pointer"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                       <span>Clear</span>
@@ -465,7 +465,7 @@ export default function AddClothPage() {
                 <div className="w-14 h-14 rounded-2xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                   <UploadCloud className="w-7 h-7" />
                 </div>
-                <p className="text-xs font-bold text-foreground group-hover:text-rose-600 transition-colors">
+                <p className="text-xs font-bold text-foreground group-hover:text-[#1C3B27] transition-colors">
                   {uploadingImage ? 'Uploading photo...' : 'Click to import image from your device'}
                 </p>
                 <p className="text-[11px] text-muted-foreground mt-1">

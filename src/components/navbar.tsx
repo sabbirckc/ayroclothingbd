@@ -18,6 +18,7 @@ import {
   Search,
   LayoutDashboard,
   User as UserIcon,
+  Home,
   Phone,
   Plus,
   Minus,
@@ -256,11 +257,11 @@ export function Navbar() {
                   <Link
                     href="/clothes?wishlist=true"
                     aria-label="Wishlist"
-                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors relative shrink-0"
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-[#1C3B27] hover:bg-[#1C3B27]/10 transition-colors relative shrink-0"
                   >
                     <Heart className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
                     {wishlistIds.length > 0 && (
-                      <span className="absolute -top-1 -right-1 w-4.5 h-4.5 bg-rose-600 text-[10px] text-white font-bold rounded-full flex items-center justify-center shadow-xs">
+                      <span className="absolute -top-1 -right-1 w-4.5 h-4.5 bg-[#1C3B27] text-[10px] text-white font-bold rounded-full flex items-center justify-center shadow-xs">
                         {wishlistIds.length}
                       </span>
                     )}
@@ -401,14 +402,14 @@ export function Navbar() {
                           <Link
                             href="/login"
                             onClick={() => setDropdownOpen(false)}
-                            className="block px-5 py-3 text-sm font-medium text-foreground hover:bg-muted/50 hover:text-[#b57a48] dark:hover:text-[#d49767] transition-colors cursor-pointer"
+                            className="block px-5 py-3 text-sm font-medium text-foreground hover:bg-muted/50 hover:text-[#1C3B27] transition-colors cursor-pointer"
                           >
                             Sign in
                           </Link>
                           <Link
                             href="/register"
                             onClick={() => setDropdownOpen(false)}
-                            className="block px-5 py-3 text-sm font-medium text-foreground hover:bg-muted/50 hover:text-[#b57a48] dark:hover:text-[#d49767] transition-colors cursor-pointer"
+                            className="block px-5 py-3 text-sm font-medium text-foreground hover:bg-muted/50 hover:text-[#1C3B27] transition-colors cursor-pointer"
                           >
                             Register
                           </Link>
@@ -423,7 +424,7 @@ export function Navbar() {
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-foreground hover:text-[#b57a48] transition-colors cursor-pointer shrink-0"
+                className="lg:hidden w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-foreground hover:text-[#1C3B27] transition-colors cursor-pointer shrink-0"
                 aria-label="Open Navigation Menu"
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -444,8 +445,8 @@ export function Navbar() {
                 <Link
                   href={cat.href}
                   className={`text-[13.5px] sm:text-[14px] font-medium tracking-normal transition-colors duration-150 cursor-pointer block select-none px-1 py-0.5 ${activeHoverCategory === cat.name
-                    ? 'text-[#b57a48] dark:text-[#d49767] font-semibold'
-                    : 'text-foreground/90 hover:text-[#b57a48] dark:hover:text-[#d49767]'
+                    ? 'text-[#1C3B27] font-semibold'
+                    : 'text-foreground/90 hover:text-[#1C3B27]'
                     }`}
                 >
                   {cat.name}
@@ -464,7 +465,7 @@ export function Navbar() {
                           key={sub.name}
                           href={sub.href}
                           onClick={() => setActiveHoverCategory(null)}
-                          className={`block px-6 py-3.5 text-[13.5px] font-medium text-foreground hover:bg-muted/50 hover:text-[#b57a48] dark:hover:text-[#d49767] transition-colors cursor-pointer ${idx !== cat.subcategories.length - 1 ? 'border-b border-border/50' : ''
+                          className={`block px-6 py-3.5 text-[13.5px] font-medium text-foreground hover:bg-muted/50 hover:text-[#1C3B27] transition-colors cursor-pointer ${idx !== cat.subcategories.length - 1 ? 'border-b border-border/50' : ''
                             }`}
                         >
                           {sub.name}
@@ -515,7 +516,7 @@ export function Navbar() {
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Close Navigation Menu"
-                className="w-10 h-10 rounded-full bg-[#b57a48] text-white flex items-center justify-center shadow-xs hover:opacity-90 active:scale-95 transition-all cursor-pointer"
+                className="w-10 h-10 rounded-full bg-[#1C3B27] text-white flex items-center justify-center shadow-xs hover:opacity-90 active:scale-95 transition-all cursor-pointer"
               >
                 <X className="w-5 h-5 stroke-[2.2]" />
               </button>
@@ -533,7 +534,7 @@ export function Navbar() {
                       <Link
                         href={cat.href}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="text-[13.5px] sm:text-[14px] font-semibold uppercase tracking-wider text-foreground/90 hover:text-[#b57a48] transition-colors"
+                        className="text-[13.5px] sm:text-[14px] font-semibold uppercase tracking-wider text-foreground/90 hover:text-[#1C3B27] transition-colors"
                       >
                         {cat.name}
                       </Link>
@@ -542,7 +543,7 @@ export function Navbar() {
                         <button
                           type="button"
                           onClick={() => setMobileExpandedCat(isExpanded ? null : cat.name)}
-                          className="w-7 h-7 sm:w-7.5 sm:h-7.5 border border-border/80 flex items-center justify-center text-foreground hover:border-[#b57a48] hover:text-[#b57a48] transition-colors cursor-pointer shrink-0"
+                          className="w-7 h-7 sm:w-7.5 sm:h-7.5 border border-border/80 flex items-center justify-center text-foreground hover:border-[#1C3B27] hover:text-[#1C3B27] transition-colors cursor-pointer shrink-0"
                           aria-label={`Toggle ${cat.name} Subcategories`}
                         >
                           {isExpanded ? (
@@ -562,7 +563,7 @@ export function Navbar() {
                             key={sub.name}
                             href={sub.href}
                             onClick={() => setMobileMenuOpen(false)}
-                            className="block py-1 text-[13px] text-muted-foreground hover:text-[#b57a48] transition-colors"
+                            className="block py-1 text-[13px] text-muted-foreground hover:text-[#1C3B27] transition-colors"
                           >
                             {sub.name}
                           </Link>
@@ -608,51 +609,50 @@ export function Navbar() {
         </div>
       )}
 
-      {/* Fixed Mobile Bottom Navigation Bar (Matches Reference cb41fee6.jpg) */}
+      {/* Fixed Mobile Bottom Navigation Bar */}
       <nav
         aria-label="Mobile Navigation Bar"
         className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-xl border-t border-border/60 px-2 sm:px-6 py-2 shadow-[0_-4px_25px_rgba(0,0,0,0.08)]"
       >
         <div className="w-full grid grid-cols-5 items-center text-center relative">
-          {/* Tab 1: Category */}
+          {/* Tab 1: Home (First button on the left) */}
+          <Link
+            href="/"
+            onClick={(e) => {
+              if (pathname === '/') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.dispatchEvent(new CustomEvent('reset-home-view'));
+              }
+            }}
+            className={`flex flex-col items-center justify-center gap-1 py-1 transition-colors cursor-pointer w-full ${
+              pathname === '/'
+                ? 'text-foreground font-semibold'
+                : 'text-muted-foreground hover:text-[#1C3B27]'
+            }`}
+          >
+            <Home className="w-5 h-5 fill-current" />
+            <span className="text-[11px] font-medium leading-none">Home</span>
+          </Link>
+
+          {/* Tab 2: Category */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#b57a48] transition-colors cursor-pointer w-full"
+            className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#1C3B27] transition-colors cursor-pointer w-full"
           >
             <Menu className="w-5 h-5" />
             <span className="text-[11px] font-medium leading-none">Category</span>
           </button>
 
-          {/* Tab 2: Contact */}
+          {/* Tab 3: Contact */}
           <a
             href="tel:+8801700000000"
-            className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#b57a48] transition-colors cursor-pointer w-full"
+            className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#1C3B27] transition-colors cursor-pointer w-full"
           >
             <Phone className="w-5 h-5" />
             <span className="text-[11px] font-medium leading-none">Contact</span>
           </a>
-
-          {/* Tab 3: AYRO / Home (Elevated Camel Circle Button in Center) */}
-          <div className="flex flex-col items-center justify-center -mt-6 w-full">
-            <Link
-              href="/"
-              onClick={(e) => {
-                if (pathname === '/') {
-                  e.preventDefault();
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                  window.dispatchEvent(new CustomEvent('reset-home-view'));
-                }
-              }}
-              className="w-13 h-13 rounded-full bg-[#b57a48] text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer border-2 border-background"
-              aria-label="AYRO Home"
-            >
-              <span className="font-heading font-black text-[12px] sm:text-[13px] tracking-[0.14em] text-white select-none leading-none">
-                AYRO
-              </span>
-            </Link>
-            <span className="text-[11px] font-semibold text-[#b57a48] mt-1 leading-none">Home</span>
-          </div>
 
           {/* Tab 4: Cart */}
           <Link
@@ -662,7 +662,7 @@ export function Navbar() {
                 toast.error('Please log in to review your orders.', { id: 'auth-required' });
               }
             }}
-            className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#b57a48] transition-colors cursor-pointer w-full"
+            className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#1C3B27] transition-colors cursor-pointer w-full"
           >
             <ShoppingBag className="w-5 h-5" />
             <span className="text-[11px] font-medium leading-none">Cart ({wishlistIds.length > 0 ? wishlistIds.length : 0})</span>
@@ -671,7 +671,7 @@ export function Navbar() {
           {/* Tab 5: Login / Account */}
           <Link
             href={user ? '/dashboard' : '/login'}
-            className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#b57a48] transition-colors cursor-pointer w-full"
+            className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#1C3B27] transition-colors cursor-pointer w-full"
           >
             <UserIcon className="w-5 h-5" />
             <span className="text-[11px] font-medium leading-none">{user ? 'Account' : 'Login'}</span>

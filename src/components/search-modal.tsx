@@ -200,7 +200,7 @@ export function SearchModal() {
                             className="w-11 h-11 rounded-lg object-cover border border-border shrink-0 group-hover:scale-105 transition-transform"
                           />
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs font-bold text-foreground group-hover:text-rose-600 dark:group-hover:text-rose-400 truncate transition-colors">
+                            <p className="text-xs font-bold text-foreground group-hover:text-[#1C3B27] truncate transition-colors">
                               {item.title}
                             </p>
                             <p className="text-[11px] text-muted-foreground truncate mt-0.5">
@@ -237,7 +237,7 @@ export function SearchModal() {
                       setShowSuggestions(false);
                       handleSearchSubmit(e);
                     }}
-                    className="w-full py-2.5 px-4 bg-muted/40 hover:bg-muted text-xs font-semibold text-rose-600 dark:text-rose-400 text-center flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    className="w-full py-2.5 px-4 bg-muted/40 hover:bg-muted text-xs font-semibold text-[#1C3B27] text-center flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
                     <span>View all matching results</span>
                     <ArrowRight className="w-3.5 h-3.5" />

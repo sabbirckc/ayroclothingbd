@@ -194,7 +194,7 @@ export default function MyListingsPage() {
                       </span>
                       <Link
                         href={`/clothes/${itemId}`}
-                        className="font-heading font-bold text-sm text-foreground hover:text-rose-600 transition-colors line-clamp-1 block pt-0.5"
+                        className="font-heading font-bold text-sm text-foreground hover:text-[#1C3B27] transition-colors line-clamp-1 block pt-0.5"
                       >
                         {item.title}
                       </Link>
@@ -252,7 +252,7 @@ export default function MyListingsPage() {
                         type="button"
                         onClick={() => handleDeletePrompt(item)}
                         title="Delete piece"
-                        className="p-1.5 rounded-lg border border-border hover:bg-rose-500/10 text-muted-foreground hover:text-rose-600 transition-colors cursor-pointer"
+                        className="p-1.5 rounded-lg border border-border hover:bg-accent text-muted-foreground hover:text-[#1C3B27] transition-colors cursor-pointer"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -294,7 +294,7 @@ export default function MyListingsPage() {
                             <div className="min-w-0">
                               <Link
                                 href={`/clothes/${itemId}`}
-                                className="font-heading font-bold text-sm text-foreground hover:text-rose-600 transition-colors line-clamp-1"
+                                className="font-heading font-bold text-sm text-foreground hover:text-[#1C3B27] transition-colors line-clamp-1"
                               >
                                 {item.title}
                               </Link>
@@ -370,7 +370,7 @@ export default function MyListingsPage() {
                               type="button"
                               onClick={() => handleDeletePrompt(item)}
                               title="Delete piece"
-                              className="p-2 rounded-lg border border-border hover:bg-rose-500/10 text-muted-foreground hover:text-rose-600 transition-colors"
+                              className="p-2 rounded-lg border border-border hover:bg-accent text-muted-foreground hover:text-[#1C3B27] transition-colors"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
