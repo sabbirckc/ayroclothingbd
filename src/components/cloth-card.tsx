@@ -94,14 +94,6 @@ export function ClothCard({ item }: { item: ClothItem }) {
 
       {/* Content Container below Image */}
       <div className="p-3 sm:p-4 flex flex-col flex-1 items-center text-center justify-between gap-1.5">
-        {/* Button/Link (All Black) */}
-        <Link
-          href={`/clothes/${clothId}`}
-          className="text-black hover:opacity-75 font-bold text-xs sm:text-sm tracking-wider uppercase transition-opacity pt-1 block cursor-pointer"
-        >
-          QUICK VIEW
-        </Link>
-
         {/* Title */}
         <Link href={`/clothes/${clothId}`} className="block w-full">
           <h3 className="font-heading font-medium text-xs sm:text-sm text-black hover:opacity-75 transition-opacity line-clamp-1">
