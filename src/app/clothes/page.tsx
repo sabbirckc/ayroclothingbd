@@ -15,8 +15,12 @@ function ClothesCatalogContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const initialCategory = searchParams.get('category') || 'all';
-  const initialSubCategory = searchParams.get('subCategory') || searchParams.get('subcategory') || '';
+  let initialCategory = searchParams.get('category') || 'all';
+  let initialSubCategory = searchParams.get('subCategory') || searchParams.get('subcategory') || '';
+  if (initialCategory.toLowerCase().includes('classic') && !initialSubCategory) {
+    initialCategory = 'Shirts';
+    initialSubCategory = 'Classic Fit';
+  }
   const initialSearch = searchParams.get('search') || '';
   const initialWishlistOnly = searchParams.get('wishlist') === 'true';
 
@@ -36,8 +40,12 @@ function ClothesCatalogContent() {
   // Sync category, subCategory, search, or wishlist if searchParams change
   useEffect(() => {
     queueMicrotask(() => {
-      const cat = searchParams.get('category') || 'all';
-      const subCat = searchParams.get('subCategory') || searchParams.get('subcategory') || '';
+      let cat = searchParams.get('category') || 'all';
+      let subCat = searchParams.get('subCategory') || searchParams.get('subcategory') || '';
+      if (cat.toLowerCase().includes('classic') && !subCat) {
+        cat = 'Shirts';
+        subCat = 'Classic Fit';
+      }
       const s = searchParams.get('search') || '';
       const wl = searchParams.get('wishlist') === 'true';
       setCategory(cat);
