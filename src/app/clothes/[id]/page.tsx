@@ -323,7 +323,7 @@ return (
             <button
               type="button"
               onClick={() => setSizeChartOpen(true)}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-border bg-card hover:bg-accent text-xs font-semibold text-rose-600 dark:text-rose-400 transition-all cursor-pointer shadow-xs group"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-black/15 bg-white hover:bg-neutral-100 text-xs font-semibold text-black transition-all cursor-pointer shadow-xs group"
               title="Open Sizes Chart & Measurement Guide"
             >
               <Ruler className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform" />

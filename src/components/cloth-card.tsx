@@ -87,38 +87,37 @@ export function ClothCard({ item }: { item: ClothItem }) {
         ) : null}
       </div>
 
-      {/* Content Container below Image - Left-aligned matching reference */}
-      <div className="p-3 sm:p-4 flex flex-col flex-1 items-start text-left justify-between gap-1">
-        {/* Title */}
-        <Link href={`/clothes/${clothId}`} className="block w-full">
-          <h3 className="font-heading font-medium text-xs sm:text-sm text-black hover:opacity-75 transition-opacity line-clamp-2 leading-snug">
-            {item.title}
-          </h3>
-        </Link>
+        {/* Content Container below Image - Left-aligned matching reference */}
+        <div className="p-3 sm:p-4 flex flex-col flex-1 items-start text-left justify-between gap-1">
+          {/* Title */}
+          <Link href={`/clothes/${clothId}`} className="block w-full">
+              <h3 className="font-heading font-medium text-xs sm:text-sm text-black hover:opacity-75 transition-opacity line-clamp-2 leading-snug">
+                {item.title}
+              </h3>
+          </Link>
 
-        {/* 5-Star Rating */}
-        <div className="flex items-center gap-0.5 text-amber-400 my-0.5" aria-label={`Rating: ${item.rating || 0} out of 5 stars`}>
-          {[1, 2, 3, 4, 5].map((star) => {
-            const isFilled = Boolean(item.rating && (item.reviewsCount || 0) > 0 && star <= Math.round(item.rating));
-            return (
-              <Star
-                key={star}
-                className={`w-3.5 h-3.5 ${
-                  isFilled ? 'fill-amber-400 text-amber-400' : 'text-amber-400 fill-transparent'
-                }`}
-                strokeWidth={1.5}
-              />
-            );
-          })}
-        </div>
+          {/* 5-Star Rating */}
+          <div className="flex items-center gap-0.5 text-amber-400 my-0.5" aria-label={`Rating: ${item.rating || 0} out of 5 stars`}>
+            {[1, 2, 3, 4, 5].map((star) => {
+              const isFilled = Boolean(item.rating && (item.reviewsCount || 0) > 0 && star <= Math.round(item.rating));
+              return (
+                <Star
+                  key={star}
+                  className={`w-3.5 h-3.5 ${isFilled ? 'fill-amber-400 text-amber-400' : 'text-amber-400 fill-transparent'
+                    }`}
+                  strokeWidth={1.5}
+                />
+              );
+            })}
+          </div>
 
-        {/* Price: ৳ */}
-        <div className="pt-0.5">
-          <span className="font-bold text-xs sm:text-sm text-black font-sans">
-            ৳ {currentPrice.toLocaleString('en-US')}
-          </span>
+          {/* Price: ৳ */}
+          <div className="pt-0.5">
+              <span className="font-bold text-xs sm:text-sm text-black font-sans">
+                ৳ {currentPrice.toLocaleString('en-US')}
+              </span>
+          </div>
         </div>
       </div>
-    </div>
-  );
+      );
 }

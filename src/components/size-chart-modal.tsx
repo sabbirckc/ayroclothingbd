@@ -24,13 +24,10 @@ interface SizeRow {
 }
 
 const TOPS_SIZES: SizeRow[] = [
-  { size: 'XS', chestIn: '36 - 38', chestCm: '91 - 96', lengthIn: '26.5', lengthCm: '67', shoulderIn: '16.5', shoulderCm: '42', sleeveIn: '24.0', sleeveCm: '61' },
-  { size: 'S', chestIn: '38 - 40', chestCm: '96 - 101', lengthIn: '27.5', lengthCm: '70', shoulderIn: '17.5', shoulderCm: '44', sleeveIn: '24.8', sleeveCm: '63' },
-  { size: 'M', chestIn: '40 - 42', chestCm: '101 - 106', lengthIn: '28.5', lengthCm: '72', shoulderIn: '18.5', shoulderCm: '47', sleeveIn: '25.5', sleeveCm: '65' },
-  { size: 'L', chestIn: '42 - 44', chestCm: '106 - 112', lengthIn: '29.5', lengthCm: '75', shoulderIn: '19.5', shoulderCm: '49', sleeveIn: '26.3', sleeveCm: '67' },
-  { size: 'XL', chestIn: '44 - 46', chestCm: '112 - 117', lengthIn: '30.5', lengthCm: '77', shoulderIn: '20.5', shoulderCm: '52', sleeveIn: '27.0', sleeveCm: '68' },
-  { size: 'XXL', chestIn: '46 - 48', chestCm: '117 - 122', lengthIn: '31.5', lengthCm: '80', shoulderIn: '21.5', shoulderCm: '55', sleeveIn: '27.5', sleeveCm: '70' },
-  { size: '3XL', chestIn: '48 - 50', chestCm: '122 - 127', lengthIn: '32.5', lengthCm: '82', shoulderIn: '22.5', shoulderCm: '57', sleeveIn: '28.0', sleeveCm: '71' },
+  { size: 'M', chestIn: '38', chestCm: '96.5', lengthIn: '28', lengthCm: '71', shoulderIn: '17.5', shoulderCm: '44.5', sleeveIn: '24.5', sleeveCm: '62.2' },
+  { size: 'L', chestIn: '40', chestCm: '101.6', lengthIn: '29', lengthCm: '73.7', shoulderIn: '18', shoulderCm: '45.7', sleeveIn: '25', sleeveCm: '63.5' },
+  { size: 'XL', chestIn: '42', chestCm: '106.7', lengthIn: '30', lengthCm: '76.2', shoulderIn: '18.5', shoulderCm: '47', sleeveIn: '25.5', sleeveCm: '64.8' },
+  { size: 'XXL', chestIn: '44', chestCm: '111.8', lengthIn: '31', lengthCm: '78.7', shoulderIn: '19.5', shoulderCm: '49.5', sleeveIn: '26', sleeveCm: '66' },
 ];
 
 const PANTS_SIZES = [
@@ -50,6 +47,7 @@ export function SizeChartModal({
   clothTitle,
 }: SizeChartModalProps) {
   const [internalIsOpen, setInternalIsOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<'chart' | 'table'>('chart');
   const [unit, setUnit] = useState<'in' | 'cm'>('in');
   const [prevCategory, setPrevCategory] = useState(category);
   const [activeTab, setActiveTab] = useState<'tops' | 'bottoms'>(() => {
@@ -129,189 +127,241 @@ return (
       {/* Header */}
       <div className="flex items-start justify-between gap-3 border-b border-border/60 pb-4">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-rose-500/10 text-rose-600 flex items-center justify-center shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-black/5 text-black flex items-center justify-center shrink-0">
             <Ruler className="w-5 h-5" />
           </div>
           <div>
             <h2 className="text-base sm:text-lg font-bold font-heading text-foreground">
-              Garment Size & Measurement Guide
+              AYRO Garment Size & Measurement Guide
             </h2>
             <p className="text-xs text-muted-foreground">
               {contextTitle || clothTitle
-                ? `Standard atelier dimensions for "${contextTitle || clothTitle}"`
-                : 'Atelier standardized dimensions for optimal fit and silhouette'}
+                ? `Official AYRO dimensions for "${contextTitle || clothTitle}"`
+                : 'AYRO European Regular Fit atelier dimensions'}
             </p>
           </div>
         </div>
         <button
           type="button"
           onClick={handleClose}
-          className="w-8 h-8 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer shrink-0"
+          className="w-8 h-8 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-black/5 transition-colors cursor-pointer shrink-0"
           title="Close size chart (Esc)"
         >
           <X className="w-4 h-4" />
         </button>
       </div>
 
-      {/* Controls: Category Tabs & Unit Switcher */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        {/* Category Tabs */}
+      {/* Mode Switcher Tabs */}
+      <div className="flex items-center justify-between gap-2 border-b border-border/40 pb-3">
         <div className="inline-flex p-1 rounded-xl bg-muted/60 border border-border">
           <button
             type="button"
-            onClick={() => setActiveTab('tops')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${activeTab === 'tops'
-                ? 'bg-card text-foreground shadow-xs'
+            onClick={() => setViewMode('chart')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+              viewMode === 'chart'
+                ? 'bg-black text-white shadow-xs'
                 : 'text-muted-foreground hover:text-foreground'
-              }`}
+            }`}
           >
-            Tops & Outerwear
+            Official AYRO Chart
           </button>
           <button
             type="button"
-            onClick={() => setActiveTab('bottoms')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${activeTab === 'bottoms'
-                ? 'bg-card text-foreground shadow-xs'
+            onClick={() => setViewMode('table')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+              viewMode === 'table'
+                ? 'bg-black text-white shadow-xs'
                 : 'text-muted-foreground hover:text-foreground'
-              }`}
+            }`}
           >
-            Pants & Bottoms
+            Measurement Table
           </button>
         </div>
+      </div>
 
-        {/* Unit Switcher */}
-        <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
-          <span>Unit:</span>
-          <div className="inline-flex p-0.5 rounded-lg bg-muted border border-border">
-            <button
-              type="button"
-              onClick={() => setUnit('in')}
-              className={`px-2.5 py-1 rounded-md text-xs font-bold transition-all ${unit === 'in'
-                  ? 'bg-rose-600 text-white shadow-xs'
-                  : 'text-muted-foreground hover:text-foreground'
+      {/* Official Visual Chart View */}
+      {viewMode === 'chart' ? (
+        <div className="space-y-3">
+          <div className="relative w-full rounded-2xl overflow-hidden border border-black/10 bg-[#FAF8F5] shadow-xs flex items-center justify-center p-2 sm:p-4">
+            <img
+              src="/ayro-size-chart.jpg"
+              alt="AYRO European Regular Fit Size Chart"
+              className="w-full max-h-[72vh] object-contain rounded-xl"
+            />
+          </div>
+          <p className="text-[11px] text-center text-muted-foreground">
+            All measurements in the chart are in inches. Crafted with ±0.5&quot; tolerance.
+          </p>
+        </div>
+      ) : (
+        <>
+          {/* Controls: Category Tabs & Unit Switcher */}
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            {/* Category Tabs */}
+            <div className="inline-flex p-1 rounded-xl bg-muted/60 border border-border">
+              <button
+                type="button"
+                onClick={() => setActiveTab('tops')}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  activeTab === 'tops'
+                    ? 'bg-black text-white shadow-xs'
+                    : 'text-muted-foreground hover:text-foreground'
                 }`}
-            >
-              Inches (in)
-            </button>
-            <button
-              type="button"
-              onClick={() => setUnit('cm')}
-              className={`px-2.5 py-1 rounded-md text-xs font-bold transition-all ${unit === 'cm'
-                  ? 'bg-rose-600 text-white shadow-xs'
-                  : 'text-muted-foreground hover:text-foreground'
+              >
+                Tops & Outerwear
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('bottoms')}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  activeTab === 'bottoms'
+                    ? 'bg-black text-white shadow-xs'
+                    : 'text-muted-foreground hover:text-foreground'
                 }`}
-            >
-              Centimeters (cm)
-            </button>
-          </div>
-        </div>
-      </div>
+              >
+                Pants & Bottoms
+              </button>
+            </div>
 
-      {/* Measurement Table */}
-      <div className="overflow-x-auto rounded-2xl border border-border">
-        <table className="w-full text-left text-xs">
-          <thead className="bg-muted/50 border-b border-border text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-            {activeTab === 'tops' ? (
-              <tr>
-                <th className="py-3 px-3.5">Size</th>
-                <th className="py-3 px-3.5">Chest / Bust</th>
-                <th className="py-3 px-3.5">Body Length</th>
-                <th className="py-3 px-3.5">Shoulder</th>
-                <th className="py-3 px-3.5">Sleeve</th>
-              </tr>
-            ) : (
-              <tr>
-                <th className="py-3 px-3.5">Size</th>
-                <th className="py-3 px-3.5">Waist</th>
-                <th className="py-3 px-3.5">Hip</th>
-                <th className="py-3 px-3.5">Inseam</th>
-                <th className="py-3 px-3.5">Total Length</th>
-              </tr>
-            )}
-          </thead>
-          <tbody className="divide-y divide-border/60">
-            {activeTab === 'tops'
-              ? TOPS_SIZES.map((row) => {
-                const isSelected = selectedSize && selectedSize.toUpperCase() === row.size;
-                return (
-                  <tr
-                    key={row.size}
-                    className={`transition-colors ${isSelected
-                        ? 'bg-rose-500/10 font-bold text-rose-600 dark:text-rose-400'
-                        : 'hover:bg-muted/30 text-foreground'
-                      }`}
-                  >
-                    <td className="py-2.5 px-3.5 font-bold flex items-center gap-1.5">
-                      <span>{row.size}</span>
-                      {isSelected && <Check className="w-3.5 h-3.5 text-rose-600" />}
-                    </td>
-                    <td className="py-2.5 px-3.5">{unit === 'in' ? `${row.chestIn}"` : `${row.chestCm} cm`}</td>
-                    <td className="py-2.5 px-3.5">{unit === 'in' ? `${row.lengthIn}"` : `${row.lengthCm} cm`}</td>
-                    <td className="py-2.5 px-3.5">{unit === 'in' ? `${row.shoulderIn}"` : `${row.shoulderCm} cm`}</td>
-                    <td className="py-2.5 px-3.5">{unit === 'in' ? `${row.sleeveIn}"` : `${row.sleeveCm} cm`}</td>
-                  </tr>
-                );
-              })
-              : PANTS_SIZES.map((row) => {
-                const isSelected = selectedSize && selectedSize.toUpperCase().includes(row.size.slice(0, 2));
-                return (
-                  <tr
-                    key={row.size}
-                    className={`transition-colors ${isSelected
-                        ? 'bg-rose-500/10 font-bold text-rose-600 dark:text-rose-400'
-                        : 'hover:bg-muted/30 text-foreground'
-                      }`}
-                  >
-                    <td className="py-2.5 px-3.5 font-bold flex items-center gap-1.5">
-                      <span>{row.size}</span>
-                      {isSelected && <Check className="w-3.5 h-3.5 text-rose-600" />}
-                    </td>
-                    <td className="py-2.5 px-3.5">{unit === 'in' ? `${row.waistIn}"` : `${row.waistCm} cm`}</td>
-                    <td className="py-2.5 px-3.5">{unit === 'in' ? `${row.hipIn}"` : `${row.hipCm} cm`}</td>
-                    <td className="py-2.5 px-3.5">{unit === 'in' ? `${row.inseamIn}"` : `${row.inseamCm} cm`}</td>
-                    <td className="py-2.5 px-3.5">{unit === 'in' ? `${row.lengthIn}"` : `${row.lengthCm} cm`}</td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
-      </div>
+            {/* Unit Switcher */}
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
+              <span>Unit:</span>
+              <div className="inline-flex p-0.5 rounded-lg bg-muted border border-border">
+                <button
+                  type="button"
+                  onClick={() => setUnit('in')}
+                  className={`px-2.5 py-1 rounded-md text-xs font-bold transition-all cursor-pointer ${
+                    unit === 'in'
+                      ? 'bg-black text-white shadow-xs'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  Inches (in)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setUnit('cm')}
+                  className={`px-2.5 py-1 rounded-md text-xs font-bold transition-all cursor-pointer ${
+                    unit === 'cm'
+                      ? 'bg-black text-white shadow-xs'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  Centimeters (cm)
+                </button>
+              </div>
+            </div>
+          </div>
 
-      {/* How to Measure Section */}
-      <div className="p-4 rounded-2xl bg-muted/40 border border-border space-y-3">
-        <div className="flex items-center gap-2 text-xs font-bold text-foreground">
-          <HelpCircle className="w-4 h-4 text-rose-500" />
-          <span>How to Measure Your Garment Fit</span>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px] text-muted-foreground leading-relaxed">
-          <div className="space-y-1">
-            <span className="font-bold text-foreground block">1. Chest / Bust</span>
-            <p>Measure across the fullest part of your chest, keeping the tape straight under your arms.</p>
+          {/* Measurement Table */}
+          <div className="overflow-x-auto rounded-2xl border border-border">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-muted/50 border-b border-border text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                {activeTab === 'tops' ? (
+                  <tr>
+                    <th className="py-3 px-3.5">Size</th>
+                    <th className="py-3 px-3.5">Chest / Bust</th>
+                    <th className="py-3 px-3.5">Body Length</th>
+                    <th className="py-3 px-3.5">Shoulder</th>
+                    <th className="py-3 px-3.5">Sleeve</th>
+                  </tr>
+                ) : (
+                  <tr>
+                    <th className="py-3 px-3.5">Size</th>
+                    <th className="py-3 px-3.5">Waist</th>
+                    <th className="py-3 px-3.5">Hip</th>
+                    <th className="py-3 px-3.5">Inseam</th>
+                    <th className="py-3 px-3.5">Total Length</th>
+                  </tr>
+                )}
+              </thead>
+              <tbody className="divide-y divide-border/60">
+                {activeTab === 'tops'
+                  ? TOPS_SIZES.map((row) => {
+                      const isSelected = selectedSize && selectedSize.toUpperCase() === row.size;
+                      return (
+                        <tr
+                          key={row.size}
+                          className={`transition-colors ${
+                            isSelected
+                              ? 'bg-black/5 font-bold text-black'
+                              : 'hover:bg-muted/30 text-foreground'
+                          }`}
+                        >
+                          <td className="py-2.5 px-3.5 font-bold flex items-center gap-1.5">
+                            <span>{row.size}</span>
+                            {isSelected && <Check className="w-3.5 h-3.5 text-black" />}
+                          </td>
+                          <td className="py-2.5 px-3.5">{unit === 'in' ? `${row.chestIn}"` : `${row.chestCm} cm`}</td>
+                          <td className="py-2.5 px-3.5">{unit === 'in' ? `${row.lengthIn}"` : `${row.lengthCm} cm`}</td>
+                          <td className="py-2.5 px-3.5">{unit === 'in' ? `${row.shoulderIn}"` : `${row.shoulderCm} cm`}</td>
+                          <td className="py-2.5 px-3.5">{unit === 'in' ? `${row.sleeveIn}"` : `${row.sleeveCm} cm`}</td>
+                        </tr>
+                      );
+                    })
+                  : PANTS_SIZES.map((row) => {
+                      const isSelected = selectedSize && selectedSize.toUpperCase().includes(row.size.slice(0, 2));
+                      return (
+                        <tr
+                          key={row.size}
+                          className={`transition-colors ${
+                            isSelected
+                              ? 'bg-black/5 font-bold text-black'
+                              : 'hover:bg-muted/30 text-foreground'
+                          }`}
+                        >
+                          <td className="py-2.5 px-3.5 font-bold flex items-center gap-1.5">
+                            <span>{row.size}</span>
+                            {isSelected && <Check className="w-3.5 h-3.5 text-black" />}
+                          </td>
+                          <td className="py-2.5 px-3.5">{unit === 'in' ? `${row.waistIn}"` : `${row.waistCm} cm`}</td>
+                          <td className="py-2.5 px-3.5">{unit === 'in' ? `${row.hipIn}"` : `${row.hipCm} cm`}</td>
+                          <td className="py-2.5 px-3.5">{unit === 'in' ? `${row.inseamIn}"` : `${row.inseamCm} cm`}</td>
+                          <td className="py-2.5 px-3.5">{unit === 'in' ? `${row.lengthIn}"` : `${row.lengthCm} cm`}</td>
+                        </tr>
+                      );
+                    })}
+              </tbody>
+            </table>
           </div>
-          <div className="space-y-1">
-            <span className="font-bold text-foreground block">2. Garment Length</span>
-            <p>Measure from the highest point of the shoulder collar seam down to the bottom hemline.</p>
+
+          {/* How to Measure Section */}
+          <div className="p-4 rounded-2xl bg-muted/40 border border-border space-y-3">
+            <div className="flex items-center gap-2 text-xs font-bold text-foreground">
+              <HelpCircle className="w-4 h-4 text-black" />
+              <span>How to Measure Your Garment Fit</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px] text-muted-foreground leading-relaxed">
+              <div className="space-y-1">
+                <span className="font-bold text-foreground block">1. Chest / Bust</span>
+                <p>Measure across the fullest part of your chest, keeping the tape straight under your arms.</p>
+              </div>
+              <div className="space-y-1">
+                <span className="font-bold text-foreground block">2. Garment Length</span>
+                <p>Measure from the highest point of the shoulder collar seam down to the bottom hemline.</p>
+              </div>
+              <div className="space-y-1">
+                <span className="font-bold text-foreground block">3. Shoulder Width</span>
+                <p>Measure straight across the back from the tip of one shoulder seam to the other.</p>
+              </div>
+              <div className="space-y-1">
+                <span className="font-bold text-foreground block">4. Fit Recommendation</span>
+                <p>AYRO shirts are European Regular Fit. For a relaxed drape, choose one size up.</p>
+              </div>
+            </div>
           </div>
-          <div className="space-y-1">
-            <span className="font-bold text-foreground block">3. Shoulder Width</span>
-            <p>Measure straight across the back from the tip of one shoulder seam to the other.</p>
-          </div>
-          <div className="space-y-1">
-            <span className="font-bold text-foreground block">4. Fit Recommendation</span>
-            <p>For an oversized streetwear drape, choose one size up. For tailored formal wear, stick to true-to-size.</p>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
 
       {/* Footer Actions */}
       <div className="flex items-center justify-between pt-2">
         <span className="text-[11px] text-muted-foreground">
-          Handcrafted with ±0.5&quot; atelier crafting tolerance.
+          AYRO Timeless Essentials • European Regular Fit
         </span>
         <button
           type="button"
           onClick={handleClose}
-          className="px-5 py-2 rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
+          className="px-5 py-2.5 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
         >
           <span>Close Chart</span>
           <ArrowRight className="w-3.5 h-3.5" />

@@ -165,7 +165,7 @@ export function OrderModal({ isOpen, onClose, cloth, onOrderSuccess }: OrderModa
                     })
                   )
                 }
-                className="text-[11px] font-bold text-rose-600 dark:text-rose-400 hover:underline inline-flex items-center gap-1 cursor-pointer"
+                className="text-[11px] font-bold text-black hover:underline inline-flex items-center gap-1 cursor-pointer"
               >
                 <Ruler className="w-3 h-3" />
                 <span>Sizes Chart</span>
