@@ -155,18 +155,18 @@ export function Footer() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="w-full px-3 py-2 text-xs rounded-lg border border-border bg-background focus:outline-none focus:ring-1 focus:ring-rose-500"
+                className="w-full px-3 py-2 text-xs rounded-lg border border-border bg-background text-black focus:outline-none focus:ring-1 focus:ring-black focus:border-black"
               />
               <button
                 type="submit"
                 aria-label="Subscribe"
-                className="px-3 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-semibold flex items-center justify-center transition-colors"
+                className="px-3 py-2 bg-black hover:bg-neutral-800 text-white rounded-lg text-xs font-semibold flex items-center justify-center transition-colors cursor-pointer"
               >
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </form>
             <div className="pt-2 flex items-center gap-2 text-[11px] text-muted-foreground">
-              <ShieldCheck className="w-4 h-4 text-emerald-500" />
+              <ShieldCheck className="w-4 h-4 text-black" />
               <span>Authenticity & Quality Guaranteed</span>
             </div>
           </div>
@@ -174,7 +174,7 @@ export function Footer() {
 
         {/* Bottom Bar: Copyright & Terms */}
         <div className="pt-8 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <p>© 2026 ClothSpace. All rights reserved. Built for conscious apparel lovers.</p>
+          <p>© 2026 AYRO Clothing BD. All rights reserved. Built for conscious apparel lovers.</p>
           <div className="flex items-center gap-5">
             <Link href="/about" className="hover:text-foreground transition-colors">
               Privacy Policy
