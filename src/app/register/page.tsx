@@ -88,7 +88,7 @@ export default function RegisterPage() {
             Home
           </Link>
           <span>&gt;</span>
-          <span className="text-[#1C3B27] font-medium">Register for an account</span>
+          <span className="text-black font-medium">Register for an account</span>
         </div>
       </div>
 

@@ -56,7 +56,7 @@ function LoginFormContent() {
             Home
           </Link>
           <span>&gt;</span>
-          <span className="text-[#1C3B27] font-medium">Login to your Account</span>
+          <span className="text-black font-medium">Login to your Account</span>
         </div>
       </div>
 
