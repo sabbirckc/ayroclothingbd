@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Heart } from 'lucide-react';
+import { Heart, Star } from 'lucide-react';
 import { useWishlist } from '@/context/wishlist-context';
 
 export interface ClothItem {
@@ -30,11 +30,6 @@ export function ClothCard({ item }: { item: ClothItem }) {
 
   const isOutOfStock = Number(item.stock) <= 0;
   const currentPrice = Number(item.price) || 0;
-
-  const formattedPrice = currentPrice.toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
 
   return (
     <div className="group relative flex flex-col h-full bg-white border border-black/15 hover:border-black/40 hover:shadow-md transition-all duration-300 overflow-hidden rounded-md text-black">
@@ -92,19 +87,35 @@ export function ClothCard({ item }: { item: ClothItem }) {
         ) : null}
       </div>
 
-      {/* Content Container below Image */}
-      <div className="p-3 sm:p-4 flex flex-col flex-1 items-center text-center justify-between gap-1.5">
+      {/* Content Container below Image - Left-aligned matching reference */}
+      <div className="p-3 sm:p-4 flex flex-col flex-1 items-start text-left justify-between gap-1">
         {/* Title */}
         <Link href={`/clothes/${clothId}`} className="block w-full">
-          <h3 className="font-heading font-medium text-xs sm:text-sm text-black hover:opacity-75 transition-opacity line-clamp-1">
+          <h3 className="font-heading font-medium text-xs sm:text-sm text-black hover:opacity-75 transition-opacity line-clamp-2 leading-snug">
             {item.title}
           </h3>
         </Link>
 
-        {/* Price: Current TK */}
+        {/* 5-Star Rating */}
+        <div className="flex items-center gap-0.5 text-amber-400 my-0.5" aria-label={`Rating: ${item.rating || 0} out of 5 stars`}>
+          {[1, 2, 3, 4, 5].map((star) => {
+            const isFilled = Boolean(item.rating && (item.reviewsCount || 0) > 0 && star <= Math.round(item.rating));
+            return (
+              <Star
+                key={star}
+                className={`w-3.5 h-3.5 ${
+                  isFilled ? 'fill-amber-400 text-amber-400' : 'text-amber-400 fill-transparent'
+                }`}
+                strokeWidth={1.5}
+              />
+            );
+          })}
+        </div>
+
+        {/* Price: ৳ */}
         <div className="pt-0.5">
-          <span className="font-bold text-xs sm:text-sm text-black">
-            TK {formattedPrice}
+          <span className="font-bold text-xs sm:text-sm text-black font-sans">
+            ৳ {currentPrice.toLocaleString('en-US')}
           </span>
         </div>
       </div>
