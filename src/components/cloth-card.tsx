@@ -99,14 +99,14 @@ export function ClothCard({ item }: { item: ClothItem }) {
           </h3>
         </Link>
 
-        {/* Price: Current TK */}
-        <div className="pt-0.5">
-          <span className="font-bold text-xs sm:text-sm text-foreground">
-            TK {formattedPrice}
-          </span>
+          {/* Price: Current TK */}
+          <div className="pt-0.5">
+            <span className="font-bold text-xs sm:text-sm text-foreground">
+              TK {formattedPrice}
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-  );
+      );
 }
 

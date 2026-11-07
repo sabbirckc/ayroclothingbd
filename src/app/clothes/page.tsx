@@ -16,6 +16,7 @@ function ClothesCatalogContent() {
   const searchParams = useSearchParams();
 
   const initialCategory = searchParams.get('category') || 'all';
+  const initialSearch = searchParams.get('search') || '';
   const initialWishlistOnly = searchParams.get('wishlist') === 'true';
 
   const { wishlistItems } = useWishlist();
@@ -24,18 +25,20 @@ function ClothesCatalogContent() {
   const [loading, setLoading] = useState(true);
 
   // Filters state
-  const [search] = useState('');
+  const [search, setSearch] = useState(initialSearch);
   const [category, setCategory] = useState(initialCategory);
   const [selectedSize] = useState('all');
   const [sortBy] = useState('newest');
   const [wishlistOnly, setWishlistOnly] = useState(initialWishlistOnly);
 
-  // Sync category or wishlist if searchParams change
+  // Sync category, search, or wishlist if searchParams change
   useEffect(() => {
     queueMicrotask(() => {
-      const cat = searchParams.get('category');
-      if (cat) setCategory(cat);
+      const cat = searchParams.get('category') || 'all';
+      const s = searchParams.get('search') || '';
       const wl = searchParams.get('wishlist') === 'true';
+      setCategory(cat);
+      setSearch(s);
       setWishlistOnly(wl);
     });
   }, [searchParams]);
