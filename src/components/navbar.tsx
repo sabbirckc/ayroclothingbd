@@ -614,8 +614,8 @@ export function Navbar() {
         aria-label="Mobile Navigation Bar"
         className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-xl border-t border-border/60 px-2 sm:px-6 py-2 shadow-[0_-4px_25px_rgba(0,0,0,0.08)]"
       >
-        <div className="w-full grid grid-cols-5 items-center text-center relative">
-          {/* Tab 1: Home (First button on the left) */}
+        <div className="w-full grid grid-cols-4 items-center text-center relative">
+          {/* Tab 1: Home */}
           <Link
             href="/"
             onClick={(e) => {
@@ -625,27 +625,16 @@ export function Navbar() {
                 window.dispatchEvent(new CustomEvent('reset-home-view'));
               }
             }}
-            className={`flex flex-col items-center justify-center gap-1 py-1 transition-colors cursor-pointer w-full ${
-              pathname === '/'
+            className={`flex flex-col items-center justify-center gap-1 py-1 transition-colors cursor-pointer w-full ${pathname === '/'
                 ? 'text-foreground font-semibold'
                 : 'text-muted-foreground hover:text-[#1C3B27]'
-            }`}
+              }`}
           >
             <Home className="w-5 h-5 fill-current" />
             <span className="text-[11px] font-medium leading-none">Home</span>
           </Link>
 
-          {/* Tab 2: Category */}
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#1C3B27] transition-colors cursor-pointer w-full"
-          >
-            <Menu className="w-5 h-5" />
-            <span className="text-[11px] font-medium leading-none">Category</span>
-          </button>
-
-          {/* Tab 3: Contact */}
+          {/* Tab 2: Contact */}
           <a
             href="tel:+8801700000000"
             className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#1C3B27] transition-colors cursor-pointer w-full"
@@ -654,7 +643,7 @@ export function Navbar() {
             <span className="text-[11px] font-medium leading-none">Contact</span>
           </a>
 
-          {/* Tab 4: Cart */}
+          {/* Tab 3: Cart */}
           <Link
             href={user ? '/my-orders' : '/login?redirect=/my-orders'}
             onClick={() => {
@@ -668,7 +657,7 @@ export function Navbar() {
             <span className="text-[11px] font-medium leading-none">Cart ({wishlistIds.length > 0 ? wishlistIds.length : 0})</span>
           </Link>
 
-          {/* Tab 5: Login / Account */}
+          {/* Tab 4: Login / Account */}
           <Link
             href={user ? '/dashboard' : '/login'}
             className="flex flex-col items-center justify-center gap-1 py-1 text-muted-foreground hover:text-[#1C3B27] transition-colors cursor-pointer w-full"
